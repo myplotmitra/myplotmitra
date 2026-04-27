@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#E85D04"/>
+<meta name="description" content="OnePercent Real Estate — Buy, sell and discover properties in Hyderabad"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="1% Real Estate"/>
+<link rel="manifest" href="/manifest.json"/>
+<link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+<title>1% Real Estate — Hyderabad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/src/css/main.css"/>
+</head>
+<body>
+<div class="install-bar" id="installBar">
+  <span>Add to home screen for app experience</span>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="ibtn" id="installBtn">Install</button>
+    <button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button>
+  </div>
+</div>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">1%<span>Real Estate</span></div>
+    <div class="search-wrap">
+      <span class="sicon">&#128269;</span>
+      <input type="search" placeholder="Search city, area, location..." oninput="window.setSearch(this.value)" autocomplete="off"/>
+    </div>
+    <div class="hdr-right">
+      <button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">Admin</button>
+      <button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button>
+      <div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div>
+    </div>
+  </div>
+</header>
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="chips">
+      <span class="chip on" data-t="" onclick="window.setType(this)">All</span>
+      <span class="chip" data-t="plot" onclick="window.setType(this)">Plot</span>
+      <span class="chip" data-t="house" onclick="window.setType(this)">House</span>
+      <span class="chip" data-t="land" onclick="window.setType(this)">Land</span>
+      <span class="chip" data-t="flat" onclick="window.setType(this)">Flat</span>
+    </div>
+    <div class="vtog">
+      <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')">Grid</button>
+      <button class="vbtn" id="vbMap" onclick="window.setView('map')">Map</button>
+    </div>
+    <span class="pcnt" id="pcnt">Loading...</span>
+  </div>
+</div>
+<main class="main"><div class="property-grid" id="propGrid"></div></main>
+<nav class="bottom-nav">
+  <button class="nav-item on"><span class="nav-icon">&#127968;</span>Home</button>
+  <button class="nav-item"><span class="nav-icon">&#128269;</span>Search</button>
+  <button class="nav-post" onclick="window.openPost()">+</button>
+  <button class="nav-item"><span class="nav-icon">&#128276;</span>Alerts</button>
+  <button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button>
+</nav>
+<div class="sheet-overlay" id="sheetOverlay" onclick="window.closeDetail()"></div>
+<div class="bottom-sheet" id="detailSheet">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" onclick="window.closeDetail()">x</button>
+  <div id="detailBody"></div>
+</div>
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Post Your Property</span>
+      <button class="modal-close" onclick="window.closePost()">x</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="window.submitProperty(event)">
+        <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div>
+        <div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div>
+        <div class="frow2">
+          <div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div>
+          <div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div>
+        </div>
+        <div class="fg">
+          <label class="flbl">Dimensions</label>
+          <div class="frow">
+            <input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/>
+            <input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/>
+            <input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/>
+          </div>
+          <div class="dims-preview" id="dimsPreview"></div>
+        </div>
+        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div>
+        <div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div>
+        <div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div>
+        <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div>
+        <div class="notice">Your listing will be reviewed by admin before going live.</div>
+        <button type="submit" class="submit-btn">Submit for Approval</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="adminModal">
+  <div class="modal adm-modal">
+    <div class="modal-header">
+      <span class="modal-title">Admin - Pending Approvals</span>
+      <button class="modal-close" onclick="window.closeAdmin()">x</button>
+    </div>
+    <div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div>
+  </div>
+</div>
+<script type="module" src="/src/js/app.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=PASTE_YOUR_NEW_KEY_HERE&libraries=places&callback=initGoogleMap"></script>
+</body>
+</html>

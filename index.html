@@ -4,13 +4,13 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#E85D04"/>
-<meta name="description" content="OnePercent Real Estate — Buy, sell and discover properties in Hyderabad"/>
+<meta name="description" content="MyPlotMitra — Buy, sell and discover plots, houses, flats and land in Hyderabad. Call 9989083321"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-<meta name="apple-mobile-web-app-title" content="1% Real Estate"/>
+<meta name="apple-mobile-web-app-title" content="MyPlotMitra"/>
 <link rel="manifest" href="/manifest.json"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
-<title>1% Real Estate — Hyderabad</title>
+<title>MyPlotMitra — Properties in Hyderabad</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -24,7 +24,7 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .iclose{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.8;padding:0 4px}
 .header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--g200);padding:0 16px}
 .header-inner{max-width:1200px;margin:0 auto;height:56px;display:flex;align-items:center;gap:10px}
-.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--or);letter-spacing:-.5px;white-space:nowrap;flex-shrink:0}
+.logo{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--or);letter-spacing:-.3px;white-space:nowrap;flex-shrink:0}
 .logo span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--g400);margin-left:3px}
 .search-wrap{flex:1;position:relative}
 .search-wrap input{width:100%;height:38px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-md);padding:0 12px 0 36px;font-size:13px;color:var(--black);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
@@ -128,10 +128,10 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
-<header class="header"><div class="header-inner"><div class="logo">1%<span>Real Estate</span></div><div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.setSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
+<header class="header"><div class="header-inner"><div class="logo">MyPlotMitra<span>Hyderabad</span></div><div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.setSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
 <div class="filter-bar"><div class="filter-inner"><div class="chips"><span class="chip on" data-t="" onclick="window.setType(this)">All</span><span class="chip" data-t="plot" onclick="window.setType(this)">Plot</span><span class="chip" data-t="house" onclick="window.setType(this)">House</span><span class="chip" data-t="land" onclick="window.setType(this)">Land</span><span class="chip" data-t="flat" onclick="window.setType(this)">Flat</span></div><div class="vtog"><button class="vbtn on" id="vbGrid" onclick="window.setView('grid')">&#8857; Grid</button><button class="vbtn" id="vbMap" onclick="window.setView('map')">&#9711; Map</button></div><span class="pcnt" id="pcnt">Loading...</span></div></div>
 <main class="main"><div class="property-grid" id="propGrid"></div></main>
-<nav class="bottom-nav"><button class="nav-item on"><span class="nav-icon">&#127968;</span>Home</button><button class="nav-item"><span class="nav-icon">&#128269;</span>Search</button><button class="nav-post" onclick="window.openPost()">+</button><button class="nav-item"><span class="nav-icon">&#128276;</span>Alerts</button><button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button></nav>
+<nav class="bottom-nav"><button class="nav-item on"><span class="nav-icon">&#127968;</span>Home</button><button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon">&#128269;</span>Search</button><button class="nav-post" onclick="window.openPost()">+</button><button class="nav-item" onclick="window.open('tel:9989083321')"><span class="nav-icon">&#128222;</span>Call</button><button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button></nav>
 <div class="sheet-overlay" id="sheetOverlay" onclick="window.closeDetail()"></div>
 <div class="bottom-sheet" id="detailSheet"><div class="sheet-handle"></div><button class="sheet-close" onclick="window.closeDetail()">x</button><div id="detailBody"></div></div>
 <div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div><div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
@@ -167,6 +167,9 @@ const TC={plot:'#E85D04',house:'#185FA5',land:'#BA7517',flat:'#7C3AED'};
 const TB={plot:'#FFF0E6',house:'#EFF6FF',land:'#FFFBEB',flat:'#F5F3FF'};
 const TI={plot:'\u25a1',house:'\u2302',land:'\U0001f33f',flat:'\u25a0'};
 
+/* ══ ADMIN EMAIL — always gets admin panel ══ */
+const ADMIN_EMAIL = 'nkhadar@gmail.com';
+
 onAuthStateChanged(auth,async u=>{
   currentUser=u;
   const ab=document.getElementById('authBtns'),pb=document.getElementById('postBtn'),adm=document.getElementById('adminBtn');
@@ -174,11 +177,32 @@ onAuthStateChanged(auth,async u=>{
   if(u){
     ab.innerHTML=`<img src="${u.photoURL||''}" class="user-avatar" title="Sign out" onclick="window.doSignOut()"/>`;
     if(pb)pb.style.display='flex';
-    const q2=query(collection(db,'users'),where('id','==',u.uid));
-    const sn=await getDocs(q2);
-    if(sn.empty){await addDoc(collection(db,'users'),{id:u.uid,fullName:u.displayName||'User',email:u.email,photoURL:u.photoURL||'',phone:'',role:'user',createdAt:serverTimestamp()});}
-    else if(sn.docs[0].data().role==='admin'||sn.docs[0].data().role==='superadmin'){if(adm)adm.style.display='flex';}
-  }else{ab.innerHTML=`<button class="btn-signin" onclick="window.doSignIn()">Sign in</button>`;if(pb)pb.style.display='none';if(adm)adm.style.display='none';}
+
+    // Check if this is the admin email — always show admin panel
+    if(u.email===ADMIN_EMAIL){
+      if(adm)adm.style.display='flex';
+    }
+
+    // Also check/create user in Firestore
+    try{
+      const q2=query(collection(db,'users'),where('id','==',u.uid));
+      const sn=await getDocs(q2);
+      if(sn.empty){
+        const role=u.email===ADMIN_EMAIL?'admin':'user';
+        await addDoc(collection(db,'users'),{id:u.uid,fullName:u.displayName||'User',email:u.email,photoURL:u.photoURL||'',phone:'',role:role,createdAt:serverTimestamp()});
+      } else {
+        const role=sn.docs[0].data().role;
+        if(adm&&(role==='admin'||role==='superadmin'||u.email===ADMIN_EMAIL)){adm.style.display='flex';}
+      }
+    }catch(err){
+      // Firebase not configured — still show admin for admin email
+      console.warn('Firestore check failed',err);
+    }
+  }else{
+    ab.innerHTML=`<button class="btn-signin" onclick="window.doSignIn()">Sign in</button>`;
+    if(pb)pb.style.display='none';
+    if(adm)adm.style.display='none';
+  }
 });
 window.doSignIn=async()=>{try{await signInWithPopup(auth,provider);}catch(e){console.error(e);}};
 window.doSignOut=async()=>{if(confirm('Sign out?'))await signOut(auth);};
@@ -339,7 +363,7 @@ function closePopup(e){const pp=document.getElementById('mapPopup');if(pp&&!pp.c
 window.openDetail=function(id){
   const p=allProps.find(x=>x.id===id);if(!p)return;
   const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6';
-  document.getElementById('detailBody').innerHTML=`<div class="detail-img" style="background:${bg}">${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}"/>`:`<span style="font-size:64px">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}</div><div class="detail-content"><div class="detail-price">${fp(p.price)}</div><div class="detail-title">${p.title}</div><div class="detail-loc">&#128205; ${p.city}</div>${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}<div class="detail-meta"><div class="meta-item"><span class="meta-lbl">Type</span><span class="meta-val">${p.type}</span></div><div class="meta-item"><span class="meta-lbl">Area</span><span class="meta-val">${p.areaSqft?Number(p.areaSqft).toLocaleString()+' sqft':'n/a'}</span></div><div class="meta-item"><span class="meta-lbl">Negotiable</span><span class="meta-val">${p.isNegotiable?'Yes':'No'}</span></div><div class="meta-item"><span class="meta-lbl">Posted</span><span class="meta-val">${ago(p.createdAt)}</span></div></div>${p.description?`<div class="detail-desc">${p.description}</div>`:''}<div class="contact-btns"><button class="btn-call" onclick="alert('Contact seller coming soon!')">&#128222; Call Seller</button><button class="btn-inquiry" onclick="alert('Inquiry coming soon!')">&#128172; Inquiry</button></div></div>`;
+  document.getElementById('detailBody').innerHTML=`<div class="detail-img" style="background:${bg}">${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}"/>`:`<span style="font-size:64px">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}</div><div class="detail-content"><div class="detail-price">${fp(p.price)}</div><div class="detail-title">${p.title}</div><div class="detail-loc">&#128205; ${p.city}</div>${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}<div class="detail-meta"><div class="meta-item"><span class="meta-lbl">Type</span><span class="meta-val">${p.type}</span></div><div class="meta-item"><span class="meta-lbl">Area</span><span class="meta-val">${p.areaSqft?Number(p.areaSqft).toLocaleString()+' sqft':'n/a'}</span></div><div class="meta-item"><span class="meta-lbl">Negotiable</span><span class="meta-val">${p.isNegotiable?'Yes':'No'}</span></div><div class="meta-item"><span class="meta-lbl">Posted</span><span class="meta-val">${ago(p.createdAt)}</span></div></div>${p.description?`<div class="detail-desc">${p.description}</div>`:''}<div class="contact-btns"><button class="btn-call" onclick="window.open('tel:9989083321')">&#128222; Call 9989083321</button><button class="btn-inquiry" onclick="window.open('https://wa.me/919989083321?text=Hi, I am interested in this property on MyPlotMitra')">&#128172; WhatsApp</button></div></div>`;
   document.getElementById('sheetOverlay').classList.add('open');document.getElementById('detailSheet').classList.add('open');
 };
 window.closeDetail=function(){document.getElementById('sheetOverlay').classList.remove('open');document.getElementById('detailSheet').classList.remove('open');};
@@ -350,14 +374,60 @@ window.openPost=()=>{if(!currentUser){window.doSignIn();return;}document.getElem
 window.closePost=()=>document.getElementById('postModal').classList.remove('open');
 window.updDims=()=>{const l=Number(document.getElementById('fLft')?.value)||0,w=Number(document.getElementById('fWft')?.value)||0,pr=document.getElementById('dimsPreview');if(pr)pr.textContent=l&&w?`${l} ft \xd7 ${w} ft = ${(l*w).toLocaleString()} sqft`:'';}
 window.submitProperty=async e=>{
-  e.preventDefault();if(!currentUser)return;
-  const form=e.target,btn=form.querySelector('.submit-btn');btn.textContent='Submitting...';btn.disabled=true;
+  e.preventDefault();
+  if(!currentUser){showToast('Please sign in first','error');return;}
+  const form=e.target,btn=form.querySelector('.submit-btn');
+  btn.textContent='Submitting...';btn.disabled=true;
   try{
-    const data={ownerId:currentUser.uid,title:form.title_.value.trim(),description:form.description.value.trim(),type:form.type_.value,address:form.address.value.trim(),city:form.city.value.trim()||'Hyderabad',lengthFt:Number(form.lengthFt.value)||0,widthFt:Number(form.widthFt.value)||0,areaSqft:Number(form.areaSqft.value)||0,price:Number(form.price.value),isNegotiable:form.negotiable.checked,status:'pending',viewsCount:0,createdAt:serverTimestamp(),updatedAt:serverTimestamp()};
-    const pi=form.querySelector('#photoInput');
-    if(pi.files.length>0){const f=pi.files[0],sr=ref(storage,`properties/${Date.now()}/${f.name}`),sn=await uploadBytes(sr,f);data.coverPhoto=await getDownloadURL(sn.ref);}
-    await addDoc(collection(db,'properties'),data);window.closePost();form.reset();showToast('Submitted! Admin will review your listing.','success');
-  }catch(err){showToast('Error: '+err.message,'error');}finally{btn.textContent='Submit for Approval';btn.disabled=false;}
+    const data={
+      ownerId:currentUser.uid,
+      ownerEmail:currentUser.email,
+      ownerName:currentUser.displayName||'User',
+      title:form.title_.value.trim(),
+      description:form.description.value.trim(),
+      type:form.type_.value,
+      address:form.address.value.trim(),
+      city:form.city.value.trim()||'Hyderabad',
+      lengthFt:Number(form.lengthFt.value)||0,
+      widthFt:Number(form.widthFt.value)||0,
+      areaSqft:Number(form.areaSqft.value)||0,
+      price:Number(form.price.value),
+      isNegotiable:form.negotiable.checked,
+      status:'pending',
+      viewsCount:0,
+      createdAt:serverTimestamp(),
+      updatedAt:serverTimestamp()
+    };
+
+    // Try photo upload (skip if fails)
+    try{
+      const pi=form.querySelector('#photoInput');
+      if(pi&&pi.files.length>0){
+        const f=pi.files[0];
+        const sr=ref(storage,`properties/${Date.now()}/${f.name}`);
+        const sn=await uploadBytes(sr,f);
+        data.coverPhoto=await getDownloadURL(sn.ref);
+      }
+    }catch(photoErr){console.warn('Photo upload failed, continuing without photo',photoErr);}
+
+    await addDoc(collection(db,'properties'),data);
+    window.closePost();
+    form.reset();
+    document.getElementById('dimsPreview').textContent='';
+    showToast('Submitted successfully! Admin will review and approve.','success');
+  }catch(err){
+    console.error('Submit error:',err);
+    if(err.code==='permission-denied'){
+      showToast('Permission error — check Firebase rules','error');
+    } else if(err.message&&err.message.includes('offline')){
+      showToast('No internet connection. Please try again.','error');
+    } else {
+      showToast('Error submitting. Please try again.','error');
+    }
+  }finally{
+    btn.textContent='Submit for Approval';
+    btn.disabled=false;
+  }
 };
 window.openAdmin=async()=>{
   if(!currentUser)return;document.getElementById('adminModal').classList.add('open');

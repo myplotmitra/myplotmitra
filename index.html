@@ -140,7 +140,7 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,updateDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 /* ══ PASTE YOUR FIREBASE CONFIG HERE ══════════════════════════════════ */
@@ -175,28 +175,56 @@ onAuthStateChanged(auth,async u=>{
   const ab=document.getElementById('authBtns'),pb=document.getElementById('postBtn'),adm=document.getElementById('adminBtn');
   if(!ab)return;
   if(u){
-    ab.innerHTML=`<img src="${u.photoURL||''}" class="user-avatar" title="Sign out" onclick="window.doSignOut()"/>`;
+    // Show profile
+    ab.innerHTML=`
+      <div style="position:relative;display:inline-block">
+        <div style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--g50);border:1px solid var(--g200);border-radius:20px;padding:3px 10px 3px 3px" onclick="window.toggleProfileMenu()">
+          <img src="${u.photoURL||''}" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--or);object-fit:cover" onerror="this.style.display='none'"/>
+          <span style="font-size:12px;font-weight:500;color:var(--black);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.displayName||u.email?.split('@')[0]||'User'}</span>
+          <span style="font-size:10px;color:var(--g400)">&#9660;</span>
+        </div>
+        <div id="profileMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--g200);border-radius:var(--r-md);box-shadow:var(--sh);min-width:160px;z-index:999;overflow:hidden">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--g200)">
+            <div style="font-size:12px;font-weight:500;color:var(--black)">${u.displayName||'User'}</div>
+            <div style="font-size:11px;color:var(--g400);margin-top:2px">${u.email}</div>
+          </div>
+          <div onclick="window.doSignOut()" style="padding:10px 14px;font-size:12px;color:#DC2626;cursor:pointer;display:flex;align-items:center;gap:6px" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
+            &#128682; Sign out
+          </div>
+        </div>
+      </div>`;
     if(pb)pb.style.display='flex';
 
-    // Check if this is the admin email — always show admin panel
-    if(u.email===ADMIN_EMAIL){
-      if(adm)adm.style.display='flex';
-    }
+    // Always show admin button for admin email
+    if(u.email===ADMIN_EMAIL && adm) adm.style.display='flex';
 
-    // Also check/create user in Firestore
+    // Save/update user in Firestore using UID as document ID (setDoc not addDoc)
     try{
-      const q2=query(collection(db,'users'),where('id','==',u.uid));
-      const sn=await getDocs(q2);
-      if(sn.empty){
-        const role=u.email===ADMIN_EMAIL?'admin':'user';
-        await addDoc(collection(db,'users'),{id:u.uid,fullName:u.displayName||'User',email:u.email,photoURL:u.photoURL||'',phone:'',role:role,createdAt:serverTimestamp()});
+      const userRef = doc(db,'users',u.uid);
+      const userSnap = await getDoc(userRef);
+      if(!userSnap.exists()){
+        // First time — create with correct UID as document ID
+        await setDoc(userRef,{
+          id: u.uid,
+          fullName: u.displayName||'User',
+          email: u.email,
+          photoURL: u.photoURL||'',
+          phone: '',
+          role: u.email===ADMIN_EMAIL ? 'admin' : 'user',
+          createdAt: serverTimestamp()
+        });
       } else {
-        const role=sn.docs[0].data().role;
-        if(adm&&(role==='admin'||role==='superadmin'||u.email===ADMIN_EMAIL)){adm.style.display='flex';}
+        // Existing user — update role if admin email
+        const data = userSnap.data();
+        if(u.email===ADMIN_EMAIL && data.role!=='admin'){
+          await setDoc(userRef,{...data, role:'admin'},{merge:true});
+        }
+        if(adm&&(data.role==='admin'||data.role==='superadmin')){
+          adm.style.display='flex';
+        }
       }
     }catch(err){
-      // Firebase not configured — still show admin for admin email
-      console.warn('Firestore check failed',err);
+      console.warn('Firestore user save failed:',err);
     }
   }else{
     ab.innerHTML=`<button class="btn-signin" onclick="window.doSignIn()">Sign in</button>`;
@@ -204,8 +232,10 @@ onAuthStateChanged(auth,async u=>{
     if(adm)adm.style.display='none';
   }
 });
-window.doSignIn=async()=>{try{await signInWithPopup(auth,provider);}catch(e){console.error(e);}};
-window.doSignOut=async()=>{if(confirm('Sign out?'))await signOut(auth);};
+window.doSignIn=async()=>{try{await signInWithPopup(auth,provider);}catch(e){console.error(e);showToast('Sign in failed. Please try again.','error');}};
+window.doSignOut=async()=>{if(confirm('Sign out?')){await signOut(auth);window.location.reload();}};
+window.toggleProfileMenu=()=>{const m=document.getElementById('profileMenu');if(m)m.style.display=m.style.display==='none'?'block':'none';};
+document.addEventListener('click',e=>{const m=document.getElementById('profileMenu');if(m&&m.style.display==='block'&&!m.parentElement?.contains(e.target))m.style.display='none';});
 
 async function loadProps(){
   showSkeleton();
@@ -430,14 +460,61 @@ window.submitProperty=async e=>{
   }
 };
 window.openAdmin=async()=>{
-  if(!currentUser)return;document.getElementById('adminModal').classList.add('open');
-  const list=document.getElementById('pendingList');list.innerHTML='<div style="text-align:center;padding:40px;color:#AAA">Loading...</div>';
+  if(!currentUser)return;
+  document.getElementById('adminModal').classList.add('open');
+  const list=document.getElementById('pendingList');
+  list.innerHTML='<div style="text-align:center;padding:40px;color:#AAA">Loading...</div>';
   try{
-    const q2=query(collection(db,'properties'),where('status','==','pending'),orderBy('createdAt','asc'));
-    const sn=await getDocs(q2);const items=sn.docs.map(d=>({id:d.id,...d.data()}));
-    if(!items.length){list.innerHTML='<div class="empty-adm">All caught up! No pending listings.</div>';return;}
-    list.innerHTML=items.map(p=>`<div class="adm-card" id="adc-${p.id}"><div class="adm-top"><div class="adm-thumb" style="background:${TB[p.type]||'#FFF0E6'}">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</div><div class="adm-info"><div class="adm-title">${p.title}</div><div class="adm-city">&#128205; ${p.city}</div><div class="adm-pills"><span class="adm-pill">${fp(p.price)}</span>${p.areaSqft?`<span class="adm-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''} ${p.lengthFt>0?`<span class="adm-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}</div></div><div class="adm-acts"><button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button><button class="btn-rej-open" onclick="window.showRej('${p.id}')">&#10007; Reject</button></div></div><div class="rej-form" id="rf-${p.id}" style="display:none"><div class="rej-presets">${['Documents missing','Duplicate listing','Incorrect dimensions','Unclear photos','Price mismatch','Fraudulent'].map(r=>`<span class="preset-chip" onclick="document.getElementById('rr-${p.id}').value='${r}'">${r}</span>`).join('')}</div><input class="rej-input" id="rr-${p.id}" placeholder="Rejection reason..."/><div class="rej-btns"><button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button><button class="btn-rej-confirm" onclick="window.doReject('${p.id}')">&#10007; Reject</button></div></div></div>`).join('');
-  }catch(e){list.innerHTML='<div style="color:#DC2626;padding:20px">Error loading. Check Firebase rules.</div>';}
+    // Get ALL properties — filter pending in JS (avoids index/rules issues)
+    const snap=await getDocs(collection(db,'properties'));
+    const all=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const items=all.filter(p=>p.status==='pending');
+    items.sort((a,b)=>{
+      const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(0);
+      const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(0);
+      return da-db2;
+    });
+    if(!items.length){
+      list.innerHTML='<div class="empty-adm">&#127881; No pending listings — all caught up!</div>';
+      return;
+    }
+    list.innerHTML=items.map(p=>`
+      <div class="adm-card" id="adc-${p.id}">
+        <div class="adm-top">
+          <div class="adm-thumb" style="background:${TB[p.type]||'#FFF0E6'}">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</div>
+          <div class="adm-info">
+            <div class="adm-title">${p.title}</div>
+            <div class="adm-city">&#128205; ${p.city}</div>
+            <div style="font-size:11px;color:#888;margin-bottom:4px">by ${p.ownerName||p.ownerEmail||'Unknown'}</div>
+            <div class="adm-pills">
+              <span class="adm-pill">${fp(p.price)}</span>
+              ${p.areaSqft?`<span class="adm-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}
+              ${p.lengthFt>0?`<span class="adm-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}
+            </div>
+          </div>
+          <div class="adm-acts">
+            <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button>
+            <button class="btn-rej-open" onclick="window.showRej('${p.id}')">&#10007; Reject</button>
+          </div>
+        </div>
+        <div class="rej-form" id="rf-${p.id}" style="display:none">
+          <div class="rej-presets">
+            ${['Documents missing','Duplicate listing','Incorrect dimensions','Unclear photos','Price mismatch','Fraudulent'].map(r=>`<span class="preset-chip" onclick="document.getElementById('rr-${p.id}').value='${r}'">${r}</span>`).join('')}
+          </div>
+          <input class="rej-input" id="rr-${p.id}" placeholder="Rejection reason..."/>
+          <div class="rej-btns">
+            <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve &amp; Go Live</button>
+            <button class="btn-rej-confirm" onclick="window.doReject('${p.id}')">&#10007; Reject</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(e){
+    console.error('Admin error:',e);
+    list.innerHTML=`<div style="color:#DC2626;padding:20px;font-size:13px">
+      Error: ${e.message}<br><br>
+      Make sure you are signed in with nkhadar@gmail.com
+    </div>`;
+  }
 };
 window.closeAdmin=()=>document.getElementById('adminModal').classList.remove('open');
 window.showRej=id=>{const r=document.getElementById(`rf-${id}`);if(r)r.style.display=r.style.display==='none'?'block':'none';};

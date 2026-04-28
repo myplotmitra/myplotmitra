@@ -10,7 +10,17 @@
 <meta name="apple-mobile-web-app-title" content="MyPlotMitra"/>
 <link rel="manifest" href="/manifest.json"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
-<title>MyPlotMitra — Properties in Hyderabad</title>
+<title>MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad</title>
+<meta name="keywords" content="plots in Hyderabad, houses for sale Hyderabad, flats Hyderabad, agricultural land Hyderabad, HMDA plots, property for sale Hyderabad"/>
+<meta property="og:title" content="MyPlotMitra — Buy &amp; Sell Properties in Hyderabad"/>
+<meta property="og:description" content="Find verified plots, houses, flats and land in Hyderabad. Direct from owners. Zero brokerage. Call 9989083321"/>
+<meta property="og:url" content="https://www.myplotmitra.com"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="MyPlotMitra — Properties in Hyderabad"/>
+<meta name="geo.region" content="IN-TG"/>
+<meta name="geo.placename" content="Hyderabad, Telangana, India"/>
+<link rel="canonical" href="https://www.myplotmitra.com"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -38,7 +48,20 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .btn-signin:hover{background:var(--ort)}
 .user-avatar{width:34px;height:34px;border-radius:50%;border:2px solid var(--or);cursor:pointer;object-fit:cover}
 .filter-bar{background:#fff;border-bottom:1px solid var(--g200);position:sticky;top:56px;z-index:99}
-.filter-inner{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px}
+.filter-inner{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-row1{display:flex;align-items:center;gap:8px;width:100%}
+.filter-row2{display:flex;align-items:center;gap:8px;width:100%;padding-top:4px;border-top:0.5px solid var(--g100)}
+.price-chips{display:flex;gap:5px;overflow-x:auto}.price-chips::-webkit-scrollbar{display:none}
+.pchip{white-space:nowrap;padding:4px 11px;border:1px solid var(--g200);border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;background:#fff;color:var(--g600);transition:all .15s;flex-shrink:0}
+.pchip.on{background:var(--or);color:#fff;border-color:var(--or)}
+.bk-btn{background:none;border:0.5px solid var(--g200);border-radius:var(--r-sm);padding:5px 10px;font-size:11px;cursor:pointer;color:var(--g600);transition:all .15s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.bk-btn.on{background:var(--ort);color:var(--or);border-color:var(--or)}
+.bk-heart{font-size:14px;cursor:pointer;transition:transform .15s;position:absolute;top:8px;right:8px;background:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.bk-heart:hover{transform:scale(1.2)}
+.bk-heart.saved{color:#E85D04}
+.seller-info{background:var(--g50);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--g200)}
+.seller-name{font-size:13px;font-weight:500;color:var(--black)}
+.seller-phone{font-size:12px;color:var(--g600);margin-top:2px}
 .chips{display:flex;gap:6px;flex:1;overflow-x:auto}.chips::-webkit-scrollbar{display:none}
 .chip{white-space:nowrap;padding:5px 14px;border:1px solid var(--g200);border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:var(--g600);transition:all .15s;flex-shrink:0}
 .chip.on{background:var(--or);color:#fff;border-color:var(--or)}.chip:hover:not(.on){border-color:var(--or);color:var(--or)}
@@ -129,12 +152,37 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
 <header class="header"><div class="header-inner"><div class="logo">MyPlotMitra<span>Hyderabad</span></div><div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.setSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
-<div class="filter-bar"><div class="filter-inner"><div class="chips"><span class="chip on" data-t="" onclick="window.setType(this)">All</span><span class="chip" data-t="plot" onclick="window.setType(this)">Plot</span><span class="chip" data-t="house" onclick="window.setType(this)">House</span><span class="chip" data-t="land" onclick="window.setType(this)">Land</span><span class="chip" data-t="flat" onclick="window.setType(this)">Flat</span></div><div class="vtog"><button class="vbtn on" id="vbGrid" onclick="window.setView('grid')">&#8857; Grid</button><button class="vbtn" id="vbMap" onclick="window.setView('map')">&#9711; Map</button></div><span class="pcnt" id="pcnt">Loading...</span></div></div>
+<div class="filter-bar"><div class="filter-inner">
+  <div class="filter-row1">
+    <div class="chips">
+      <span class="chip on" data-t="" onclick="window.setType(this)">All</span>
+      <span class="chip" data-t="plot" onclick="window.setType(this)">Plot</span>
+      <span class="chip" data-t="house" onclick="window.setType(this)">House</span>
+      <span class="chip" data-t="land" onclick="window.setType(this)">Land</span>
+      <span class="chip" data-t="flat" onclick="window.setType(this)">Flat</span>
+    </div>
+    <div class="vtog">
+      <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')">&#8857; Grid</button>
+      <button class="vbtn" id="vbMap" onclick="window.setView('map')">&#9711; Map</button>
+    </div>
+    <span class="pcnt" id="pcnt">Loading...</span>
+  </div>
+  <div class="filter-row2">
+    <div class="price-chips">
+      <span class="pchip on" data-p="" onclick="window.setPrice(this)">Any price</span>
+      <span class="pchip" data-p="5000000" onclick="window.setPrice(this)">Under ₹50L</span>
+      <span class="pchip" data-p="10000000" onclick="window.setPrice(this)">Under ₹1Cr</span>
+      <span class="pchip" data-p="50000000" onclick="window.setPrice(this)">Under ₹5Cr</span>
+    </div>
+    <button class="bk-btn" id="bkToggle" onclick="window.toggleBookmarks()">&#9825; Saved</button>
+  </div>
+</div></div>
 <main class="main"><div class="property-grid" id="propGrid"></div></main>
 <nav class="bottom-nav"><button class="nav-item on"><span class="nav-icon">&#127968;</span>Home</button><button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon">&#128269;</span>Search</button><button class="nav-post" onclick="window.openPost()">+</button><button class="nav-item" onclick="window.open('tel:9989083321')"><span class="nav-icon">&#128222;</span>Call</button><button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button></nav>
 <div class="sheet-overlay" id="sheetOverlay" onclick="window.closeDetail()"></div>
 <div class="bottom-sheet" id="detailSheet"><div class="sheet-handle"></div><button class="sheet-close" onclick="window.closeDetail()">x</button><div id="detailBody"></div></div>
-<div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div><div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
+<div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
+        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div><div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
 <div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header"><span class="modal-title">&#9881; Admin - Pending Approvals</span><button class="modal-close" onclick="window.closeAdmin()">x</button></div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
 
 <script type="module">
@@ -159,10 +207,12 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 const storage=getStorage(app);
 const provider=new GoogleAuthProvider();
-let currentUser=null,vMode='grid',typeF='',searchQ='',allProps=[];
+let currentUser=null,vMode='grid',typeF='',searchQ='',priceF=0,allProps=[],bookmarks=new Set(JSON.parse(localStorage.getItem('mpm_bk')||'[]')),showBookmarks=false;
 function fp(p){if(p>=10000000)return`\u20b9${(p/10000000).toFixed(1)}Cr`;if(p>=100000)return`\u20b9${(p/100000).toFixed(1)}L`;return`\u20b9${Number(p).toLocaleString('en-IN')}`;}
 function ago(ts){if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);const s=Math.floor((Date.now()-d.getTime())/1000);if(s<86400)return'Today';if(s<172800)return'Yesterday';if(s<604800)return`${Math.floor(s/86400)}d ago`;return`${Math.floor(s/604800)}w ago`;}
 function isNew(ts){if(!ts)return false;const d=ts.toDate?ts.toDate():new Date(ts);return Date.now()-d.getTime()<7*86400000;}
+function saveBk(){localStorage.setItem('mpm_bk',JSON.stringify([...bookmarks]));}
+function toggleBk(id,e){e&&e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();}
 const TC={plot:'#E85D04',house:'#185FA5',land:'#BA7517',flat:'#7C3AED'};
 const TB={plot:'#FFF0E6',house:'#EFF6FF',land:'#FFFBEB',flat:'#F5F3FF'};
 const TI={plot:'\u25a1',house:'\u2302',land:'\U0001f33f',flat:'\u25a0'};
@@ -240,10 +290,33 @@ document.addEventListener('click',e=>{const m=document.getElementById('profileMe
 async function loadProps(){
   showSkeleton();
   try{
-    const q2=query(collection(db,'properties'),where('status','==','approved'),orderBy('createdAt','desc'),limit(40));
+    // Simple query — no orderBy to avoid composite index requirement
+    const q2=query(
+      collection(db,'properties'),
+      where('status','==','approved'),
+      limit(60)
+    );
     const sn=await getDocs(q2);
-    allProps=sn.docs.map(d=>({id:d.id,...d.data()}));render();
-  }catch(e){console.warn('Firebase not configured, loading demo data');loadDemo();}
+    allProps=sn.docs.map(d=>({id:d.id,...d.data()}));
+    // Sort by createdAt in JS — no index needed
+    allProps.sort((a,b)=>{
+      const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(0);
+      const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(0);
+      return db2-da;
+    });
+    render();
+  }catch(e){
+    console.warn('Firebase error:',e.message);
+    // Only fall back to demo if Firebase is not configured at all
+    if(e.message?.includes('invalid-api-key')||e.message?.includes('app/no-app')){
+      loadDemo();
+    } else {
+      // Firebase IS configured but query failed — show empty with error
+      allProps=[];
+      render();
+      showToast('Error loading properties: '+e.message,'error');
+    }
+  }
 }
 
 function loadDemo(){
@@ -318,19 +391,23 @@ function loadDemo(){
 }
 
 function showSkeleton(){document.getElementById('propGrid').innerHTML=Array.from({length:8}).map(()=>`<div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line" style="height:18px;width:55%"></div><div class="sk-line" style="height:13px;width:85%"></div><div class="sk-line" style="height:13px;width:60%"></div><div class="sk-line" style="height:13px;width:70%"></div></div></div>`).join('');}
-function getFiltered(){return allProps.filter(p=>{const mt=!typeF||p.type===typeF;const ms=!searchQ||p.title.toLowerCase().includes(searchQ.toLowerCase())||p.city.toLowerCase().includes(searchQ.toLowerCase());return mt&&ms;});}
+function getFiltered(){return allProps.filter(p=>{const mt=!typeF||p.type===typeF;const ms=!searchQ||p.title.toLowerCase().includes(searchQ.toLowerCase())||p.city.toLowerCase().includes(searchQ.toLowerCase())||p.address?.toLowerCase().includes(searchQ.toLowerCase());const mp=!priceF||p.price<=priceF;const mb=!showBookmarks||bookmarks.has(p.id);return mt&&ms&&mp&&mb;});}
 function render(){const data=getFiltered();document.getElementById('pcnt').textContent=`${data.length} propert${data.length===1?'y':'ies'}`;if(vMode==='grid')renderGrid(data);else renderMap(data);}
 
 function renderGrid(data){
   const g=document.getElementById('propGrid');
-  if(!data.length){g.innerHTML=`<div class="empty-state"><div class="empty-icon">&#127968;</div><div class="empty-title">No properties found</div><div class="empty-sub">Try a different search or filter</div></div>`;return;}
+  if(!data.length){
+    if(showBookmarks){g.innerHTML=`<div class="empty-state"><div class="empty-icon">&#9825;</div><div class="empty-title">No saved properties</div><div class="empty-sub">Tap the heart on any listing to save it</div></div>`;return;}
+    g.innerHTML=`<div class="empty-state"><div class="empty-icon">&#127968;</div><div class="empty-title">No properties found</div><div class="empty-sub">Try a different search or filter</div></div>`;return;
+  }
   g.innerHTML=data.map((p,i)=>{
-    const c=TC[p.type]||'#E85D04',bg=TB[p.type]||'#FFF0E6',hasDim=p.lengthFt>0&&p.widthFt>0;
+    const c=TC[p.type]||'#E85D04',bg=TB[p.type]||'#FFF0E6',hasDim=p.lengthFt>0&&p.widthFt>0,isSaved=bookmarks.has(p.id);
     return`<div class="card" style="animation-delay:${i*.04}s" onclick="window.openDetail('${p.id}')">
-      <div class="card-img" style="background:${bg}">
+      <div class="card-img" style="background:${bg};position:relative">
         ${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}" loading="lazy"/>`:`<span class="type-icon">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}
         ${isNew(p.createdAt)?'<span class="badge-new">NEW</span>':''}
         <span class="badge-type" style="color:${c};border-color:${c}44;background:${c}18">${(p.type||'plot').toUpperCase()}</span>
+        <span class="bk-heart${isSaved?' saved':''}" onclick="window.toggleBk('${p.id}',event)">${isSaved?'&#10084;':'&#9825;'}</span>
       </div>
       <div class="card-body">
         <div class="card-price">${fp(p.price)}</div>
@@ -392,14 +469,50 @@ function closePopup(e){const pp=document.getElementById('mapPopup');if(pp&&!pp.c
 
 window.openDetail=function(id){
   const p=allProps.find(x=>x.id===id);if(!p)return;
-  const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6';
-  document.getElementById('detailBody').innerHTML=`<div class="detail-img" style="background:${bg}">${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}"/>`:`<span style="font-size:64px">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}</div><div class="detail-content"><div class="detail-price">${fp(p.price)}</div><div class="detail-title">${p.title}</div><div class="detail-loc">&#128205; ${p.city}</div>${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}<div class="detail-meta"><div class="meta-item"><span class="meta-lbl">Type</span><span class="meta-val">${p.type}</span></div><div class="meta-item"><span class="meta-lbl">Area</span><span class="meta-val">${p.areaSqft?Number(p.areaSqft).toLocaleString()+' sqft':'n/a'}</span></div><div class="meta-item"><span class="meta-lbl">Negotiable</span><span class="meta-val">${p.isNegotiable?'Yes':'No'}</span></div><div class="meta-item"><span class="meta-lbl">Posted</span><span class="meta-val">${ago(p.createdAt)}</span></div></div>${p.description?`<div class="detail-desc">${p.description}</div>`:''}<div class="contact-btns"><button class="btn-call" onclick="window.open('tel:9989083321')">&#128222; Call 9989083321</button><button class="btn-inquiry" onclick="window.open('https://wa.me/919989083321?text=Hi, I am interested in this property on MyPlotMitra')">&#128172; WhatsApp</button></div></div>`;
-  document.getElementById('sheetOverlay').classList.add('open');document.getElementById('detailSheet').classList.add('open');
+  const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6',isSaved=bookmarks.has(p.id);
+  const sellerPhone=p.sellerPhone||p.ownerPhone||'9989083321';
+  const sellerName=p.ownerName||p.sellerName||'Owner';
+  document.getElementById('detailBody').innerHTML=`
+    <div class="detail-img" style="background:${bg}">
+      ${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}"/>`:`<span style="font-size:64px">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}
+    </div>
+    <div class="detail-content">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
+        <div class="detail-price">${fp(p.price)}</div>
+        <span style="font-size:22px;cursor:pointer;color:${isSaved?'#E85D04':'#ccc'}" onclick="window.toggleBk('${p.id}',event);this.textContent=bookmarks.has('${p.id}')?'&#10084;':'&#9825;';this.style.color=bookmarks.has('${p.id}')?'#E85D04':'#ccc'">${isSaved?'&#10084;':'&#9825;'}</span>
+      </div>
+      <div class="detail-title">${p.title}</div>
+      <div class="detail-loc">&#128205; ${p.address?p.address+', ':''} ${p.city}</div>
+      ${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}
+      <div class="detail-meta">
+        <div class="meta-item"><span class="meta-lbl">Type</span><span class="meta-val">${p.type}</span></div>
+        <div class="meta-item"><span class="meta-lbl">Area</span><span class="meta-val">${p.areaSqft?Number(p.areaSqft).toLocaleString()+' sqft':'—'}</span></div>
+        <div class="meta-item"><span class="meta-lbl">Negotiable</span><span class="meta-val">${p.isNegotiable?'Yes':'No'}</span></div>
+        <div class="meta-item"><span class="meta-lbl">Posted</span><span class="meta-val">${ago(p.createdAt)}</span></div>
+      </div>
+      ${p.description?`<div class="detail-desc">${p.description}</div>`:''}
+      <div class="seller-info">
+        <div>
+          <div class="seller-name">&#128100; ${sellerName}</div>
+          <div class="seller-phone">&#128222; ${sellerPhone}</div>
+        </div>
+        <span style="font-size:11px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:10px;font-weight:500">Direct Owner</span>
+      </div>
+      <div class="contact-btns">
+        <button class="btn-call" onclick="window.open('tel:${sellerPhone}')">&#128222; Call ${sellerPhone}</button>
+        <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')">&#128172; WhatsApp</button>
+      </div>
+    </div>`;
+  document.getElementById('sheetOverlay').classList.add('open');
+  document.getElementById('detailSheet').classList.add('open');
 };
 window.closeDetail=function(){document.getElementById('sheetOverlay').classList.remove('open');document.getElementById('detailSheet').classList.remove('open');};
 window.setSearch=v=>{searchQ=v;render();};
 window.setType=el=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');typeF=el.dataset.t;render();};
 window.setView=v=>{vMode=v;document.getElementById('vbGrid').classList.toggle('on',v==='grid');document.getElementById('vbMap').classList.toggle('on',v==='map');render();};
+window.setPrice=el=>{document.querySelectorAll('.pchip').forEach(c=>c.classList.remove('on'));el.classList.add('on');priceF=Number(el.dataset.p)||0;render();};
+window.toggleBookmarks=()=>{showBookmarks=!showBookmarks;const b=document.getElementById('bkToggle');if(b){b.classList.toggle('on',showBookmarks);b.textContent=showBookmarks?'❤ Saved':'♡ Saved';}render();};
+window.toggleBk=(id,e)=>{if(e)e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();};
 window.openPost=()=>{if(!currentUser){window.doSignIn();return;}document.getElementById('postModal').classList.add('open');};
 window.closePost=()=>document.getElementById('postModal').classList.remove('open');
 window.updDims=()=>{const l=Number(document.getElementById('fLft')?.value)||0,w=Number(document.getElementById('fWft')?.value)||0,pr=document.getElementById('dimsPreview');if(pr)pr.textContent=l&&w?`${l} ft \xd7 ${w} ft = ${(l*w).toLocaleString()} sqft`:'';}
@@ -413,6 +526,7 @@ window.submitProperty=async e=>{
       ownerId:currentUser.uid,
       ownerEmail:currentUser.email,
       ownerName:currentUser.displayName||'User',
+      sellerPhone:form.sellerPhone.value.trim(),
       title:form.title_.value.trim(),
       description:form.description.value.trim(),
       type:form.type_.value,
@@ -518,7 +632,25 @@ window.openAdmin=async()=>{
 };
 window.closeAdmin=()=>document.getElementById('adminModal').classList.remove('open');
 window.showRej=id=>{const r=document.getElementById(`rf-${id}`);if(r)r.style.display=r.style.display==='none'?'block':'none';};
-window.doApprove=async id=>{try{await updateDoc(doc(db,'properties',id),{status:'approved',reviewedBy:currentUser.uid,reviewedAt:serverTimestamp()});document.getElementById(`adc-${id}`)?.remove();showToast('Approved! Seller notified.','success');loadProps();}catch(e){showToast('Error: '+e.message,'error');}};
+window.doApprove=async id=>{
+  try{
+    await updateDoc(doc(db,'properties',id),{
+      status:'approved',
+      reviewedBy:currentUser.uid,
+      reviewedAt:serverTimestamp()
+    });
+    document.getElementById(`adc-${id}`)?.remove();
+    showToast('✓ Approved! Property is now live.','success');
+    // Reload properties so approved one appears in grid
+    await loadProps();
+    // Check if any pending left
+    const remaining=document.querySelectorAll('[id^="adc-"]');
+    if(remaining.length===0){
+      const list=document.getElementById('pendingList');
+      if(list)list.innerHTML='<div class="empty-adm">&#127881; All caught up! No pending listings.</div>';
+    }
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
 window.doReject=async id=>{const r=document.getElementById(`rr-${id}`)?.value?.trim();if(!r){showToast('Enter rejection reason first','error');return;}try{await updateDoc(doc(db,'properties',id),{status:'rejected',rejectionReason:r,reviewedBy:currentUser.uid,reviewedAt:serverTimestamp()});document.getElementById(`adc-${id}`)?.remove();showToast('Rejected. Seller notified.','');}catch(e){showToast('Error: '+e.message,'error');}};
 function showToast(msg,type=''){const t=document.createElement('div');t.className=`toast${type?' '+type:''}`;t.textContent=msg;document.body.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);}
 window.showToast=showToast;

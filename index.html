@@ -1144,14 +1144,28 @@ window.submitProperty=async e=>{
         try{
           const p = photoFiles[i];
           const ext = p.file.name.split('.').pop().toLowerCase() || 'jpg';
-          const safeName = `${Date.now()}_${i}.${ext}`;
-          const storRef = ref(storage, `properties/${safeName}`);
-          const snap = await uploadBytes(storRef, p.file);
-          const url = await getDownloadURL(snap.ref);
+          const safeName = `properties/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+          const storRef = ref(storage, safeName);
+
+          // Upload with 30 second timeout
+          const uploadWithTimeout = new Promise(async(resolve, reject)=>{
+            const timer = setTimeout(()=>reject(new Error('Upload timeout')), 30000);
+            try{
+              const snap = await uploadBytes(storRef, p.file);
+              const url = await getDownloadURL(snap.ref);
+              clearTimeout(timer);
+              resolve(url);
+            }catch(e){
+              clearTimeout(timer);
+              reject(e);
+            }
+          });
+
+          const url = await uploadWithTimeout;
           uploadedUrls.push(url);
         }catch(photoErr){
-          console.warn(`Photo ${i+1} upload failed:`, photoErr);
-          // Continue with remaining photos — don't block submission
+          console.warn(`Photo ${i+1} failed:`, photoErr.message);
+          // Don't block — continue to next photo
         }
       }
       if(uploadedUrls.length > 0){
@@ -1160,16 +1174,16 @@ window.submitProperty=async e=>{
       }
     }
 
-    btn.textContent = 'Saving...';
+    btn.textContent = 'Saving property...';
     await addDoc(collection(db,'properties'), data);
 
-    // Show success screen instead of closing immediately
+    // Show success screen
     const frm  = document.querySelector('#postModal form');
     const succ = document.getElementById('submitSuccess');
     if(frm)  frm.style.display='none';
     if(succ) succ.classList.add('show');
 
-    // Reset state for next time
+    // Reset photos
     for(let i=0; i<6; i++) selectedPhotos[i]=null;
     window.clearMapPin();
 

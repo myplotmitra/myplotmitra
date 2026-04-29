@@ -35,8 +35,13 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .iclose{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.8;padding:0 4px}
 .header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--g200);padding:0 16px}
 .header-inner{max-width:1200px;margin:0 auto;height:56px;display:flex;align-items:center;gap:10px}
-.logo{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--or);letter-spacing:-.3px;white-space:nowrap;flex-shrink:0}
-.logo span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--g400);margin-left:3px}
+.logo{display:flex;align-items:center;gap:0;white-space:nowrap;flex-shrink:0;cursor:pointer;text-decoration:none}
+.logo-icon{width:40px;height:40px;flex-shrink:0}
+.logo-text{display:flex;flex-direction:column;justify-content:center;margin-left:8px}
+.logo-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;line-height:1;letter-spacing:-.3px}
+.logo-name-my{color:var(--or)}
+.logo-name-rest{color:var(--black)}
+.logo-tagline{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;color:var(--g400);letter-spacing:.8px;text-transform:uppercase;margin-top:1px}
 .search-wrap{flex:1;position:relative}
 .search-wrap input{width:100%;height:38px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-md);padding:0 12px 0 36px;font-size:13px;color:var(--black);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
 .search-wrap input:focus{border-color:var(--or);box-shadow:0 0 0 3px var(--ort)}.search-wrap input::placeholder{color:var(--g400)}
@@ -170,7 +175,36 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
-<header class="header"><div class="header-inner"><div class="logo">MyPlotMitra<span>Hyderabad</span></div><div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.setSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
+<header class="header"><div class="header-inner">
+<div class="logo" onclick="window.location.reload()">
+  <svg class="logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="24" r="24" fill="#E85D04"/>
+    <circle cx="24" cy="24" r="21" fill="#C44D00"/>
+    <!-- Plot grid lines -->
+    <line x1="6"  y1="18" x2="42" y2="18" stroke="#fff" stroke-width="1" opacity=".2"/>
+    <line x1="6"  y1="26" x2="42" y2="26" stroke="#fff" stroke-width="1" opacity=".2"/>
+    <line x1="6"  y1="34" x2="42" y2="34" stroke="#fff" stroke-width="1" opacity=".2"/>
+    <line x1="16" y1="4"  x2="16" y2="44" stroke="#fff" stroke-width="1" opacity=".2"/>
+    <line x1="24" y1="4"  x2="24" y2="44" stroke="#fff" stroke-width="1" opacity=".2"/>
+    <line x1="32" y1="4"  x2="32" y2="44" stroke="#fff" stroke-width="1" opacity=".2"/>
+    <!-- Location pin head -->
+    <circle cx="24" cy="17" r="11" fill="#fff"/>
+    <circle cx="24" cy="17" r="7.5" fill="#E85D04"/>
+    <!-- M inside pin -->
+    <text x="24" y="21" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="9" fill="#fff">M</text>
+    <!-- Pin tail -->
+    <path d="M17 26 Q24 38 31 26" fill="#fff"/>
+    <!-- Handshake clasp -->
+    <path d="M7 36 Q14 32 19 35 L22 37 Q16 41 9 41 Z" fill="#fff" opacity=".85"/>
+    <path d="M41 36 Q34 32 29 35 L26 37 Q32 41 39 41 Z" fill="#fff" opacity=".85"/>
+    <ellipse cx="24" cy="37" rx="5" ry="3" fill="#FF8C42"/>
+  </svg>
+  <div class="logo-text">
+    <div class="logo-name"><span class="logo-name-my">My</span><span class="logo-name-rest">PlotMitra</span></div>
+    <div class="logo-tagline">Trusted Property Partner</div>
+  </div>
+</div>
+<div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.setSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
 <div class="filter-bar"><div class="filter-inner">
   <div class="filter-row1">
     <div class="chips">
@@ -200,7 +234,21 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 <nav class="bottom-nav"><button class="nav-item on"><span class="nav-icon">&#127968;</span>Home</button><button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon">&#128269;</span>Search</button><button class="nav-post" onclick="window.openPost()">+</button><button class="nav-item" onclick="window.open('tel:9989083321')"><span class="nav-icon">&#128222;</span>Call</button><button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button></nav>
 <div class="sheet-overlay" id="sheetOverlay" onclick="window.closeDetail()"></div>
 <div class="bottom-sheet" id="detailSheet"><div class="sheet-handle"></div><button class="sheet-close" onclick="window.closeDetail()">x</button><div id="detailBody"></div></div>
-<div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg" id="pickerTopSection">
+<div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header">
+<div style="display:flex;align-items:center;gap:8px">
+  <svg width="28" height="28" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#E85D04"/>
+    <circle cx="24" cy="24" r="21" fill="#C44D00"/>
+    <circle cx="24" cy="17" r="11" fill="#fff"/>
+    <circle cx="24" cy="17" r="7.5" fill="#E85D04"/>
+    <text x="24" y="21" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="9" fill="#fff">M</text>
+    <path d="M17 26 Q24 38 31 26" fill="#fff"/>
+    <ellipse cx="24" cy="37" rx="5" ry="3" fill="#FF8C42"/>
+  </svg>
+  <span class="modal-title">Post Your Property</span>
+</div>
+<button class="modal-close" onclick="window.closePost()">x</button>
+</div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg" id="pickerTopSection">
           <label class="flbl" style="font-size:13px;font-weight:500;color:var(--black);display:flex;align-items:center;gap:6px">
             <span style="background:var(--or);color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">1</span>
             Pin your property location on the map
@@ -226,7 +274,21 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
         <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
         <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div>
                 <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
-<div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header"><span class="modal-title">&#9881; Admin - Pending Approvals</span><button class="modal-close" onclick="window.closeAdmin()">x</button></div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
+<div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header">
+<div style="display:flex;align-items:center;gap:8px">
+  <svg width="28" height="28" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#E85D04"/>
+    <circle cx="24" cy="24" r="21" fill="#C44D00"/>
+    <circle cx="24" cy="17" r="11" fill="#fff"/>
+    <circle cx="24" cy="17" r="7.5" fill="#E85D04"/>
+    <text x="24" y="21" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="9" fill="#fff">M</text>
+    <path d="M17 26 Q24 38 31 26" fill="#fff"/>
+    <ellipse cx="24" cy="37" rx="5" ry="3" fill="#FF8C42"/>
+  </svg>
+  <span class="modal-title">Admin — Approvals</span>
+</div>
+<button class="modal-close" onclick="window.closeAdmin()">x</button>
+</div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";

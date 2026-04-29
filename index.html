@@ -580,7 +580,8 @@ function showGooglePopup(p,marker){
   </div>`;
   infoWindow=new google.maps.InfoWindow({content});
   infoWindow.open(googleMap,marker);
-}(data){
+}
+function renderSVGMap(data){
   const mapDiv=document.getElementById('googleMapDiv');if(!mapDiv)return;
   // Place pins using city coords mapped to SVG space
   // Hyderabad bounding box: lat 17.05-17.65, lng 77.9-78.8

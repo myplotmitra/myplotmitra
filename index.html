@@ -147,7 +147,21 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .map-coords-badge{background:var(--ort);border:1px solid #FFD4B3;border-radius:var(--r-sm);padding:7px 10px;font-size:11px;color:var(--ord);margin-top:6px;display:none;align-items:center;gap:6px}
 .map-coords-badge.show{display:flex}
 .map-coords-clear{margin-left:auto;font-size:11px;color:var(--g400);cursor:pointer;text-decoration:underline}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+.photo-slot{aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;position:relative;background:var(--g50);border:1.5px dashed var(--g200);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s}
+.photo-slot:hover{border-color:var(--or)}
+.photo-slot.has-photo{border-style:solid;border-color:var(--g200)}
 .submit-btn{width:100%;background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}.submit-btn:hover{background:var(--ord)}.submit-btn:disabled{opacity:.6;cursor:not-allowed}
+.photo-slot img{width:100%;height:100%;object-fit:cover}
+.photo-slot-add{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--g400);font-size:11px}
+.photo-slot-add span{font-size:22px;color:var(--or);line-height:1}
+.photo-remove{position:absolute;top:3px;right:3px;background:#DC2626;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;z-index:2}
+.photo-cover-tag{position:absolute;bottom:3px;left:3px;background:var(--or);color:#fff;font-size:9px;font-weight:500;padding:1px 5px;border-radius:4px}
+.submit-success{text-align:center;padding:30px 20px;display:none}
+.submit-success.show{display:block}
+.submit-success-icon{font-size:48px;margin-bottom:12px}
+.submit-success-title{font-size:16px;font-weight:500;color:var(--black);margin-bottom:6px}
+.submit-success-sub{font-size:13px;color:var(--g400);margin-bottom:20px}
 .badge-sold{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;border-radius:var(--r-md) var(--r-md) 0 0}
 .badge-sold-text{background:#DC2626;color:#fff;font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:.5px;transform:rotate(-8deg)}
 .badge-sold-timer{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:9px;padding:2px 8px;border-radius:10px;white-space:nowrap}
@@ -272,8 +286,49 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
           <input type="hidden" id="pickedLng" name="lng"/>
         </div>
         <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
-        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div>
-                <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
+        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div>
+        <div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property — location, nearby landmarks, documents available..."></textarea></div>
+
+        <div class="fg">
+          <label class="flbl">
+            Photos <span style="color:var(--g400);font-weight:400">(up to 6 — first photo is cover)</span>
+          </label>
+          <div class="photo-grid" id="photoGrid">
+            <div class="photo-slot" id="slot-0" onclick="window.triggerPhotoSelect(0)">
+              <div class="photo-slot-add"><span>+</span>Add photo</div>
+            </div>
+            <div class="photo-slot" id="slot-1" onclick="window.triggerPhotoSelect(1)">
+              <div class="photo-slot-add"><span>+</span>Add photo</div>
+            </div>
+            <div class="photo-slot" id="slot-2" onclick="window.triggerPhotoSelect(2)">
+              <div class="photo-slot-add"><span>+</span>Add photo</div>
+            </div>
+            <div class="photo-slot" id="slot-3" onclick="window.triggerPhotoSelect(3)">
+              <div class="photo-slot-add"><span>+</span>Add photo</div>
+            </div>
+            <div class="photo-slot" id="slot-4" onclick="window.triggerPhotoSelect(4)">
+              <div class="photo-slot-add"><span>+</span>Add photo</div>
+            </div>
+            <div class="photo-slot" id="slot-5" onclick="window.triggerPhotoSelect(5)">
+              <div class="photo-slot-add"><span>+</span>Add photo</div>
+            </div>
+          </div>
+          <input type="file" id="photoFileInput" accept="image/*" style="display:none" onchange="window.handlePhotoSelect(event)"/>
+        </div>
+
+        <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div>
+        <div class="notice">Your listing will be reviewed by admin before going live. Usually within 24 hours.</div>
+        <button type="submit" class="submit-btn" id="submitBtn">Submit for Approval</button>
+      </form>
+
+      <!-- Success screen shown after submit -->
+      <div class="submit-success" id="submitSuccess">
+        <div class="submit-success-icon">&#127881;</div>
+        <div class="submit-success-title">Property Submitted!</div>
+        <div class="submit-success-sub">Your listing has been sent for admin review.<br>It will go live within 24 hours.</div>
+        <button onclick="window.closePost()" style="background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:12px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">Done</button>
+      </div>
+    </div></div></div>
 <div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header">
 <div style="display:flex;align-items:center;gap:8px">
   <svg width="28" height="28" viewBox="0 0 48 48">
@@ -695,12 +750,27 @@ function closePopup(e){const pp=document.getElementById('mapPopup');if(pp&&!pp.c
 
 window.openDetail=function(id){
   const p=allProps.find(x=>x.id===id);if(!p)return;
+  currentSlide=0;
+  currentSlidePhotos=p.photos&&p.photos.length?p.photos:(p.coverPhoto?[p.coverPhoto]:[]);
   const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6',isSaved=bookmarks.has(p.id);
   const sellerPhone=p.sellerPhone||p.ownerPhone||'9989083321';
   const sellerName=p.ownerName||p.sellerName||'Owner';
   document.getElementById('detailBody').innerHTML=`
-    <div class="detail-img" style="background:${bg}">
-      ${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}"/>`:`<span style="font-size:64px">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}
+    <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
+      ${p.photos&&p.photos.length>1
+        ? `<div id="photoSlider" style="width:100%;height:100%;position:relative;overflow:hidden">
+            <img id="slideImg" src="${p.photos[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>
+            <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px">
+              ${p.photos.map((_,i)=>`<div class="slide-dot${i===0?' active':''}" onclick="window.goSlide(${i})" style="width:6px;height:6px;border-radius:50%;background:${i===0?'#fff':'rgba(255,255,255,.5)'};cursor:pointer"></div>`).join('')}
+            </div>
+            ${p.photos.length>1?`
+            <button onclick="window.goSlide(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px">&#8249;</button>
+            <button onclick="window.goSlide(1)"  style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px">&#8250;</button>`:''}
+          </div>`
+        : p.coverPhoto
+          ? `<img src="${p.coverPhoto}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
+          : `<span style="font-size:64px">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`
+      }
     </div>
     <div class="detail-content">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
@@ -745,6 +815,17 @@ window.openDetail=function(id){
   document.getElementById('detailSheet').classList.add('open');
 };
 window.closeDetail=function(){document.getElementById('sheetOverlay').classList.remove('open');document.getElementById('detailSheet').classList.remove('open');};
+
+let currentSlide=0,currentSlidePhotos=[];
+window.goSlide=function(dir){
+  if(!currentSlidePhotos.length)return;
+  if(dir===-1)currentSlide=(currentSlide-1+currentSlidePhotos.length)%currentSlidePhotos.length;
+  else if(dir===1)currentSlide=(currentSlide+1)%currentSlidePhotos.length;
+  else currentSlide=dir;
+  const img=document.getElementById('slideImg');
+  if(img)img.src=currentSlidePhotos[currentSlide];
+  document.querySelectorAll('.slide-dot').forEach((d,i)=>{d.style.background=i===currentSlide?'#fff':'rgba(255,255,255,.5)';});
+};
 window.setSearch=v=>{searchQ=v;render();};
 window.setType=el=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');typeF=el.dataset.t;render();};
 window.setView=v=>{vMode=v;document.getElementById('vbGrid').classList.toggle('on',v==='grid');document.getElementById('vbMap').classList.toggle('on',v==='map');render();};
@@ -938,9 +1019,70 @@ window.clearMapPin=function(){
     div._leafletMapPicker=null;
   }
 };
+// ── MULTI PHOTO MANAGEMENT ──────────────────────────
+const selectedPhotos = [];
+let activeSlot = 0;
+
+window.triggerPhotoSelect = function(slotIndex) {
+  activeSlot = slotIndex;
+  const input = document.getElementById('photoFileInput');
+  if(input) { input.value=''; input.click(); }
+};
+
+window.handlePhotoSelect = function(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  // Max 6 photos
+  if(selectedPhotos.length >= 6 && !selectedPhotos[activeSlot]) {
+    showToast('Maximum 6 photos allowed','error'); return;
+  }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    // Store file at slot index
+    selectedPhotos[activeSlot] = { file, preview: ev.target.result };
+    renderPhotoGrid();
+  };
+  reader.readAsDataURL(file);
+};
+
+function renderPhotoGrid() {
+  for(let i=0; i<6; i++) {
+    const slot = document.getElementById(`slot-${i}`);
+    if(!slot) continue;
+    if(selectedPhotos[i]) {
+      slot.classList.add('has-photo');
+      slot.innerHTML = `
+        <img src="${selectedPhotos[i].preview}" alt="Photo ${i+1}"/>
+        ${i===0?'<span class="photo-cover-tag">Cover</span>':''}
+        <button class="photo-remove" onclick="window.removePhoto(${i},event)">x</button>`;
+    } else {
+      slot.classList.remove('has-photo');
+      slot.innerHTML = '<div class="photo-slot-add"><span>+</span>Add photo</div>';
+    }
+  }
+}
+
+window.removePhoto = function(idx, e) {
+  if(e) e.stopPropagation();
+  selectedPhotos[idx] = null;
+  // Compact — shift photos left
+  const compact = selectedPhotos.filter(Boolean);
+  for(let i=0; i<6; i++) selectedPhotos[i] = compact[i]||null;
+  renderPhotoGrid();
+};
+
 window.closePost=()=>{
   document.getElementById('postModal').classList.remove('open');
+  // Reset form
+  const frm2=document.querySelector('#postModal form');
+  const succ=document.getElementById('submitSuccess');
+  if(frm2){frm2.reset();frm2.style.display='block';}
+  if(succ)succ.classList.remove('show');
+  for(let i=0; i<6; i++) selectedPhotos[i]=null;
+  renderPhotoGrid();
   window.clearMapPin();
+  const dp=document.getElementById('dimsPreview');
+  if(dp)dp.textContent='';
 };
 window.updDims=()=>{const l=Number(document.getElementById('fLft')?.value)||0,w=Number(document.getElementById('fWft')?.value)||0,pr=document.getElementById('dimsPreview');if(pr)pr.textContent=l&&w?`${l} ft \xd7 ${w} ft = ${(l*w).toLocaleString()} sqft`:'';}
 window.submitProperty=async e=>{
@@ -968,27 +1110,44 @@ window.submitProperty=async e=>{
       isNegotiable:form.negotiable.checked,
       status:'pending',
       viewsCount:0,
+      photos:[],
       createdAt:serverTimestamp(),
       updatedAt:serverTimestamp()
     };
 
-    // Try photo upload (skip if fails)
-    try{
-      const pi=form.querySelector('#photoInput');
-      if(pi&&pi.files.length>0){
-        const f=pi.files[0];
-        const sr=ref(storage,`properties/${Date.now()}/${f.name}`);
-        const sn=await uploadBytes(sr,f);
-        data.coverPhoto=await getDownloadURL(sn.ref);
+    // Upload multiple photos
+    const photoFiles = selectedPhotos.filter(Boolean);
+    if(photoFiles.length > 0){
+      btn.textContent = `Uploading ${photoFiles.length} photo${photoFiles.length>1?'s':''}...`;
+      try{
+        const uploadPromises = photoFiles.map(async(p, i) => {
+          const ext = p.file.name.split('.').pop() || 'jpg';
+          const path = `properties/${Date.now()}_${i}.${ext}`;
+          const storRef = ref(storage, path);
+          const snap = await uploadBytes(storRef, p.file);
+          return await getDownloadURL(snap.ref);
+        });
+        const urls = await Promise.all(uploadPromises);
+        data.coverPhoto = urls[0];   // first = cover
+        data.photos = urls;          // all photos
+      }catch(photoErr){
+        console.warn('Photo upload failed, continuing without photos', photoErr);
       }
-    }catch(photoErr){console.warn('Photo upload failed, continuing without photo',photoErr);}
+    }
 
-    await addDoc(collection(db,'properties'),data);
-    window.closePost();
-    form.reset();
-    document.getElementById('dimsPreview').textContent='';
+    btn.textContent = 'Saving...';
+    await addDoc(collection(db,'properties'), data);
+
+    // Show success screen instead of closing immediately
+    const frm  = document.querySelector('#postModal form');
+    const succ = document.getElementById('submitSuccess');
+    if(frm)  frm.style.display='none';
+    if(succ) succ.classList.add('show');
+
+    // Reset state for next time
+    for(let i=0; i<6; i++) selectedPhotos[i]=null;
     window.clearMapPin();
-    showToast('Submitted successfully! Admin will review and approve.','success');
+
   }catch(err){
     console.error('Submit error:',err);
     if(err.code==='permission-denied'){

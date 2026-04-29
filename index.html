@@ -131,6 +131,16 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .ftog{display:flex;align-items:center;justify-content:space-between;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-sm);padding:10px 12px}.ftog-lbl{font-size:13px;color:var(--black)}
 .tog{position:relative;width:44px;height:24px;flex-shrink:0}.tog input{opacity:0;width:0;height:0}.tog-track{position:absolute;inset:0;background:var(--g300);border-radius:12px;cursor:pointer;transition:background .2s}.tog input:checked+.tog-track{background:var(--or)}.tog-track::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s}.tog input:checked+.tog-track::after{transform:translateX(20px)}
 .notice{background:var(--ort);border:1px solid #FFD4B3;border-radius:var(--r-sm);padding:10px 12px;font-size:12px;color:var(--ord);margin-bottom:14px;line-height:1.5}
+.map-picker-wrap{margin-top:6px}
+.map-picker{width:100%;height:240px;border-radius:var(--r-md);border:2px dashed var(--g200);overflow:hidden;position:relative;cursor:crosshair;background:#F5F0E8;transition:border-color .15s}
+.map-picker:hover{border-color:var(--or)}
+.map-picker.has-pin{border:2px solid var(--or);border-style:solid}
+.map-picker-hint{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:5px 14px;border-radius:20px;pointer-events:none;white-space:nowrap;z-index:5;transition:opacity .3s}
+.map-picker-pin{position:absolute;transform:translate(-50%,-100%);font-size:30px;z-index:6;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));display:none}
+.map-picker-pin.show{display:block}
+.map-coords-badge{background:var(--ort);border:1px solid #FFD4B3;border-radius:var(--r-sm);padding:7px 10px;font-size:11px;color:var(--ord);margin-top:6px;display:none;align-items:center;gap:6px}
+.map-coords-badge.show{display:flex}
+.map-coords-clear{margin-left:auto;font-size:11px;color:var(--g400);cursor:pointer;text-decoration:underline}
 .submit-btn{width:100%;background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}.submit-btn:hover{background:var(--ord)}.submit-btn:disabled{opacity:.6;cursor:not-allowed}
 .adm-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r-md);margin-bottom:10px;overflow:hidden}
 .adm-top{display:flex;gap:12px;padding:14px;align-items:flex-start}.adm-thumb{width:56px;height:48px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:var(--g100)}.adm-info{flex:1;min-width:0}.adm-title{font-size:13px;font-weight:500;color:var(--black);margin-bottom:3px;line-height:1.3}.adm-city{font-size:11px;color:var(--g400);margin-bottom:6px}.adm-pills{display:flex;gap:5px;flex-wrap:wrap}.adm-pill{font-size:10px;font-weight:600;background:var(--ort);color:var(--ord);padding:2px 8px;border-radius:10px}.adm-acts{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
@@ -182,7 +192,25 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 <div class="sheet-overlay" id="sheetOverlay" onclick="window.closeDetail()"></div>
 <div class="bottom-sheet" id="detailSheet"><div class="sheet-handle"></div><button class="sheet-close" onclick="window.closeDetail()">x</button><div id="detailBody"></div></div>
 <div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
-        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div><div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
+        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div>
+        <div class="fg">
+          <label class="flbl">&#128205; Pin your property on the map <span style="color:var(--g400);font-weight:400">(optional but recommended)</span></label>
+          <div class="map-picker-wrap">
+            <div class="map-picker" id="mapPicker">
+              <div class="map-picker-hint" id="mapPickerHint">Tap anywhere on map to place your property pin</div>
+              <div id="mapPickerDiv" style="width:100%;height:100%"></div>
+              <div class="map-picker-pin" id="mapPickerPin">&#128205;</div>
+            </div>
+            <div class="map-coords-badge" id="mapCoordsBadge">
+              <span>&#128205;</span>
+              <span id="mapCoordsText">Location pinned</span>
+              <span class="map-coords-clear" onclick="window.clearMapPin()">Remove pin</span>
+            </div>
+          </div>
+          <input type="hidden" id="pickedLat" name="lat"/>
+          <input type="hidden" id="pickedLng" name="lng"/>
+        </div>
+        <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
 <div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header"><span class="modal-title">&#9881; Admin - Pending Approvals</span><button class="modal-close" onclick="window.closeAdmin()">x</button></div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
 
 <script type="module">
@@ -427,43 +455,153 @@ function renderMap(data){
   if(window.google&&window.google.maps)initGoogleMapView(data);else renderSVGMap(data);
 }
 window.initGoogleMap=function(){if(vMode==='map')initGoogleMapView(mapData);};
+// ── HYDERABAD AREA COORDINATES LOOKUP ──────────────
+const CITY_COORDS={
+  'kondapur':{lat:17.4647,lng:78.3571},'madhapur':{lat:17.4505,lng:78.3892},
+  'gachibowli':{lat:17.4401,lng:78.3489},'hitech city':{lat:17.4486,lng:78.3808},
+  'hitec city':{lat:17.4486,lng:78.3808},'kphb':{lat:17.4947,lng:78.3927},
+  'kphb colony':{lat:17.4947,lng:78.3927},'miyapur':{lat:17.5042,lng:78.3674},
+  'bachupally':{lat:17.5433,lng:78.3893},'jubilee hills':{lat:17.4313,lng:78.4066},
+  'banjara hills':{lat:17.4137,lng:78.4473},'film nagar':{lat:17.4196,lng:78.4003},
+  'kukatpally':{lat:17.4849,lng:78.4137},'dilsukhnagar':{lat:17.3688,lng:78.5240},
+  'lb nagar':{lat:17.3470,lng:78.5478},'uppal':{lat:17.4030,lng:78.5590},
+  'boduppal':{lat:17.4211,lng:78.5840},'hayathnagar':{lat:17.3360,lng:78.6040},
+  'mehdipatnam':{lat:17.3929,lng:78.4380},'tolichowki':{lat:17.4002,lng:78.4172},
+  'manikonda':{lat:17.3982,lng:78.4043},'narsingi':{lat:17.3907,lng:78.3740},
+  'nanakramguda':{lat:17.4244,lng:78.3582},'financial district':{lat:17.4156,lng:78.3450},
+  'kompally':{lat:17.5602,lng:78.4866},'alwal':{lat:17.5206,lng:78.5081},
+  'secunderabad':{lat:17.4399,lng:78.4983},'begumpet':{lat:17.4437,lng:78.4691},
+  'ameerpet':{lat:17.4375,lng:78.4483},'sr nagar':{lat:17.4524,lng:78.4362},
+  'srinagar colony':{lat:17.4524,lng:78.4362},'yousufguda':{lat:17.4413,lng:78.4218},
+  'panjagutta':{lat:17.4277,lng:78.4489},'somajiguda':{lat:17.4272,lng:78.4634},
+  'nizampet':{lat:17.5155,lng:78.3931},'pragathi nagar':{lat:17.5242,lng:78.4042},
+  'suchitra':{lat:17.5462,lng:78.4627},'suraram':{lat:17.5576,lng:78.4571},
+  'shadnagar':{lat:17.0653,lng:78.2011},'shamshabad':{lat:17.2474,lng:78.4169},
+  'ibrahimpatnam':{lat:17.2088,lng:78.5720},'chevella':{lat:17.3099,lng:77.8046},
+  'patancheru':{lat:17.5327,lng:78.2640},'sangareddy':{lat:17.6237,lng:78.0857},
+  'ghatkesar':{lat:17.4534,lng:78.6950},'keesara':{lat:17.5037,lng:78.6745},
+  'medchal':{lat:17.6262,lng:78.4806},'shamirpet':{lat:17.6047,lng:78.5637},
+  'yapral':{lat:17.4871,lng:78.5623},'malkajgiri':{lat:17.4575,lng:78.5282},
+  'dammaiguda':{lat:17.4966,lng:78.5571},'kapra':{lat:17.4779,lng:78.5614},
+  'sainikpuri':{lat:17.5023,lng:78.5628},'as rao nagar':{lat:17.4852,lng:78.5583},
+  'nagole':{lat:17.3783,lng:78.5640},'vanasthalipuram':{lat:17.3377,lng:78.5527},
+  'mansoorabad':{lat:17.3237,lng:78.5345},'bandlaguda':{lat:17.3215,lng:78.4765},
+  'attapur':{lat:17.3598,lng:78.4264},'rajendra nagar':{lat:17.3532,lng:78.4456},
+  'puppalaguda':{lat:17.4024,lng:78.3840},'kokapet':{lat:17.4028,lng:78.3547},
+  'tellapur':{lat:17.4614,lng:78.2996},'osman nagar':{lat:17.4702,lng:78.3110},
+  'hyderabad':{lat:17.3850,lng:78.4867},'anatapur':{lat:14.6819,lng:77.6006},
+  'anantapur':{lat:14.6819,lng:77.6006},'anantapuram':{lat:14.6819,lng:77.6006},
+  'vijayawada':{lat:16.5062,lng:80.6480},'warangal':{lat:18.0000,lng:79.5800},
+  'nizamabad':{lat:18.6725,lng:78.0941},'karimnagar':{lat:18.4386,lng:79.1288},
+};
+
+function getCityCoords(p){
+  // Use stored lat/lng if available
+  if(p.lat&&p.lng)return{lat:p.lat,lng:p.lng};
+  // Try to match city name
+  const cityStr=(p.city||p.address||'').toLowerCase();
+  for(const[key,coords]of Object.entries(CITY_COORDS)){
+    if(cityStr.includes(key))return coords;
+  }
+  // Default to Hyderabad center with slight random offset so pins don't stack
+  return{lat:17.385+(Math.random()-0.5)*0.05,lng:78.4867+(Math.random()-0.5)*0.05};
+}
+
 function initGoogleMapView(data){
   const mapDiv=document.getElementById('googleMapDiv');if(!mapDiv)return;
   googleMarkers.forEach(m=>m.setMap(null));googleMarkers=[];
-  if(!googleMap){googleMap=new google.maps.Map(mapDiv,{center:{lat:17.385,lng:78.4867},zoom:11,mapTypeControl:false,streetViewControl:false,fullscreenControl:false});}
-  const bounds=new google.maps.LatLngBounds();let hasPoints=false;
+  if(!googleMap){
+    googleMap=new google.maps.Map(mapDiv,{
+      center:{lat:17.385,lng:78.4867},zoom:11,
+      mapTypeControl:false,streetViewControl:false,fullscreenControl:false
+    });
+  }
+  const bounds=new google.maps.LatLngBounds();
   data.forEach(p=>{
-    const lat=p.lat||(p.py?(17.3+((p.py||240)-240)*-0.002):null);
-    const lng=p.lng||(p.px?(78.3+((p.px||300)-300)*0.002):null);
-    if(!lat||!lng)return;hasPoints=true;const pos={lat,lng};bounds.extend(pos);
+    const coords=getCityCoords(p);
+    const pos={lat:coords.lat,lng:coords.lng};
+    bounds.extend(pos);
     const color=TC[p.type]||'#E85D04',label=fp(p.price);
-    const pinSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${label.length*8+20}" height="32"><rect x="1" y="1" width="${label.length*8+18}" height="24" rx="6" fill="${color}"/><polygon points="${(label.length*8+20)/2-6},25 ${(label.length*8+20)/2+6},25 ${(label.length*8+20)/2},31" fill="${color}"/><text x="${(label.length*8+20)/2}" y="16" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="500" fill="white">${label}</text></svg>`;
-    const marker=new google.maps.Marker({position:pos,map:googleMap,icon:{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(pinSvg),anchor:new google.maps.Point((label.length*8+20)/2,31)}});
-    marker.addListener('click',()=>showGooglePopup(p,marker));googleMarkers.push(marker);
+    const w=label.length*8+20;
+    const pinSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="32">
+      <rect x="1" y="1" width="${w-2}" height="24" rx="6" fill="${color}"/>
+      <polygon points="${w/2-6},25 ${w/2+6},25 ${w/2},31" fill="${color}"/>
+      <text x="${w/2}" y="16" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="500" fill="white">${label}</text>
+    </svg>`;
+    const marker=new google.maps.Marker({
+      position:pos,map:googleMap,
+      title:p.title,
+      icon:{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(pinSvg),anchor:new google.maps.Point(w/2,31)}
+    });
+    marker.addListener('click',()=>showGooglePopup(p,marker));
+    googleMarkers.push(marker);
   });
-  if(hasPoints&&googleMarkers.length>1)googleMap.fitBounds(bounds,60);
+  if(googleMarkers.length===1){googleMap.setCenter(bounds.getCenter());googleMap.setZoom(14);}
+  else if(googleMarkers.length>1){googleMap.fitBounds(bounds,80);}
 }
+
 let infoWindow=null;
 function showGooglePopup(p,marker){
   if(infoWindow)infoWindow.close();
   const hasDim=p.lengthFt>0&&p.widthFt>0;
-  const content=`<div style="font-family:'DM Sans',sans-serif;min-width:180px;padding:4px"><div style="font-size:16px;font-weight:600;color:#E85D04;margin-bottom:3px">${fp(p.price)}</div><div style="font-size:12px;font-weight:500;color:#111;margin-bottom:3px">${p.title}</div><div style="font-size:11px;color:#666;margin-bottom:8px">&#128205; ${p.city}</div>${hasDim?`<div style="background:#FFF0E6;border-radius:8px;padding:8px;margin-bottom:8px"><div style="font-size:9px;color:#E85D04;font-weight:600;margin-bottom:5px">DIMENSIONS</div><div style="font-size:13px;font-weight:600;color:#C44D00">${p.lengthFt}ft &times; ${p.widthFt}ft${p.areaSqft?` = ${Number(p.areaSqft).toLocaleString()} sqft`:''}</div></div>`:''}<button onclick="window.openDetail('${p.id}')" style="width:100%;background:#E85D04;color:#fff;border:none;border-radius:7px;padding:7px;font-size:12px;cursor:pointer">View Details</button></div>`;
-  infoWindow=new google.maps.InfoWindow({content});infoWindow.open(googleMap,marker);
-}
-function renderSVGMap(data){
+  const content=`<div style="font-family:'DM Sans',sans-serif;min-width:180px;padding:4px">
+    <div style="font-size:16px;font-weight:600;color:#E85D04;margin-bottom:3px">${fp(p.price)}</div>
+    <div style="font-size:12px;font-weight:500;color:#111;margin-bottom:3px;line-height:1.3">${p.title}</div>
+    <div style="font-size:11px;color:#666;margin-bottom:8px">&#128205; ${p.city}</div>
+    ${hasDim?`<div style="background:#FFF0E6;border-radius:8px;padding:8px;margin-bottom:8px">
+      <div style="font-size:9px;color:#E85D04;font-weight:600;margin-bottom:5px">DIMENSIONS</div>
+      <div style="font-size:13px;font-weight:600;color:#C44D00">${p.lengthFt}ft &times; ${p.widthFt}ft${p.areaSqft?` = ${Number(p.areaSqft).toLocaleString()} sqft`:''}</div>
+    </div>`:''}
+    <button onclick="window.openDetail('${p.id}')" style="width:100%;background:#E85D04;color:#fff;border:none;border-radius:7px;padding:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">View Details</button>
+  </div>`;
+  infoWindow=new google.maps.InfoWindow({content});
+  infoWindow.open(googleMap,marker);
+}(data){
   const mapDiv=document.getElementById('googleMapDiv');if(!mapDiv)return;
-  mapDiv.innerHTML=`<svg style="width:100%;height:100%" viewBox="0 0 620 480" id="msvg" onclick="closePopup(event)"><rect width="620" height="480" fill="#F5F0E8"/><ellipse cx="310" cy="240" rx="280" ry="190" fill="#EDE5D8" stroke="#D8CEBF" stroke-width="1"/><ellipse cx="310" cy="240" rx="200" ry="130" fill="#E5DDD0"/><rect x="40" y="236" width="540" height="7" fill="#D4C9B8" rx="3" opacity=".6"/><rect x="306" y="40" width="7" height="400" fill="#D4C9B8" rx="3" opacity=".6"/><text x="310" y="22" text-anchor="middle" font-size="12" fill="#B8A898" font-family="sans-serif">Hyderabad Region</text>${data.map(p=>{const c=TC[p.type]||'#E85D04',lbl=fp(p.price),px=p.px||300,py=p.py||240,w=lbl.length*7+18;return`<g style="cursor:pointer" onclick="window.pinClick(event,'${p.id}')" transform="translate(${px},${py})"><rect x="${-w/2}" y="-13" width="${w}" height="24" rx="6" fill="${c}"/><polygon points="-5,11 5,11 0,18" fill="${c}"/><text x="0" y="4" text-anchor="middle" font-size="10" fill="white" font-weight="500" font-family="sans-serif">${lbl}</text></g>`;}).join('')}</svg>`;
+  // Place pins using city coords mapped to SVG space
+  // Hyderabad bounding box: lat 17.05-17.65, lng 77.9-78.8
+  function toSVG(lat,lng){
+    const x=Math.round(((lng-77.9)/(78.8-77.9))*560+30);
+    const y=Math.round(((17.65-lat)/(17.65-17.05))*420+30);
+    return{x:Math.max(30,Math.min(590,x)),y:Math.max(30,Math.min(450,y))};
+  }
+  const pins=data.map(p=>{
+    const coords=getCityCoords(p);
+    const{x,y}=toSVG(coords.lat,coords.lng);
+    const c=TC[p.type]||'#E85D04',lbl=fp(p.price),w=lbl.length*7+18;
+    return`<g style="cursor:pointer" onclick="window.pinClick(event,'${p.id}')" transform="translate(${x},${y})">
+      <rect x="${-w/2}" y="-13" width="${w}" height="24" rx="6" fill="${c}" opacity=".95"/>
+      <polygon points="-5,11 5,11 0,18" fill="${c}"/>
+      <text x="0" y="4" text-anchor="middle" font-size="10" fill="white" font-weight="500" font-family="sans-serif">${lbl}</text>
+    </g>`;
+  }).join('');
+  mapDiv.innerHTML=`<svg style="width:100%;height:100%" viewBox="0 0 620 480" id="msvg" onclick="closePopup(event)">
+    <rect width="620" height="480" fill="#F5F0E8"/>
+    <ellipse cx="310" cy="240" rx="280" ry="190" fill="#EDE5D8" stroke="#D8CEBF" stroke-width="1"/>
+    <ellipse cx="310" cy="240" rx="200" ry="130" fill="#E5DDD0"/>
+    <rect x="40" y="236" width="540" height="7" fill="#D4C9B8" rx="3" opacity=".6"/>
+    <rect x="306" y="40" width="7" height="400" fill="#D4C9B8" rx="3" opacity=".6"/>
+    <text x="310" y="22" text-anchor="middle" font-size="12" fill="#B8A898" font-family="sans-serif">Hyderabad &amp; Nearby Areas</text>
+    ${pins}
+  </svg>`;
 }
 window.pinClick=function(e,id){
   e.stopPropagation();const p=allProps.find(x=>x.id===id);if(!p)return;
   const popup=document.getElementById('mapPopup');if(!popup)return;
   const hasDim=p.lengthFt>0&&p.widthFt>0;
   popup.innerHTML=`<div class="pp-price">${fp(p.price)}</div><div class="pp-title">${p.title}</div><div class="pp-loc">&#128205; ${p.city}</div>${hasDim?`<div class="pp-dims"><div class="pp-dims-lbl">DIMENSIONS</div><div class="pp-dims-row"><div class="pp-dim"><span class="pp-dv">${p.lengthFt}ft</span><span class="pp-dl">Length</span></div><span class="pp-x">&times;</span><div class="pp-dim"><span class="pp-dv">${p.widthFt}ft</span><span class="pp-dl">Width</span></div>${p.areaSqft?`<span class="pp-x">=</span><div class="pp-dim"><span class="pp-dv">${Number(p.areaSqft).toLocaleString()}</span><span class="pp-dl">sqft</span></div>`:''}</div></div>`:''}<button class="pp-btn" onclick="window.openDetail('${p.id}')">View Details</button>`;
-  const msvg=document.getElementById('msvg');if(!msvg)return;
-  const bbox=msvg.getBoundingClientRect(),scX=bbox.width/620,scY=bbox.height/480;
-  let left=(p.px||300)*scX+10,top=(p.py||240)*scY-150;
-  if(left+210>bbox.width)left=(p.px||300)*scX-220;if(top<10)top=(p.py||240)*scY+25;
-  popup.style.left=left+'px';popup.style.top=top+'px';popup.classList.add('show');
+  // Position popup near the click point
+  const mapWrap=document.querySelector('.map-wrap');
+  if(mapWrap){
+    const rect=mapWrap.getBoundingClientRect();
+    const clickX=e.clientX-rect.left;
+    const clickY=e.clientY-rect.top;
+    let left=clickX+10,top=clickY-150;
+    if(left+210>rect.width)left=clickX-220;
+    if(top<10)top=clickY+25;
+    popup.style.left=left+'px';popup.style.top=top+'px';
+  }
+  popup.classList.add('show');
 };
 function closePopup(e){const pp=document.getElementById('mapPopup');if(pp&&!pp.contains(e.target))pp.classList.remove('show');}
 
@@ -513,8 +651,135 @@ window.setView=v=>{vMode=v;document.getElementById('vbGrid').classList.toggle('o
 window.setPrice=el=>{document.querySelectorAll('.pchip').forEach(c=>c.classList.remove('on'));el.classList.add('on');priceF=Number(el.dataset.p)||0;render();};
 window.toggleBookmarks=()=>{showBookmarks=!showBookmarks;const b=document.getElementById('bkToggle');if(b){b.classList.toggle('on',showBookmarks);b.textContent=showBookmarks?'❤ Saved':'♡ Saved';}render();};
 window.toggleBk=(id,e)=>{if(e)e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();};
-window.openPost=()=>{if(!currentUser){window.doSignIn();return;}document.getElementById('postModal').classList.add('open');};
-window.closePost=()=>document.getElementById('postModal').classList.remove('open');
+window.openPost=()=>{
+  if(!currentUser){window.doSignIn();return;}
+  document.getElementById('postModal').classList.add('open');
+  // Init map picker after modal opens
+  setTimeout(()=>window.initMapPicker(),300);
+};
+
+// ── MAP PICKER FOR POST FORM ────────────────────────
+let pickerMap=null, pickerMarker=null;
+
+window.initMapPicker=function(){
+  const div=document.getElementById('mapPickerDiv');
+  if(!div)return;
+  if(window.google&&window.google.maps){
+    if(!pickerMap){
+      pickerMap=new google.maps.Map(div,{
+        center:{lat:17.385,lng:78.4867},
+        zoom:11,
+        mapTypeControl:false,
+        streetViewControl:false,
+        fullscreenControl:false,
+        zoomControl:true,
+      });
+      pickerMap.addListener('click',(e)=>{
+        const lat=e.latLng.lat();
+        const lng=e.latLng.lng();
+        window.placePickerPin(lat,lng,true);
+      });
+    }
+  } else {
+    // SVG fallback map picker
+    div.innerHTML=`<svg style="width:100%;height:100%;cursor:crosshair" viewBox="0 0 400 240" id="svgPicker"
+      onclick="window.handleSVGPick(event)">
+      <rect width="400" height="240" fill="#F5F0E8"/>
+      <ellipse cx="200" cy="120" rx="180" ry="110" fill="#EDE5D8" stroke="#D8CEBF" stroke-width="1"/>
+      <ellipse cx="200" cy="120" rx="130" ry="75" fill="#E5DDD0"/>
+      <rect x="20" y="117" width="360" height="5" fill="#D4C9B8" rx="2" opacity=".5"/>
+      <rect x="197" y="20" width="5" height="200" fill="#D4C9B8" rx="2" opacity=".5"/>
+      ${Object.entries({
+        'Kondapur':{x:155,y:80},'Madhapur':{x:175,y:90},'Gachibowli':{x:148,y:100},
+        'KPHB':{x:180,y:70},'Miyapur':{x:155,y:65},'Jubilee Hills':{x:185,y:108},
+        'Uppal':{x:255,y:105},'LB Nagar':{x:248,y:130},'Secunderabad':{x:215,y:78},
+        'Shadnagar':{x:148,y:185},'Patancheru':{x:115,y:68}
+      }).map(([name,pos])=>`
+        <g>
+          <circle cx="${pos.x}" cy="${pos.y}" r="3" fill="#E85D04" opacity=".6"/>
+          <text x="${pos.x+5}" y="${pos.y+4}" font-size="8" fill="#888" font-family="sans-serif">${name}</text>
+        </g>`).join('')}
+      <text x="200" y="18" text-anchor="middle" font-size="10" fill="#B8A898" font-family="sans-serif">Hyderabad — Tap to place pin</text>
+    </svg>`;
+  }
+};
+
+window.handleSVGPick=function(e){
+  const svg=document.getElementById('svgPicker');
+  if(!svg)return;
+  const rect=svg.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const y=e.clientY-rect.top;
+  const vx=(x/rect.width)*400;
+  const vy=(y/rect.height)*240;
+  // Convert SVG coords to lat/lng (Hyderabad bounding box)
+  const lat=17.65-((vy-30)/(240-60))*(17.65-17.05);
+  const lng=77.9+((vx-20)/(400-40))*(78.8-77.9);
+  window.placePickerPin(lat,lng,false);
+  // Show pin on SVG
+  const existing=document.getElementById('svgPinMark');
+  if(existing)existing.remove();
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.id='svgPinMark';
+  g.innerHTML=`<circle cx="${vx}" cy="${vy}" r="8" fill="#E85D04" opacity=".3"/>
+    <circle cx="${vx}" cy="${vy}" r="4" fill="#E85D04"/>
+    <line x1="${vx}" y1="${vy+4}" x2="${vx}" y2="${vy+10}" stroke="#E85D04" stroke-width="2"/>`;
+  svg.appendChild(g);
+};
+
+window.placePickerPin=function(lat,lng,isGoogle){
+  // Store coords in hidden inputs
+  document.getElementById('pickedLat').value=lat.toFixed(6);
+  document.getElementById('pickedLng').value=lng.toFixed(6);
+
+  // Update badge
+  const badge=document.getElementById('mapCoordsBadge');
+  const txt=document.getElementById('mapCoordsText');
+  if(badge&&txt){
+    txt.textContent=`${lat.toFixed(4)}, ${lng.toFixed(4)} — location saved`;
+    badge.classList.add('show');
+  }
+  // Update hint
+  const hint=document.getElementById('mapPickerHint');
+  if(hint)hint.style.opacity='0';
+  // Mark picker as having pin
+  document.getElementById('mapPicker')?.classList.add('has-pin');
+
+  if(isGoogle&&pickerMap&&window.google){
+    const pos={lat,lng};
+    if(pickerMarker){pickerMarker.setPosition(pos);}
+    else{
+      pickerMarker=new google.maps.Marker({
+        position:pos,map:pickerMap,
+        icon:{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24S32 26 32 16C32 7.163 24.837 0 16 0z" fill="#E85D04"/>
+            <circle cx="16" cy="16" r="7" fill="white"/>
+            <circle cx="16" cy="16" r="4" fill="#E85D04"/>
+          </svg>`),
+          anchor:new google.maps.Point(16,40)
+        }
+      });
+    }
+    pickerMap.panTo(pos);
+  }
+};
+
+window.clearMapPin=function(){
+  document.getElementById('pickedLat').value='';
+  document.getElementById('pickedLng').value='';
+  document.getElementById('mapCoordsBadge')?.classList.remove('show');
+  document.getElementById('mapPicker')?.classList.remove('has-pin');
+  const hint=document.getElementById('mapPickerHint');
+  if(hint)hint.style.opacity='1';
+  if(pickerMarker){pickerMarker.setMap(null);pickerMarker=null;}
+  const svgPin=document.getElementById('svgPinMark');
+  if(svgPin)svgPin.remove();
+};
+window.closePost=()=>{
+  document.getElementById('postModal').classList.remove('open');
+  window.clearMapPin();
+};
 window.updDims=()=>{const l=Number(document.getElementById('fLft')?.value)||0,w=Number(document.getElementById('fWft')?.value)||0,pr=document.getElementById('dimsPreview');if(pr)pr.textContent=l&&w?`${l} ft \xd7 ${w} ft = ${(l*w).toLocaleString()} sqft`:'';}
 window.submitProperty=async e=>{
   e.preventDefault();
@@ -532,6 +797,8 @@ window.submitProperty=async e=>{
       type:form.type_.value,
       address:form.address.value.trim(),
       city:form.city.value.trim()||'Hyderabad',
+      lat:form.lat.value?Number(form.lat.value):null,
+      lng:form.lng.value?Number(form.lng.value):null,
       lengthFt:Number(form.lengthFt.value)||0,
       widthFt:Number(form.widthFt.value)||0,
       areaSqft:Number(form.areaSqft.value)||0,
@@ -558,6 +825,8 @@ window.submitProperty=async e=>{
     window.closePost();
     form.reset();
     document.getElementById('dimsPreview').textContent='';
+    window.clearMapPin();
+    pickerMap=null; pickerMarker=null;
     showToast('Submitted successfully! Admin will review and approve.','success');
   }catch(err){
     console.error('Submit error:',err);

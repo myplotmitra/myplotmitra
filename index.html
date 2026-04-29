@@ -200,15 +200,19 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 <nav class="bottom-nav"><button class="nav-item on"><span class="nav-icon">&#127968;</span>Home</button><button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon">&#128269;</span>Search</button><button class="nav-post" onclick="window.openPost()">+</button><button class="nav-item" onclick="window.open('tel:9989083321')"><span class="nav-icon">&#128222;</span>Call</button><button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button></nav>
 <div class="sheet-overlay" id="sheetOverlay" onclick="window.closeDetail()"></div>
 <div class="bottom-sheet" id="detailSheet"><div class="sheet-handle"></div><button class="sheet-close" onclick="window.closeDetail()">x</button><div id="detailBody"></div></div>
-<div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
-        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div>
-        <div class="fg">
-          <label class="flbl">&#128205; Pin your property on the map <span style="color:var(--g400);font-weight:400">(optional but recommended)</span></label>
+<div class="modal-overlay" id="postModal"><div class="modal"><div class="modal-header"><span class="modal-title">Post Your Property</span><button class="modal-close" onclick="window.closePost()">x</button></div><div class="modal-body"><form onsubmit="window.submitProperty(event)"><div class="fg" id="pickerTopSection">
+          <label class="flbl" style="font-size:13px;font-weight:500;color:var(--black);display:flex;align-items:center;gap:6px">
+            <span style="background:var(--or);color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">1</span>
+            Pin your property location on the map
+            <span style="font-size:11px;font-weight:400;color:var(--g400)">(tap to place pin)</span>
+          </label>
+          <button type="button" onclick="window.useMyLocation()" style="width:100%;margin-bottom:6px;background:var(--ort);color:var(--ord);border:1px solid #FFD4B3;border-radius:var(--r-sm);padding:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px">
+            &#127358; Use My Current Location
+          </button>
           <div class="map-picker-wrap">
-            <div class="map-picker" id="mapPicker">
-              <div class="map-picker-hint" id="mapPickerHint">Tap anywhere on map to place your property pin</div>
+            <div class="map-picker" id="mapPicker" style="height:260px">
+              <div class="map-picker-hint" id="mapPickerHint">&#128205; Tap the map to mark your property location</div>
               <div id="mapPickerDiv" style="width:100%;height:100%"></div>
-              <div class="map-picker-pin" id="mapPickerPin">&#128205;</div>
             </div>
             <div class="map-coords-badge" id="mapCoordsBadge">
               <span>&#128205;</span>
@@ -219,7 +223,9 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
           <input type="hidden" id="pickedLat" name="lat"/>
           <input type="hidden" id="pickedLng" name="lng"/>
         </div>
-        <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
+        <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
+        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div><div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property..."></textarea></div><div class="fg"><label class="flbl">Cover photo</label><input id="photoInput" type="file" accept="image/*" class="finp"/></div>
+                <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div><div class="notice">Your listing will be reviewed by admin before going live.</div><button type="submit" class="submit-btn">Submit for Approval</button></form></div></div></div>
 <div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header"><span class="modal-title">&#9881; Admin - Pending Approvals</span><button class="modal-close" onclick="window.closeAdmin()">x</button></div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
 
 <script type="module">
@@ -536,63 +542,49 @@ function initLeafletMap(data){
   const div=document.getElementById('leafletMapDiv');
   if(!div||typeof L==='undefined')return;
 
-  // Destroy existing map
   if(leafletMap){leafletMap.remove();leafletMap=null;}
   leafletMarkers=[];
 
-  // Init Leaflet map centered on Hyderabad
-  leafletMap=L.map(div,{zoomControl:true}).setView([17.385,78.4867],11);
+  // Start at Hyderabad, then try to get real location
+  leafletMap=L.map(div,{zoomControl:true}).setView([17.385,78.4867],12);
 
-  // OpenStreetMap tiles - completely free
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution:'&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
     maxZoom:19
   }).addTo(leafletMap);
 
-  const bounds=[];
+  // Try to get user's current location
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        const {latitude:lat,longitude:lng}=pos.coords;
+        leafletMap.setView([lat,lng],13);
+        // Add a blue dot for current location
+        L.circleMarker([lat,lng],{
+          radius:8,fillColor:'#185FA5',fillOpacity:0.9,
+          color:'#fff',weight:2
+        }).addTo(leafletMap).bindTooltip('You are here',{permanent:false});
+      },
+      ()=>{} // silently fail if denied
+    );
+  }
 
+  const bounds=[];
   data.forEach(p=>{
     const coords=getCityCoords(p);
     bounds.push([coords.lat,coords.lng]);
     const color=TC[p.type]||'#E85D04';
     const label=fp(p.price);
-
-    // Custom price pin using DivIcon
-    const pinHtml=`<div style="
-      background:${color};color:#fff;
-      font-size:11px;font-weight:500;
-      padding:4px 10px;border-radius:6px;
-      white-space:nowrap;cursor:pointer;
-      box-shadow:0 2px 6px rgba(0,0,0,.25);
-      font-family:'DM Sans',sans-serif;
-      position:relative;
-    ">${label}<div style="
-      position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
-      width:0;height:0;
-      border-left:5px solid transparent;
-      border-right:5px solid transparent;
-      border-top:7px solid ${color};
-    "></div></div>`;
-
-    const icon=L.divIcon({
-      html:pinHtml,
-      className:'',
-      iconAnchor:[label.length*4+10,36],
-      iconSize:null
-    });
-
+    const pinHtml=`<div style="background:${color};color:#fff;font-size:11px;font-weight:500;padding:4px 10px;border-radius:6px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);font-family:'DM Sans',sans-serif;position:relative;">${label}<div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid ${color};"></div></div>`;
+    const icon=L.divIcon({html:pinHtml,className:'',iconAnchor:[label.length*4+10,36],iconSize:null});
     const marker=L.marker([coords.lat,coords.lng],{icon});
     marker.addTo(leafletMap);
     marker.on('click',()=>showLeafletPopup(p));
     leafletMarkers.push(marker);
   });
 
-  // Fit map to show all markers
-  if(bounds.length===1){
-    leafletMap.setView(bounds[0],14);
-  } else if(bounds.length>1){
-    leafletMap.fitBounds(bounds,{padding:[40,40]});
-  }
+  if(bounds.length===1){leafletMap.setView(bounds[0],14);}
+  else if(bounds.length>1){leafletMap.fitBounds(bounds,{padding:[40,40]});}
 }
 
 function showLeafletPopup(p){
@@ -710,49 +702,165 @@ window.initMapPicker=function(){
   const div=document.getElementById('mapPickerDiv');
   if(!div)return;
   if(typeof L==='undefined'){
-    // Leaflet not loaded yet - show message
-    div.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#888">Map loading...</div>';
-    setTimeout(window.initMapPicker, 500);
+    div.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#888">Loading map...</div>';
+    setTimeout(window.initMapPicker,500);
     return;
   }
-  if(div._leafletMapPicker){
-    div._leafletMapPicker.remove();
-    div._leafletMapPicker=null;
-  }
-  const picker=L.map(div,{zoomControl:true}).setView([17.385,78.4867],11);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:19,attribution:''
-  }).addTo(picker);
-  div._leafletMapPicker=picker;
+  if(div._leafletMapPicker){div._leafletMapPicker.remove();div._leafletMapPicker=null;}
 
-  let pin=null;
-  picker.on('click',e=>{
-    const {lat,lng}=e.latlng;
-    if(pin){pin.remove();}
-    const icon=L.divIcon({
-      html:'<div style="font-size:28px;margin-top:-28px;margin-left:-12px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))">&#128205;</div>',
-      className:'',iconSize:[24,28]
+  // Default center Hyderabad
+  let startLat=17.385,startLng=78.4867,startZoom=12;
+
+  const initPicker=(lat,lng,zoom)=>{
+    const picker=L.map(div,{zoomControl:true}).setView([lat,lng],zoom);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:19,
+      attribution:'<a href="https://openstreetmap.org">OSM</a>'
+    }).addTo(picker);
+    div._leafletMapPicker=picker;
+
+    // Current location button
+    const locBtn=L.control({position:'topright'});
+    locBtn.onAdd=()=>{
+      const btn=L.DomUtil.create('button','leaflet-bar');
+      btn.innerHTML='&#127358;';
+      btn.title='My location';
+      btn.style.cssText='background:#fff;border:none;width:30px;height:30px;font-size:16px;cursor:pointer;border-radius:4px;box-shadow:0 1px 5px rgba(0,0,0,.4)';
+      L.DomEvent.on(btn,'click',e=>{
+        L.DomEvent.stopPropagation(e);
+        if(navigator.geolocation){
+          btn.innerHTML='&#8987;';
+          navigator.geolocation.getCurrentPosition(pos=>{
+            picker.setView([pos.coords.latitude,pos.coords.longitude],16);
+            btn.innerHTML='&#127358;';
+          },()=>{
+            btn.innerHTML='&#127358;';
+            showToast('Location access denied','error');
+          });
+        }
+      });
+      return btn;
+    };
+    locBtn.addTo(picker);
+
+    let pin=null;
+    picker.on('click',e=>{
+      const{lat,lng}=e.latlng;
+      if(pin){pin.remove();}
+      const icon=L.divIcon({
+        html:'<div style="font-size:32px;margin-top:-32px;margin-left:-12px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))">&#128205;</div>',
+        className:'',iconSize:[24,32]
+      });
+      pin=L.marker([lat,lng],{icon}).addTo(picker);
+      window.placePickerPin(lat,lng);
     });
-    pin=L.marker([lat,lng],{icon}).addTo(picker);
-    window.placePickerPin(lat,lng,false);
-  });
+  };
+
+  // Try to start at user's current location
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      pos=>initPicker(pos.coords.latitude,pos.coords.longitude,15),
+      ()=>initPicker(startLat,startLng,startZoom),
+      {timeout:4000}
+    );
+  } else {
+    initPicker(startLat,startLng,startZoom);
+  }
 };
 
-window.placePickerPin=function(lat,lng){
+window.placePickerPin=async function(lat,lng){
+  // Save coordinates
   document.getElementById('pickedLat').value=lat.toFixed(6);
   document.getElementById('pickedLng').value=lng.toFixed(6);
+
+  // Update badge immediately
   const badge=document.getElementById('mapCoordsBadge');
   const txt=document.getElementById('mapCoordsText');
-  if(badge&&txt){
-    txt.textContent=lat.toFixed(4)+', '+lng.toFixed(4)+' — location saved';
-    badge.classList.add('show');
-  }
+  if(txt)txt.textContent='Fetching address...';
+  if(badge)badge.classList.add('show');
   const hint=document.getElementById('mapPickerHint');
   if(hint)hint.style.opacity='0';
   document.getElementById('mapPicker')?.classList.add('has-pin');
+
+  // Reverse geocode using Nominatim (free, no key needed)
+  try{
+    const url=`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+    const res=await fetch(url,{headers:{'Accept-Language':'en'}});
+    const data=await res.json();
+
+    if(data&&data.address){
+      const a=data.address;
+
+      // Build address string from components
+      const parts=[];
+      if(a.house_number)parts.push(a.house_number);
+      if(a.road||a.street)parts.push(a.road||a.street);
+      if(a.neighbourhood||a.suburb||a.village||a.town)
+        parts.push(a.neighbourhood||a.suburb||a.village||a.town);
+      const addressStr=parts.join(', ')||data.display_name?.split(',').slice(0,3).join(',')||'';
+
+      // City
+      const cityStr=a.city||a.town||a.village||a.county||a.state_district||'Hyderabad';
+
+      // Area name for badge
+      const areaName=a.neighbourhood||a.suburb||a.village||a.road||cityStr;
+
+      // Auto-fill address field
+      const addrField=document.querySelector('input[name="address"]');
+      if(addrField&&!addrField.value){
+        addrField.value=addressStr;
+        addrField.style.borderColor='var(--or)';
+        setTimeout(()=>addrField.style.borderColor='',2000);
+      }
+
+      // Auto-fill city field
+      const cityField=document.querySelector('input[name="city"]');
+      if(cityField&&(!cityField.value||cityField.value==='Hyderabad')){
+        cityField.value=cityStr;
+        cityField.style.borderColor='var(--or)';
+        setTimeout(()=>cityField.style.borderColor='',2000);
+      }
+
+      // Update badge
+      if(txt)txt.textContent='&#128205; '+areaName+(cityStr&&cityStr!==areaName?', '+cityStr:'');
+      showToast('Location found: '+areaName,'success');
+    } else {
+      if(txt)txt.textContent=lat.toFixed(4)+', '+lng.toFixed(4);
+    }
+  }catch(e){
+    console.warn('Geocoding failed:',e);
+    if(txt)txt.textContent=lat.toFixed(4)+', '+lng.toFixed(4)+' — tap fields to edit';
+  }
 };
 
-window.clearMapPin=function(){
+window.useMyLocation=function(){
+  if(!navigator.geolocation){showToast('Location not supported on this device','error');return;}
+  showToast('Getting your location...','');
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const{latitude:lat,longitude:lng}=pos.coords;
+      // Move map to location
+      const div=document.getElementById('mapPickerDiv');
+      if(div&&div._leafletMapPicker){
+        div._leafletMapPicker.setView([lat,lng],17);
+        // Place pin
+        const icon=L.divIcon({
+          html:'<div style="font-size:32px;margin-top:-32px;margin-left:-12px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))">&#128205;</div>',
+          className:'',iconSize:[24,32]
+        });
+        // Remove old pin if any
+        if(div._currentPin){div._currentPin.remove();}
+        div._currentPin=L.marker([lat,lng],{icon}).addTo(div._leafletMapPicker);
+      }
+      window.placePickerPin(lat,lng);
+    },
+    err=>{
+      if(err.code===1)showToast('Please allow location access in browser settings','error');
+      else showToast('Could not get location. Tap the map manually.','error');
+    },
+    {enableHighAccuracy:true,timeout:8000}
+  );
+};
   document.getElementById('pickedLat').value='';
   document.getElementById('pickedLng').value='';
   document.getElementById('mapCoordsBadge')?.classList.remove('show');

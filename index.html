@@ -21,6 +21,7 @@
 <meta name="geo.region" content="IN-TG"/>
 <meta name="geo.placename" content="Hyderabad, Telangana, India"/>
 <link rel="canonical" href="https://www.myplotmitra.com"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -471,14 +472,7 @@ function renderGrid(data){
   }).join('');
 }
 
-let googleMap=null,googleMarkers=[],mapData=[];
-function renderMap(data){
-  mapData=data;
-  const g=document.getElementById('propGrid');
-  g.innerHTML=`<div class="map-wrap"><div id="googleMapDiv" style="width:100%;height:100%"></div><div class="map-legend">${Object.entries(TC).map(([t,c])=>`<div class="mleg-row"><div class="mleg-dot" style="background:${c}"></div><span style="text-transform:capitalize">${t}</span></div>`).join('')}</div><div class="map-popup" id="mapPopup"></div></div>`;
-  if(window.google&&window.google.maps)initGoogleMapView(data);else renderSVGMap(data);
-}
-window.initGoogleMap=function(){if(vMode==='map')initGoogleMapView(mapData);};
+
 // ── HYDERABAD AREA COORDINATES LOOKUP ──────────────
 const CITY_COORDS={
   'kondapur':{lat:17.4647,lng:78.3571},'madhapur':{lat:17.4505,lng:78.3892},
@@ -489,127 +483,142 @@ const CITY_COORDS={
   'banjara hills':{lat:17.4137,lng:78.4473},'film nagar':{lat:17.4196,lng:78.4003},
   'kukatpally':{lat:17.4849,lng:78.4137},'dilsukhnagar':{lat:17.3688,lng:78.5240},
   'lb nagar':{lat:17.3470,lng:78.5478},'uppal':{lat:17.4030,lng:78.5590},
-  'boduppal':{lat:17.4211,lng:78.5840},'hayathnagar':{lat:17.3360,lng:78.6040},
-  'mehdipatnam':{lat:17.3929,lng:78.4380},'tolichowki':{lat:17.4002,lng:78.4172},
-  'manikonda':{lat:17.3982,lng:78.4043},'narsingi':{lat:17.3907,lng:78.3740},
-  'nanakramguda':{lat:17.4244,lng:78.3582},'financial district':{lat:17.4156,lng:78.3450},
-  'kompally':{lat:17.5602,lng:78.4866},'alwal':{lat:17.5206,lng:78.5081},
-  'secunderabad':{lat:17.4399,lng:78.4983},'begumpet':{lat:17.4437,lng:78.4691},
-  'ameerpet':{lat:17.4375,lng:78.4483},'sr nagar':{lat:17.4524,lng:78.4362},
-  'srinagar colony':{lat:17.4524,lng:78.4362},'yousufguda':{lat:17.4413,lng:78.4218},
+  'mehdipatnam':{lat:17.3929,lng:78.4380},'manikonda':{lat:17.3982,lng:78.4043},
+  'narsingi':{lat:17.3907,lng:78.3740},'nanakramguda':{lat:17.4244,lng:78.3582},
+  'financial district':{lat:17.4156,lng:78.3450},'kompally':{lat:17.5602,lng:78.4866},
+  'alwal':{lat:17.5206,lng:78.5081},'secunderabad':{lat:17.4399,lng:78.4983},
+  'begumpet':{lat:17.4437,lng:78.4691},'ameerpet':{lat:17.4375,lng:78.4483},
   'panjagutta':{lat:17.4277,lng:78.4489},'somajiguda':{lat:17.4272,lng:78.4634},
-  'nizampet':{lat:17.5155,lng:78.3931},'pragathi nagar':{lat:17.5242,lng:78.4042},
-  'suchitra':{lat:17.5462,lng:78.4627},'suraram':{lat:17.5576,lng:78.4571},
+  'nizampet':{lat:17.5155,lng:78.3931},'suchitra':{lat:17.5462,lng:78.4627},
   'shadnagar':{lat:17.0653,lng:78.2011},'shamshabad':{lat:17.2474,lng:78.4169},
-  'ibrahimpatnam':{lat:17.2088,lng:78.5720},'chevella':{lat:17.3099,lng:77.8046},
   'patancheru':{lat:17.5327,lng:78.2640},'sangareddy':{lat:17.6237,lng:78.0857},
-  'ghatkesar':{lat:17.4534,lng:78.6950},'keesara':{lat:17.5037,lng:78.6745},
-  'medchal':{lat:17.6262,lng:78.4806},'shamirpet':{lat:17.6047,lng:78.5637},
-  'yapral':{lat:17.4871,lng:78.5623},'malkajgiri':{lat:17.4575,lng:78.5282},
-  'dammaiguda':{lat:17.4966,lng:78.5571},'kapra':{lat:17.4779,lng:78.5614},
-  'sainikpuri':{lat:17.5023,lng:78.5628},'as rao nagar':{lat:17.4852,lng:78.5583},
+  'ghatkesar':{lat:17.4534,lng:78.6950},'medchal':{lat:17.6262,lng:78.4806},
+  'malkajgiri':{lat:17.4575,lng:78.5282},'uppal':{lat:17.4030,lng:78.5590},
   'nagole':{lat:17.3783,lng:78.5640},'vanasthalipuram':{lat:17.3377,lng:78.5527},
-  'mansoorabad':{lat:17.3237,lng:78.5345},'bandlaguda':{lat:17.3215,lng:78.4765},
   'attapur':{lat:17.3598,lng:78.4264},'rajendra nagar':{lat:17.3532,lng:78.4456},
-  'puppalaguda':{lat:17.4024,lng:78.3840},'kokapet':{lat:17.4028,lng:78.3547},
-  'tellapur':{lat:17.4614,lng:78.2996},'osman nagar':{lat:17.4702,lng:78.3110},
+  'kokapet':{lat:17.4028,lng:78.3547},'tellapur':{lat:17.4614,lng:78.2996},
   'hyderabad':{lat:17.3850,lng:78.4867},'anatapur':{lat:14.6819,lng:77.6006},
-  'anantapur':{lat:14.6819,lng:77.6006},'anantapuram':{lat:14.6819,lng:77.6006},
-  'vijayawada':{lat:16.5062,lng:80.6480},'warangal':{lat:18.0000,lng:79.5800},
-  'nizamabad':{lat:18.6725,lng:78.0941},'karimnagar':{lat:18.4386,lng:79.1288},
+  'anantapur':{lat:14.6819,lng:77.6006},'vijayawada':{lat:16.5062,lng:80.6480},
+  'warangal':{lat:18.0000,lng:79.5800},'nizamabad':{lat:18.6725,lng:78.0941},
+  'karimnagar':{lat:18.4386,lng:79.1288},'ram nagar':{lat:17.4000,lng:78.5000},
 };
 
 function getCityCoords(p){
-  // Use stored lat/lng if available
-  if(p.lat&&p.lng)return{lat:p.lat,lng:p.lng};
-  // Try to match city name
+  if(p.lat&&p.lng)return{lat:Number(p.lat),lng:Number(p.lng)};
   const cityStr=(p.city||p.address||'').toLowerCase();
   for(const[key,coords]of Object.entries(CITY_COORDS)){
     if(cityStr.includes(key))return coords;
   }
-  // Default to Hyderabad center with slight random offset so pins don't stack
-  return{lat:17.385+(Math.random()-0.5)*0.05,lng:78.4867+(Math.random()-0.5)*0.05};
+  return{lat:17.385+(Math.random()-0.5)*0.08,lng:78.4867+(Math.random()-0.5)*0.08};
 }
 
-function initGoogleMapView(data){
-  const mapDiv=document.getElementById('googleMapDiv');if(!mapDiv)return;
-  googleMarkers.forEach(m=>m.setMap(null));googleMarkers=[];
-  if(!googleMap){
-    googleMap=new google.maps.Map(mapDiv,{
-      center:{lat:17.385,lng:78.4867},zoom:11,
-      mapTypeControl:false,streetViewControl:false,fullscreenControl:false
-    });
-  }
-  const bounds=new google.maps.LatLngBounds();
+// ── LEAFLET MAP ─────────────────────────────────────
+let leafletMap=null, leafletMarkers=[], mapData=[];
+
+function renderMap(data){
+  mapData=data;
+  const g=document.getElementById('propGrid');
+  g.innerHTML=`<div class="map-wrap" style="grid-column:1/-1">
+    <div id="leafletMapDiv" style="width:100%;height:100%;z-index:1"></div>
+    <div class="map-legend">
+      ${Object.entries(TC).map(([t,c])=>`
+        <div class="mleg-row">
+          <div class="mleg-dot" style="background:${c}"></div>
+          <span style="text-transform:capitalize">${t}</span>
+        </div>`).join('')}
+    </div>
+    <div class="map-popup" id="mapPopup"></div>
+  </div>`;
+  setTimeout(()=>initLeafletMap(data), 100);
+}
+
+function initLeafletMap(data){
+  const div=document.getElementById('leafletMapDiv');
+  if(!div||typeof L==='undefined')return;
+
+  // Destroy existing map
+  if(leafletMap){leafletMap.remove();leafletMap=null;}
+  leafletMarkers=[];
+
+  // Init Leaflet map centered on Hyderabad
+  leafletMap=L.map(div,{zoomControl:true}).setView([17.385,78.4867],11);
+
+  // OpenStreetMap tiles - completely free
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom:19
+  }).addTo(leafletMap);
+
+  const bounds=[];
+
   data.forEach(p=>{
     const coords=getCityCoords(p);
-    const pos={lat:coords.lat,lng:coords.lng};
-    bounds.extend(pos);
-    const color=TC[p.type]||'#E85D04',label=fp(p.price);
-    const w=label.length*8+20;
-    const pinSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="32">
-      <rect x="1" y="1" width="${w-2}" height="24" rx="6" fill="${color}"/>
-      <polygon points="${w/2-6},25 ${w/2+6},25 ${w/2},31" fill="${color}"/>
-      <text x="${w/2}" y="16" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="500" fill="white">${label}</text>
-    </svg>`;
-    const marker=new google.maps.Marker({
-      position:pos,map:googleMap,
-      title:p.title,
-      icon:{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(pinSvg),anchor:new google.maps.Point(w/2,31)}
+    bounds.push([coords.lat,coords.lng]);
+    const color=TC[p.type]||'#E85D04';
+    const label=fp(p.price);
+
+    // Custom price pin using DivIcon
+    const pinHtml=`<div style="
+      background:${color};color:#fff;
+      font-size:11px;font-weight:500;
+      padding:4px 10px;border-radius:6px;
+      white-space:nowrap;cursor:pointer;
+      box-shadow:0 2px 6px rgba(0,0,0,.25);
+      font-family:'DM Sans',sans-serif;
+      position:relative;
+    ">${label}<div style="
+      position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+      width:0;height:0;
+      border-left:5px solid transparent;
+      border-right:5px solid transparent;
+      border-top:7px solid ${color};
+    "></div></div>`;
+
+    const icon=L.divIcon({
+      html:pinHtml,
+      className:'',
+      iconAnchor:[label.length*4+10,36],
+      iconSize:null
     });
-    marker.addListener('click',()=>showGooglePopup(p,marker));
-    googleMarkers.push(marker);
+
+    const marker=L.marker([coords.lat,coords.lng],{icon});
+    marker.addTo(leafletMap);
+    marker.on('click',()=>showLeafletPopup(p));
+    leafletMarkers.push(marker);
   });
-  if(googleMarkers.length===1){googleMap.setCenter(bounds.getCenter());googleMap.setZoom(14);}
-  else if(googleMarkers.length>1){googleMap.fitBounds(bounds,80);}
+
+  // Fit map to show all markers
+  if(bounds.length===1){
+    leafletMap.setView(bounds[0],14);
+  } else if(bounds.length>1){
+    leafletMap.fitBounds(bounds,{padding:[40,40]});
+  }
 }
 
-let infoWindow=null;
-function showGooglePopup(p,marker){
-  if(infoWindow)infoWindow.close();
+function showLeafletPopup(p){
+  const popup=document.getElementById('mapPopup');
+  if(!popup)return;
   const hasDim=p.lengthFt>0&&p.widthFt>0;
-  const content=`<div style="font-family:'DM Sans',sans-serif;min-width:180px;padding:4px">
-    <div style="font-size:16px;font-weight:600;color:#E85D04;margin-bottom:3px">${fp(p.price)}</div>
-    <div style="font-size:12px;font-weight:500;color:#111;margin-bottom:3px;line-height:1.3">${p.title}</div>
-    <div style="font-size:11px;color:#666;margin-bottom:8px">&#128205; ${p.city}</div>
-    ${hasDim?`<div style="background:#FFF0E6;border-radius:8px;padding:8px;margin-bottom:8px">
-      <div style="font-size:9px;color:#E85D04;font-weight:600;margin-bottom:5px">DIMENSIONS</div>
-      <div style="font-size:13px;font-weight:600;color:#C44D00">${p.lengthFt}ft &times; ${p.widthFt}ft${p.areaSqft?` = ${Number(p.areaSqft).toLocaleString()} sqft`:''}</div>
+  popup.innerHTML=`
+    <div class="pp-price">${fp(p.price)}</div>
+    <div class="pp-title">${p.title}</div>
+    <div class="pp-loc">&#128205; ${p.city}</div>
+    ${hasDim?`<div class="pp-dims">
+      <div class="pp-dims-lbl">DIMENSIONS</div>
+      <div class="pp-dims-row">
+        <div class="pp-dim"><span class="pp-dv">${p.lengthFt}ft</span><span class="pp-dl">Length</span></div>
+        <span class="pp-x">&times;</span>
+        <div class="pp-dim"><span class="pp-dv">${p.widthFt}ft</span><span class="pp-dl">Width</span></div>
+        ${p.areaSqft?`<span class="pp-x">=</span>
+        <div class="pp-dim"><span class="pp-dv">${Number(p.areaSqft).toLocaleString()}</span><span class="pp-dl">sqft</span></div>`:''}
+      </div>
     </div>`:''}
-    <button onclick="window.openDetail('${p.id}')" style="width:100%;background:#E85D04;color:#fff;border:none;border-radius:7px;padding:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">View Details</button>
-  </div>`;
-  infoWindow=new google.maps.InfoWindow({content});
-  infoWindow.open(googleMap,marker);
+    <button class="pp-btn" onclick="window.openDetail('${p.id}')">View Details &rarr;</button>`;
+  popup.style.left='10px';
+  popup.style.top='10px';
+  popup.classList.add('show');
 }
-function renderSVGMap(data){
-  const mapDiv=document.getElementById('googleMapDiv');if(!mapDiv)return;
-  // Place pins using city coords mapped to SVG space
-  // Hyderabad bounding box: lat 17.05-17.65, lng 77.9-78.8
-  function toSVG(lat,lng){
-    const x=Math.round(((lng-77.9)/(78.8-77.9))*560+30);
-    const y=Math.round(((17.65-lat)/(17.65-17.05))*420+30);
-    return{x:Math.max(30,Math.min(590,x)),y:Math.max(30,Math.min(450,y))};
-  }
-  const pins=data.map(p=>{
-    const coords=getCityCoords(p);
-    const{x,y}=toSVG(coords.lat,coords.lng);
-    const c=TC[p.type]||'#E85D04',lbl=fp(p.price),w=lbl.length*7+18;
-    return`<g style="cursor:pointer" onclick="window.pinClick(event,'${p.id}')" transform="translate(${x},${y})">
-      <rect x="${-w/2}" y="-13" width="${w}" height="24" rx="6" fill="${c}" opacity=".95"/>
-      <polygon points="-5,11 5,11 0,18" fill="${c}"/>
-      <text x="0" y="4" text-anchor="middle" font-size="10" fill="white" font-weight="500" font-family="sans-serif">${lbl}</text>
-    </g>`;
-  }).join('');
-  mapDiv.innerHTML=`<svg style="width:100%;height:100%" viewBox="0 0 620 480" id="msvg" onclick="closePopup(event)">
-    <rect width="620" height="480" fill="#F5F0E8"/>
-    <ellipse cx="310" cy="240" rx="280" ry="190" fill="#EDE5D8" stroke="#D8CEBF" stroke-width="1"/>
-    <ellipse cx="310" cy="240" rx="200" ry="130" fill="#E5DDD0"/>
-    <rect x="40" y="236" width="540" height="7" fill="#D4C9B8" rx="3" opacity=".6"/>
-    <rect x="306" y="40" width="7" height="400" fill="#D4C9B8" rx="3" opacity=".6"/>
-    <text x="310" y="22" text-anchor="middle" font-size="12" fill="#B8A898" font-family="sans-serif">Hyderabad &amp; Nearby Areas</text>
-    ${pins}
-  </svg>`;
-}
+
 window.pinClick=function(e,id){
   e.stopPropagation();const p=allProps.find(x=>x.id===id);if(!p)return;
   const popup=document.getElementById('mapPopup');if(!popup)return;
@@ -696,110 +705,51 @@ window.openPost=()=>{
 };
 
 // ── MAP PICKER FOR POST FORM ────────────────────────
-let pickerMap=null, pickerMarker=null;
 
 window.initMapPicker=function(){
   const div=document.getElementById('mapPickerDiv');
   if(!div)return;
-  if(window.google&&window.google.maps){
-    if(!pickerMap){
-      pickerMap=new google.maps.Map(div,{
-        center:{lat:17.385,lng:78.4867},
-        zoom:11,
-        mapTypeControl:false,
-        streetViewControl:false,
-        fullscreenControl:false,
-        zoomControl:true,
-      });
-      pickerMap.addListener('click',(e)=>{
-        const lat=e.latLng.lat();
-        const lng=e.latLng.lng();
-        window.placePickerPin(lat,lng,true);
-      });
-    }
-  } else {
-    // SVG fallback map picker
-    div.innerHTML=`<svg style="width:100%;height:100%;cursor:crosshair" viewBox="0 0 400 240" id="svgPicker"
-      onclick="window.handleSVGPick(event)">
-      <rect width="400" height="240" fill="#F5F0E8"/>
-      <ellipse cx="200" cy="120" rx="180" ry="110" fill="#EDE5D8" stroke="#D8CEBF" stroke-width="1"/>
-      <ellipse cx="200" cy="120" rx="130" ry="75" fill="#E5DDD0"/>
-      <rect x="20" y="117" width="360" height="5" fill="#D4C9B8" rx="2" opacity=".5"/>
-      <rect x="197" y="20" width="5" height="200" fill="#D4C9B8" rx="2" opacity=".5"/>
-      ${Object.entries({
-        'Kondapur':{x:155,y:80},'Madhapur':{x:175,y:90},'Gachibowli':{x:148,y:100},
-        'KPHB':{x:180,y:70},'Miyapur':{x:155,y:65},'Jubilee Hills':{x:185,y:108},
-        'Uppal':{x:255,y:105},'LB Nagar':{x:248,y:130},'Secunderabad':{x:215,y:78},
-        'Shadnagar':{x:148,y:185},'Patancheru':{x:115,y:68}
-      }).map(([name,pos])=>`
-        <g>
-          <circle cx="${pos.x}" cy="${pos.y}" r="3" fill="#E85D04" opacity=".6"/>
-          <text x="${pos.x+5}" y="${pos.y+4}" font-size="8" fill="#888" font-family="sans-serif">${name}</text>
-        </g>`).join('')}
-      <text x="200" y="18" text-anchor="middle" font-size="10" fill="#B8A898" font-family="sans-serif">Hyderabad — Tap to place pin</text>
-    </svg>`;
+  if(typeof L==='undefined'){
+    // Leaflet not loaded yet - show message
+    div.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#888">Map loading...</div>';
+    setTimeout(window.initMapPicker, 500);
+    return;
   }
+  if(div._leafletMapPicker){
+    div._leafletMapPicker.remove();
+    div._leafletMapPicker=null;
+  }
+  const picker=L.map(div,{zoomControl:true}).setView([17.385,78.4867],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19,attribution:''
+  }).addTo(picker);
+  div._leafletMapPicker=picker;
+
+  let pin=null;
+  picker.on('click',e=>{
+    const {lat,lng}=e.latlng;
+    if(pin){pin.remove();}
+    const icon=L.divIcon({
+      html:'<div style="font-size:28px;margin-top:-28px;margin-left:-12px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))">&#128205;</div>',
+      className:'',iconSize:[24,28]
+    });
+    pin=L.marker([lat,lng],{icon}).addTo(picker);
+    window.placePickerPin(lat,lng,false);
+  });
 };
 
-window.handleSVGPick=function(e){
-  const svg=document.getElementById('svgPicker');
-  if(!svg)return;
-  const rect=svg.getBoundingClientRect();
-  const x=e.clientX-rect.left;
-  const y=e.clientY-rect.top;
-  const vx=(x/rect.width)*400;
-  const vy=(y/rect.height)*240;
-  // Convert SVG coords to lat/lng (Hyderabad bounding box)
-  const lat=17.65-((vy-30)/(240-60))*(17.65-17.05);
-  const lng=77.9+((vx-20)/(400-40))*(78.8-77.9);
-  window.placePickerPin(lat,lng,false);
-  // Show pin on SVG
-  const existing=document.getElementById('svgPinMark');
-  if(existing)existing.remove();
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.id='svgPinMark';
-  g.innerHTML=`<circle cx="${vx}" cy="${vy}" r="8" fill="#E85D04" opacity=".3"/>
-    <circle cx="${vx}" cy="${vy}" r="4" fill="#E85D04"/>
-    <line x1="${vx}" y1="${vy+4}" x2="${vx}" y2="${vy+10}" stroke="#E85D04" stroke-width="2"/>`;
-  svg.appendChild(g);
-};
-
-window.placePickerPin=function(lat,lng,isGoogle){
-  // Store coords in hidden inputs
+window.placePickerPin=function(lat,lng){
   document.getElementById('pickedLat').value=lat.toFixed(6);
   document.getElementById('pickedLng').value=lng.toFixed(6);
-
-  // Update badge
   const badge=document.getElementById('mapCoordsBadge');
   const txt=document.getElementById('mapCoordsText');
   if(badge&&txt){
-    txt.textContent=`${lat.toFixed(4)}, ${lng.toFixed(4)} — location saved`;
+    txt.textContent=lat.toFixed(4)+', '+lng.toFixed(4)+' — location saved';
     badge.classList.add('show');
   }
-  // Update hint
   const hint=document.getElementById('mapPickerHint');
   if(hint)hint.style.opacity='0';
-  // Mark picker as having pin
   document.getElementById('mapPicker')?.classList.add('has-pin');
-
-  if(isGoogle&&pickerMap&&window.google){
-    const pos={lat,lng};
-    if(pickerMarker){pickerMarker.setPosition(pos);}
-    else{
-      pickerMarker=new google.maps.Marker({
-        position:pos,map:pickerMap,
-        icon:{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(`
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
-            <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24S32 26 32 16C32 7.163 24.837 0 16 0z" fill="#E85D04"/>
-            <circle cx="16" cy="16" r="7" fill="white"/>
-            <circle cx="16" cy="16" r="4" fill="#E85D04"/>
-          </svg>`),
-          anchor:new google.maps.Point(16,40)
-        }
-      });
-    }
-    pickerMap.panTo(pos);
-  }
 };
 
 window.clearMapPin=function(){
@@ -809,9 +759,12 @@ window.clearMapPin=function(){
   document.getElementById('mapPicker')?.classList.remove('has-pin');
   const hint=document.getElementById('mapPickerHint');
   if(hint)hint.style.opacity='1';
-  if(pickerMarker){pickerMarker.setMap(null);pickerMarker=null;}
-  const svgPin=document.getElementById('svgPinMark');
-  if(svgPin)svgPin.remove();
+  // Reset leaflet picker
+  const div=document.getElementById('mapPickerDiv');
+  if(div&&div._leafletMapPicker){
+    div._leafletMapPicker.remove();
+    div._leafletMapPicker=null;
+  }
 };
 window.closePost=()=>{
   document.getElementById('postModal').classList.remove('open');
@@ -1055,6 +1008,7 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dPr=e;docum
 if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW:',e));});}
 loadProps();
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=PASTE_YOUR_MAPS_KEY_HERE&callback=initGoogleMap"></script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>

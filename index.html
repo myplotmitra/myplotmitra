@@ -142,7 +142,15 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .map-coords-badge.show{display:flex}
 .map-coords-clear{margin-left:auto;font-size:11px;color:var(--g400);cursor:pointer;text-decoration:underline}
 .submit-btn{width:100%;background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}.submit-btn:hover{background:var(--ord)}.submit-btn:disabled{opacity:.6;cursor:not-allowed}
-.adm-card{background:#fff;border:1px solid var(--g200);border-radius:var(--r-md);margin-bottom:10px;overflow:hidden}
+.badge-sold{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;border-radius:var(--r-md) var(--r-md) 0 0}
+.badge-sold-text{background:#DC2626;color:#fff;font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:.5px;transform:rotate(-8deg)}
+.badge-sold-timer{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:9px;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.btn-sold{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.btn-delete{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.adm-tabs{display:flex;gap:0;border-bottom:1px solid var(--g200);margin-bottom:16px}
+.adm-tab{padding:8px 16px;font-size:12px;font-weight:500;cursor:pointer;color:var(--g400);border-bottom:2px solid transparent;transition:all .15s;font-family:'DM Sans',sans-serif;background:none;border-top:none;border-left:none;border-right:none}
+.adm-tab.on{color:var(--or);border-bottom-color:var(--or)}
+.adm-count{display:inline-flex;background:var(--ort);color:var(--or);font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;margin-left:4px}
 .adm-top{display:flex;gap:12px;padding:14px;align-items:flex-start}.adm-thumb{width:56px;height:48px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:var(--g100)}.adm-info{flex:1;min-width:0}.adm-title{font-size:13px;font-weight:500;color:var(--black);margin-bottom:3px;line-height:1.3}.adm-city{font-size:11px;color:var(--g400);margin-bottom:6px}.adm-pills{display:flex;gap:5px;flex-wrap:wrap}.adm-pill{font-size:10px;font-weight:600;background:var(--ort);color:var(--ord);padding:2px 8px;border-radius:10px}.adm-acts{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
 .btn-approve{background:var(--or);color:#fff;border:none;border-radius:var(--r-sm);padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .15s}.btn-approve:hover{background:var(--ord)}
 .btn-rej-open{background:#fff;color:var(--or);border:1px solid var(--or);border-radius:var(--r-sm);padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
@@ -216,8 +224,8 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
+import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import{getStorage,ref,uploadBytes,getDownloadURL,deleteObject,listAll}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 /* ══ PASTE YOUR FIREBASE CONFIG HERE ══════════════════════════════════ */
 const firebaseConfig = {
@@ -318,15 +326,30 @@ document.addEventListener('click',e=>{const m=document.getElementById('profileMe
 async function loadProps(){
   showSkeleton();
   try{
-    // Simple query — no orderBy to avoid composite index requirement
-    const q2=query(
-      collection(db,'properties'),
-      where('status','==','approved'),
-      limit(60)
-    );
-    const sn=await getDocs(q2);
-    allProps=sn.docs.map(d=>({id:d.id,...d.data()}));
-    // Sort by createdAt in JS — no index needed
+    // Get approved + sold properties
+    const [approvedSnap, soldSnap] = await Promise.all([
+      getDocs(query(collection(db,'properties'),where('status','==','approved'),limit(60))),
+      getDocs(query(collection(db,'properties'),where('status','==','sold'),limit(20)))
+    ]);
+
+    const approved = approvedSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+    // Handle sold properties — auto-delete after 24 hours
+    const now = Date.now();
+    const soldActive = [];
+    for(const d of soldSnap.docs){
+      const p = {id:d.id,...d.data()};
+      const soldTime = p.soldAt?.toDate ? p.soldAt.toDate().getTime() : 0;
+      const hoursElapsed = (now - soldTime) / 3600000;
+      if(hoursElapsed >= 24){
+        // Auto-delete expired sold property
+        window.deletePropertyCompletely(p.id, p.coverPhoto, false);
+      } else {
+        soldActive.push(p);
+      }
+    }
+
+    allProps = [...approved, ...soldActive];
     allProps.sort((a,b)=>{
       const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(0);
       const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(0);
@@ -335,14 +358,11 @@ async function loadProps(){
     render();
   }catch(e){
     console.warn('Firebase error:',e.message);
-    // Only fall back to demo if Firebase is not configured at all
     if(e.message?.includes('invalid-api-key')||e.message?.includes('app/no-app')){
       loadDemo();
     } else {
-      // Firebase IS configured but query failed — show empty with error
-      allProps=[];
-      render();
-      showToast('Error loading properties: '+e.message,'error');
+      allProps=[];render();
+      showToast('Error: '+e.message,'error');
     }
   }
 }
@@ -430,19 +450,23 @@ function renderGrid(data){
   }
   g.innerHTML=data.map((p,i)=>{
     const c=TC[p.type]||'#E85D04',bg=TB[p.type]||'#FFF0E6',hasDim=p.lengthFt>0&&p.widthFt>0,isSaved=bookmarks.has(p.id);
-    return`<div class="card" style="animation-delay:${i*.04}s" onclick="window.openDetail('${p.id}')">
+    const isSold=p.status==='sold';
+    const soldHrsLeft=isSold&&p.soldAt?Math.max(0,24-((Date.now()-(p.soldAt.toDate?p.soldAt.toDate():new Date(p.soldAt)).getTime())/3600000)).toFixed(1):null;
+    return`<div class="card" style="animation-delay:${i*.04}s;${isSold?'opacity:.8':''}" onclick="window.openDetail('${p.id}')">
       <div class="card-img" style="background:${bg};position:relative">
         ${p.coverPhoto?`<img src="${p.coverPhoto}" alt="${p.title}" loading="lazy"/>`:`<span class="type-icon">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}
-        ${isNew(p.createdAt)?'<span class="badge-new">NEW</span>':''}
+        ${isSold?`<div class="badge-sold"><div class="badge-sold-text">SOLD OUT</div>${soldHrsLeft?`<div class="badge-sold-timer">Removes in ${soldHrsLeft}h</div>`:''}</div>`:''}
+        ${!isSold&&isNew(p.createdAt)?'<span class="badge-new">NEW</span>':''}
         <span class="badge-type" style="color:${c};border-color:${c}44;background:${c}18">${(p.type||'plot').toUpperCase()}</span>
         <span class="bk-heart${isSaved?' saved':''}" onclick="window.toggleBk('${p.id}',event)">${isSaved?'&#10084;':'&#9825;'}</span>
       </div>
       <div class="card-body">
-        <div class="card-price">${fp(p.price)}</div>
+        <div class="card-price" style="${isSold?'text-decoration:line-through;color:var(--g400)':''}">${fp(p.price)}</div>
+        ${isSold?'<div style="font-size:11px;font-weight:600;color:#DC2626;margin-bottom:4px">&#10004; SOLD OUT</div>':''}
         <div class="card-title">${p.title}</div>
         <div class="card-loc">&#128205; ${p.city}</div>
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
-        <div class="card-foot"><span class="card-time">${ago(p.createdAt)}</span>${p.isNegotiable?'<span class="neg-tag">Negotiable</span>':''}</div>
+        <div class="card-foot"><span class="card-time">${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
       </div></div>`;
   }).join('');
 }
@@ -636,10 +660,22 @@ window.openDetail=function(id){
         </div>
         <span style="font-size:11px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:10px;font-weight:500">Direct Owner</span>
       </div>
+      ${p.status==='sold'?`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:var(--r-md);padding:12px;text-align:center;margin-bottom:14px">
+        <div style="font-size:16px;font-weight:700;color:#DC2626">&#10004; SOLD OUT</div>
+        <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
+      </div>`:''}
       <div class="contact-btns">
         <button class="btn-call" onclick="window.open('tel:${sellerPhone}')">&#128222; Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')">&#128172; WhatsApp</button>
       </div>
+      ${currentUser&&(currentUser.email===ADMIN_EMAIL||currentUser.uid===p.ownerId)?`
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--g200)">
+        <div style="font-size:11px;color:var(--g400);margin-bottom:8px;font-weight:500">${currentUser.email===ADMIN_EMAIL?'ADMIN ACTIONS':'OWNER ACTIONS'}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${p.status!=='sold'?`<button class="btn-sold" onclick="window.markSold('${p.id}');window.closeDetail()">&#10004; Mark as Sold Out</button>`:''}
+          ${currentUser.email===ADMIN_EMAIL?`<button class="btn-delete" onclick="window.deletePropertyCompletely('${p.id}','${p.coverPhoto||''}');window.closeDetail()">&#128465; Delete Property</button>`:''}
+        </div>
+      </div>`:''}
     </div>`;
   document.getElementById('sheetOverlay').classList.add('open');
   document.getElementById('detailSheet').classList.add('open');
@@ -842,33 +878,114 @@ window.submitProperty=async e=>{
     btn.disabled=false;
   }
 };
+// ── DELETE PROPERTY COMPLETELY ──────────────────────
+window.deletePropertyCompletely=async(id, coverPhoto, showConfirm=true)=>{
+  if(showConfirm && !confirm('Delete this property completely? This cannot be undone.'))return;
+  try{
+    // Delete from Firestore
+    await deleteDoc(doc(db,'properties',id));
+    // Delete photos from Storage
+    try{
+      const folder=ref(storage,`properties/${id}`);
+      const files=await listAll(folder);
+      await Promise.all(files.items.map(f=>deleteObject(f)));
+    }catch(storErr){
+      // Try single coverPhoto if folder listing fails
+      if(coverPhoto){
+        try{await deleteObject(ref(storage,coverPhoto));}catch(e){}
+      }
+    }
+    document.getElementById(`adc-${id}`)?.remove();
+    document.getElementById(`apv-${id}`)?.remove();
+    document.getElementById(`sld-${id}`)?.remove();
+    showToast('Property deleted completely.','success');
+    await loadProps();
+  }catch(e){showToast('Delete error: '+e.message,'error');}
+};
+
+// ── MARK AS SOLD OUT ─────────────────────────────────
+window.markSold=async(id)=>{
+  if(!confirm('Mark this property as SOLD OUT?\nIt will show a sold badge for 24 hours then be automatically deleted.'))return;
+  try{
+    await updateDoc(doc(db,'properties',id),{
+      status:'sold',
+      soldAt:serverTimestamp(),
+      soldBy:currentUser.uid
+    });
+    document.getElementById(`adc-${id}`)?.remove();
+    document.getElementById(`apv-${id}`)?.remove();
+    showToast('Marked as SOLD OUT. Will auto-delete in 24 hours.','success');
+    await loadProps();
+    window.openAdmin(); // refresh admin panel
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+// ── ADMIN PANEL ──────────────────────────────────────
+let adminTab='pending';
+
 window.openAdmin=async()=>{
   if(!currentUser)return;
   document.getElementById('adminModal').classList.add('open');
+  await loadAdminTab(adminTab);
+};
+window.closeAdmin=()=>document.getElementById('adminModal').classList.remove('open');
+
+window.switchAdminTab=async(tab)=>{
+  adminTab=tab;
+  document.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
+  await loadAdminTab(tab);
+};
+
+async function loadAdminTab(tab){
   const list=document.getElementById('pendingList');
-  list.innerHTML='<div style="text-align:center;padding:40px;color:#AAA">Loading...</div>';
+  if(!list)return;
+
+  // Update tab HTML first time
+  const modal=document.getElementById('adminModal');
+  if(modal&&!modal.querySelector('.adm-tabs')){
+    const body=modal.querySelector('.modal-body');
+    const tabBar=document.createElement('div');
+    tabBar.className='adm-tabs';
+    tabBar.innerHTML=`
+      <button class="adm-tab${tab==='pending'?' on':''}" data-tab="pending" onclick="window.switchAdminTab('pending')">Pending</button>
+      <button class="adm-tab${tab==='approved'?' on':''}" data-tab="approved" onclick="window.switchAdminTab('approved')">Approved</button>
+      <button class="adm-tab${tab==='sold'?' on':''}" data-tab="sold" onclick="window.switchAdminTab('sold')">Sold Out</button>`;
+    body.insertBefore(tabBar,body.firstChild);
+  } else if(modal){
+    modal.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
+  }
+
+  list.innerHTML='<div style="text-align:center;padding:30px;color:#AAA">Loading...</div>';
+
   try{
-    // Get ALL properties — filter pending in JS (avoids index/rules issues)
     const snap=await getDocs(collection(db,'properties'));
     const all=snap.docs.map(d=>({id:d.id,...d.data()}));
-    const items=all.filter(p=>p.status==='pending');
+    const items=all.filter(p=>p.status===tab||(tab==='pending'&&!p.status));
     items.sort((a,b)=>{
       const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(0);
       const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(0);
       return da-db2;
     });
+
     if(!items.length){
-      list.innerHTML='<div class="empty-adm">&#127881; No pending listings — all caught up!</div>';
+      list.innerHTML=`<div class="empty-adm">${
+        tab==='pending'?'&#127881; No pending listings!':
+        tab==='approved'?'No approved listings yet.':
+        'No sold out listings.'
+      }</div>`;
       return;
     }
-    list.innerHTML=items.map(p=>`
-      <div class="adm-card" id="adc-${p.id}">
+
+    list.innerHTML=items.map(p=>{
+      const soldHrs=p.soldAt?(24-((Date.now()-(p.soldAt.toDate?p.soldAt.toDate():new Date(p.soldAt)).getTime())/3600000)).toFixed(1):null;
+      return`<div class="adm-card" id="${tab==='pending'?'adc':tab==='approved'?'apv':'sld'}-${p.id}">
         <div class="adm-top">
           <div class="adm-thumb" style="background:${TB[p.type]||'#FFF0E6'}">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</div>
           <div class="adm-info">
             <div class="adm-title">${p.title}</div>
             <div class="adm-city">&#128205; ${p.city}</div>
-            <div style="font-size:11px;color:#888;margin-bottom:4px">by ${p.ownerName||p.ownerEmail||'Unknown'}</div>
+            <div style="font-size:11px;color:#888;margin-bottom:4px">by ${p.ownerName||p.ownerEmail||'Unknown'} ${p.sellerPhone?'· '+p.sellerPhone:''}</div>
+            ${tab==='sold'&&soldHrs?`<div style="font-size:11px;color:#DC2626;font-weight:500">&#128337; Auto-deletes in ${soldHrs}h</div>`:''}
             <div class="adm-pills">
               <span class="adm-pill">${fp(p.price)}</span>
               ${p.areaSqft?`<span class="adm-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}
@@ -876,51 +993,60 @@ window.openAdmin=async()=>{
             </div>
           </div>
           <div class="adm-acts">
-            <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button>
-            <button class="btn-rej-open" onclick="window.showRej('${p.id}')">&#10007; Reject</button>
+            ${tab==='pending'?`
+              <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button>
+              <button class="btn-rej-open" onclick="window.showRej('${p.id}')">&#10007; Reject</button>
+              <button class="btn-delete" onclick="window.deletePropertyCompletely('${p.id}','${p.coverPhoto||''}')">&#128465; Delete</button>`:''}
+            ${tab==='approved'?`
+              <button class="btn-sold" onclick="window.markSold('${p.id}')">&#10004; Sold Out</button>
+              <button class="btn-delete" onclick="window.deletePropertyCompletely('${p.id}','${p.coverPhoto||''}')">&#128465; Delete</button>`:''}
+            ${tab==='sold'?`
+              <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#8630; Restore</button>
+              <button class="btn-delete" onclick="window.deletePropertyCompletely('${p.id}','${p.coverPhoto||''}')">&#128465; Delete Now</button>`:''}
           </div>
         </div>
-        <div class="rej-form" id="rf-${p.id}" style="display:none">
-          <div class="rej-presets">
-            ${['Documents missing','Duplicate listing','Incorrect dimensions','Unclear photos','Price mismatch','Fraudulent'].map(r=>`<span class="preset-chip" onclick="document.getElementById('rr-${p.id}').value='${r}'">${r}</span>`).join('')}
-          </div>
+        ${tab==='pending'?`<div class="rej-form" id="rf-${p.id}" style="display:none">
+          <div class="rej-presets">${['Documents missing','Duplicate listing','Incorrect dimensions','Unclear photos','Price mismatch','Fraudulent'].map(r=>`<span class="preset-chip" onclick="document.getElementById('rr-${p.id}').value='${r}'">${r}</span>`).join('')}</div>
           <input class="rej-input" id="rr-${p.id}" placeholder="Rejection reason..."/>
           <div class="rej-btns">
-            <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve &amp; Go Live</button>
+            <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button>
             <button class="btn-rej-confirm" onclick="window.doReject('${p.id}')">&#10007; Reject</button>
           </div>
-        </div>
-      </div>`).join('');
+        </div>`:''}
+      </div>`;
+    }).join('');
   }catch(e){
     console.error('Admin error:',e);
-    list.innerHTML=`<div style="color:#DC2626;padding:20px;font-size:13px">
-      Error: ${e.message}<br><br>
-      Make sure you are signed in with nkhadar@gmail.com
-    </div>`;
+    list.innerHTML=`<div style="color:#DC2626;padding:20px;font-size:13px">Error: ${e.message}</div>`;
   }
-};
-window.closeAdmin=()=>document.getElementById('adminModal').classList.remove('open');
+}
+
 window.showRej=id=>{const r=document.getElementById(`rf-${id}`);if(r)r.style.display=r.style.display==='none'?'block':'none';};
+
 window.doApprove=async id=>{
   try{
-    await updateDoc(doc(db,'properties',id),{
-      status:'approved',
-      reviewedBy:currentUser.uid,
-      reviewedAt:serverTimestamp()
-    });
+    await updateDoc(doc(db,'properties',id),{status:'approved',reviewedBy:currentUser.uid,reviewedAt:serverTimestamp()});
     document.getElementById(`adc-${id}`)?.remove();
-    showToast('✓ Approved! Property is now live.','success');
-    // Reload properties so approved one appears in grid
+    document.getElementById(`sld-${id}`)?.remove();
+    showToast('&#10003; Approved! Property is now live.','success');
     await loadProps();
-    // Check if any pending left
     const remaining=document.querySelectorAll('[id^="adc-"]');
     if(remaining.length===0){
       const list=document.getElementById('pendingList');
-      if(list)list.innerHTML='<div class="empty-adm">&#127881; All caught up! No pending listings.</div>';
+      if(list&&adminTab==='pending')list.innerHTML='<div class="empty-adm">&#127881; All caught up!</div>';
     }
   }catch(e){showToast('Error: '+e.message,'error');}
 };
-window.doReject=async id=>{const r=document.getElementById(`rr-${id}`)?.value?.trim();if(!r){showToast('Enter rejection reason first','error');return;}try{await updateDoc(doc(db,'properties',id),{status:'rejected',rejectionReason:r,reviewedBy:currentUser.uid,reviewedAt:serverTimestamp()});document.getElementById(`adc-${id}`)?.remove();showToast('Rejected. Seller notified.','');}catch(e){showToast('Error: '+e.message,'error');}};
+
+window.doReject=async id=>{
+  const r=document.getElementById(`rr-${id}`)?.value?.trim();
+  if(!r){showToast('Enter rejection reason first','error');return;}
+  try{
+    await updateDoc(doc(db,'properties',id),{status:'rejected',rejectionReason:r,reviewedBy:currentUser.uid,reviewedAt:serverTimestamp()});
+    document.getElementById(`adc-${id}`)?.remove();
+    showToast('Rejected. Seller notified.','');
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
 function showToast(msg,type=''){const t=document.createElement('div');t.className=`toast${type?' '+type:''}`;t.textContent=msg;document.body.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);}
 window.showToast=showToast;
 let dPr=null;

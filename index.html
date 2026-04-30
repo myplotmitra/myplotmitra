@@ -463,29 +463,30 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
       <span class="modal-title">&#11088; Boost to Featured</span>
-      <button class="modal-close" onclick="document.getElementById('featuredModal').classList.remove('open')">x</button>
+      <button class="modal-close" onclick="document.getElementById('featuredModal').classList.remove('open')">&#215;</button>
     </div>
     <div class="modal-body" id="featuredModalBody">
-      <div style="text-align:center;padding:20px 0">
-        <div style="font-size:48px;margin-bottom:12px">&#11088;</div>
-        <div style="font-size:18px;font-weight:600;color:var(--black);margin-bottom:8px">Feature Your Listing</div>
-        <div style="font-size:13px;color:var(--g600);line-height:1.6;margin-bottom:20px">
-          Get 10x more visibility! Your property appears at the<br>top of all listings with a ⭐ Featured badge.
+      <div style="text-align:center;padding:12px 0 20px">
+        <div style="width:64px;height:64px;background:var(--ort);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px">&#11088;</div>
+        <div style="font-size:20px;font-weight:800;color:var(--ink);margin-bottom:8px;letter-spacing:-.3px">Feature Your Listing</div>
+        <div style="font-size:13px;color:var(--g500);line-height:1.7;margin-bottom:20px">
+          Get 10x more visibility. Your property appears<br>at the top of all listings with a ⭐ Featured badge.
         </div>
-        <div style="background:var(--ort);border:1px solid #FFD4B3;border-radius:var(--r-md);padding:16px;margin-bottom:20px">
-          <div style="font-size:28px;font-weight:700;color:var(--or)">₹499</div>
-          <div style="font-size:12px;color:var(--g600)">Featured for 30 days</div>
+        <div style="background:var(--ort);border:1.5px solid rgba(255,106,0,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:20px">
+          <div style="font-size:32px;font-weight:800;color:var(--or);letter-spacing:-.5px">₹499</div>
+          <div style="font-size:12px;color:var(--g500);margin-top:2px;font-weight:500">Featured for 30 days · Verified badge · Top placement</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px">
-          <button onclick="window.payFeature('upi')" style="background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+          <button onclick="window.payFeature('upi')" style="background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:var(--sh-or);transition:all .2s" onmouseover="this.style.background='var(--ord)'" onmouseout="this.style.background='var(--or)'">
             &#128247; Pay ₹499 via UPI / PhonePe / GPay
           </button>
-          <button onclick="window.payFeature('whatsapp')" style="background:#25D366;color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
-            &#128172; Pay via WhatsApp (send screenshot)
+          <button onclick="window.payFeature('whatsapp')" style="background:#25D366;color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s">
+            &#128172; Send Payment Screenshot on WhatsApp
           </button>
         </div>
-        <div style="font-size:11px;color:var(--g400);margin-top:14px">
-          After payment, admin will activate featured status within 2 hours
+        <div style="font-size:11px;color:var(--g400);margin-top:14px;line-height:1.6">
+          UPI: <strong style="color:var(--ink)">9989083321@upi</strong><br>
+          Admin activates within 2 hours after payment confirmation
         </div>
       </div>
     </div>

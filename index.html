@@ -155,7 +155,16 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
 .type-icon{font-size:36px;opacity:.6}
 
 /* ── CARD BADGES ─────────────────────────────────── */
-.badge-featured{position:absolute;top:10px;left:10px;background:var(--or);color:#fff;font-size:9px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.5px;box-shadow:0 2px 10px rgba(255,106,0,.4)}
+.badge-featured{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#B8860B,#FFD700,#B8860B);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.5px;box-shadow:0 2px 12px rgba(184,134,11,.5);text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.card-gold-border{border:2px solid #FFD700 !important;box-shadow:0 0 0 1px #B8860B33,0 8px 30px rgba(184,134,11,.2) !important}
+.gold-badge-pill{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#B8860B,#FFD700,#B8860B);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.4px;box-shadow:0 2px 8px rgba(184,134,11,.4)}
+.featured-upi-box{background:linear-gradient(135deg,#fffbeb,#fff9e6);border:1.5px solid #FFD700;border-radius:var(--r-lg);padding:16px;margin:12px 0}
+.featured-toggle-section{display:none}
+.featured-toggle-section.show{display:block}
+.proof-upload-area{border:2px dashed #FFD700;border-radius:var(--r-md);padding:14px;text-align:center;cursor:pointer;background:#fffbeb;transition:all .2s;margin-top:8px}
+.proof-upload-area:hover{background:#fff9e6;border-color:#B8860B}
+.proof-preview{margin-top:8px;border-radius:var(--r-sm);overflow:hidden;max-height:120px;display:none}
+.proof-preview img{width:100%;object-fit:contain;max-height:120px;background:#000}
 .badge-new{position:absolute;top:10px;left:10px;background:var(--black);color:#fff;font-size:9px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.5px}
 .badge-type{position:absolute;top:10px;right:10px;font-size:9px;font-weight:600;padding:3px 9px;border-radius:100px;border:1.5px solid;backdrop-filter:blur(8px)}
 .bk-heart{font-size:13px;cursor:pointer;transition:transform .2s,background .2s;position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,.12)}
@@ -577,6 +586,85 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
         </div>
 
         <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div>
+
+        <!-- ⭐ FEATURED LISTING OPTION -->
+        <div style="border:2px solid #FFD700;border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px">
+          <!-- Toggle header -->
+          <div style="background:linear-gradient(135deg,#fffbeb,#fff9e6);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="window.toggleFeaturedOption()">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:22px">&#11088;</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#92400E">Get Gold Featured Badge — ₹499</div>
+                <div style="font-size:11px;color:#B45309;margin-top:1px">Top placement · Gold border · 30 days visibility boost</div>
+              </div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="featuredToggleCheck" onchange="window.toggleFeaturedOption()"/>
+              <span class="tog-track" style="background:#D4A017" ></span>
+            </label>
+          </div>
+
+          <!-- Featured details - shown when toggled on -->
+          <div class="featured-toggle-section" id="featuredSection">
+            <div style="padding:14px 16px;border-top:1px solid #FFE066">
+
+              <!-- What you get -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+                <div style="background:#fff;border:1px solid #FFE066;border-radius:var(--r-sm);padding:10px;text-align:center">
+                  <div style="font-size:16px;margin-bottom:3px">&#127881;</div>
+                  <div style="font-size:10px;font-weight:600;color:#92400E">Top of listings</div>
+                </div>
+                <div style="background:#fff;border:1px solid #FFE066;border-radius:var(--r-sm);padding:10px;text-align:center">
+                  <div style="font-size:16px;margin-bottom:3px">&#127942;</div>
+                  <div style="font-size:10px;font-weight:600;color:#92400E">Gold border badge</div>
+                </div>
+                <div style="background:#fff;border:1px solid #FFE066;border-radius:var(--r-sm);padding:10px;text-align:center">
+                  <div style="font-size:16px;margin-bottom:3px">&#128065;</div>
+                  <div style="font-size:10px;font-weight:600;color:#92400E">10x more views</div>
+                </div>
+                <div style="background:#fff;border:1px solid #FFE066;border-radius:var(--r-sm);padding:10px;text-align:center">
+                  <div style="font-size:16px;margin-bottom:3px">&#128337;</div>
+                  <div style="font-size:10px;font-weight:600;color:#92400E">30 days active</div>
+                </div>
+              </div>
+
+              <!-- UPI Payment details -->
+              <div class="featured-upi-box">
+                <div style="font-size:11px;font-weight:700;color:#92400E;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">&#128178; Pay ₹499 via UPI</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid #FFD700;border-radius:var(--r-md);padding:12px 14px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:10px;color:#92400E;font-weight:500;margin-bottom:2px">UPI ID</div>
+                    <div style="font-size:15px;font-weight:800;color:#0A0A0A;letter-spacing:.3px">9989083321@upi</div>
+                  </div>
+                  <button type="button" onclick="window.copyUPI()" style="background:#FFD700;color:#92400E;border:none;border-radius:var(--r-sm);padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font)">Copy</button>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:8px">
+                  <button type="button" onclick="window.openUPI('phonepe')" style="flex:1;background:#5f259f;color:#fff;border:none;border-radius:var(--r-sm);padding:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">&#128247; PhonePe</button>
+                  <button type="button" onclick="window.openUPI('gpay')" style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:var(--r-sm);padding:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">G Pay</button>
+                  <button type="button" onclick="window.openUPI('paytm')" style="flex:1;background:#00baf2;color:#fff;border:none;border-radius:var(--r-sm);padding:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">Paytm</button>
+                </div>
+                <div style="font-size:10px;color:#B45309;text-align:center">Amount: ₹499 · Name: MyPlotMitra</div>
+              </div>
+
+              <!-- Upload proof -->
+              <div class="fg" style="margin-bottom:0">
+                <label class="flbl" style="color:#92400E">Upload Payment Screenshot *</label>
+                <div class="proof-upload-area" onclick="document.getElementById('paymentProofInput').click()">
+                  <div style="font-size:24px;margin-bottom:6px">&#128247;</div>
+                  <div style="font-size:12px;font-weight:600;color:#92400E">Tap to upload payment screenshot</div>
+                  <div style="font-size:11px;color:#B45309;margin-top:3px">JPG, PNG — screenshot from PhonePe / GPay / Paytm</div>
+                </div>
+                <div class="proof-preview" id="proofPreview">
+                  <img id="proofImg" src="" alt="Payment proof"/>
+                </div>
+                <input type="file" id="paymentProofInput" accept="image/*" style="display:none" onchange="window.handleProofUpload(event)"/>
+                <input type="hidden" id="paymentProofData" name="paymentProof"/>
+                <div id="proofStatus" style="font-size:11px;color:#059669;font-weight:500;margin-top:5px;display:none">&#10003; Screenshot attached</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="notice">Your listing will be reviewed by admin before going live. Usually within 24 hours.</div>
         <button type="submit" class="submit-btn" id="submitBtn">Submit for Approval</button>
       </form>
@@ -868,7 +956,7 @@ function renderGrid(data){
     const c=TC[p.type]||'#E85D04',bg=TB[p.type]||'#FFF0E6',hasDim=p.lengthFt>0&&p.widthFt>0,isSaved=bookmarks.has(p.id);
     const isSold=p.status==='sold';
     const soldHrsLeft=isSold&&p.soldAt?Math.max(0,24-((Date.now()-(p.soldAt.toDate?p.soldAt.toDate():new Date(p.soldAt)).getTime())/3600000)).toFixed(1):null;
-    return`<div class="card" style="animation-delay:${i*.04}s;${isSold?'opacity:.8':''}" onclick="window.openDetail('${p.id}')">
+    return`<div class="${p.isFeatured?'card card-gold-border':'card'}" style="animation-delay:${i*.04}s;${isSold?'opacity:.8':''}" onclick="window.openDetail('${p.id}')">
       <div class="card-img" style="background:${bg};position:relative">
         ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${p.title}" loading="lazy" onerror="this.style.display='none'" />`:`<span class="type-icon">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}
         ${isSold?`<div class="badge-sold"><div class="badge-sold-text">SOLD OUT</div>${soldHrsLeft?`<div class="badge-sold-timer">Removes in ${soldHrsLeft}h</div>`:''}</div>`:''}
@@ -1407,8 +1495,75 @@ window.openMyListings=async function(){
   }
 };
 
-// ── FEATURED LISTING ─────────────────────────────────
-let featuredPropertyId='', featuredPropertyTitle='';
+// ── FEATURED OPTION IN FORM ─────────────────────────
+window.toggleFeaturedOption=function(){
+  const chk=document.getElementById('featuredToggleCheck');
+  const sec=document.getElementById('featuredSection');
+  if(!chk||!sec)return;
+  if(sec.classList.contains('show')){
+    sec.classList.remove('show');
+    chk.checked=false;
+  } else {
+    sec.classList.add('show');
+    chk.checked=true;
+  }
+};
+
+window.copyUPI=function(){
+  navigator.clipboard?.writeText('9989083321@upi')
+    .then(()=>showToast('UPI ID copied!','success'))
+    .catch(()=>showToast('UPI: 9989083321@upi',''));
+};
+
+window.openUPI=function(app){
+  const upiUrl=`upi://pay?pa=9989083321@upi&pn=MyPlotMitra&am=499&cu=INR&tn=Gold+Featured+Badge`;
+  if(app==='phonepe') window.open(`phonepe://pay?pa=9989083321@upi&am=499&tn=Gold+Featured`,'_blank');
+  else if(app==='gpay') window.open(`tez://upi/pay?pa=9989083321@upi&am=499&tn=Gold+Featured`,'_blank');
+  else if(app==='paytm') window.open(`paytmmp://pay?pa=9989083321@upi&am=499&tn=Gold+Featured`,'_blank');
+  // Fallback to generic UPI deeplink
+  setTimeout(()=>window.open(upiUrl,'_blank'),300);
+};
+
+window.handleProofUpload=async function(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){showToast('Screenshot too large. Max 5MB','error');return;}
+  const compressed=await compressImage(file,800,0.8);
+  const rd=new FileReader();
+  rd.onload=ev=>{
+    document.getElementById('paymentProofData').value=ev.target.result;
+    const preview=document.getElementById('proofPreview');
+    const img=document.getElementById('proofImg');
+    const status=document.getElementById('proofStatus');
+    if(preview){preview.style.display='block';}
+    if(img){img.src=ev.target.result;}
+    if(status){status.style.display='block';}
+    showToast('Screenshot attached!','success');
+  };
+  rd.readAsDataURL(compressed);
+};
+
+// ── ADMIN: Approve + activate gold in one click ──────
+window.approveWithGold=async function(id){
+  if(!confirm('Approve this listing AND activate Gold Featured badge?'))return;
+  try{
+    await updateDoc(doc(db,'properties',id),{
+      status:'approved',
+      isFeatured:true,
+      featuredAt:serverTimestamp(),
+      reviewedBy:currentUser.uid,
+      reviewedAt:serverTimestamp(),
+    });
+    document.getElementById(`adc-${id}`)?.remove();
+    showToast('&#11088; Approved with Gold Featured badge!','success');
+    await loadProps();
+    const remaining=document.querySelectorAll('[id^="adc-"]');
+    if(!remaining.length){
+      const list=document.getElementById('pendingList');
+      if(list&&adminTab==='pending')list.innerHTML='<div class="empty-adm">&#127881; All caught up!</div>';
+    }
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
 window.openFeatured=function(id,title){
   featuredPropertyId=id;
   featuredPropertyTitle=title;
@@ -1572,6 +1727,17 @@ window.closePost=()=>{
   const pp=document.getElementById('pricePreview');if(pp)pp.textContent='= ₹45,00,000';
   const ph=document.getElementById('priceHidden');if(ph)ph.value='';
   const cl=document.getElementById('photoCountLabel');if(cl)cl.textContent='';
+  // Reset featured
+  const featSec=document.getElementById('featuredSection');
+  const featChk=document.getElementById('featuredToggleCheck');
+  const proofPrev=document.getElementById('proofPreview');
+  const proofData=document.getElementById('paymentProofData');
+  const proofStatus=document.getElementById('proofStatus');
+  if(featSec)featSec.classList.remove('show');
+  if(featChk)featChk.checked=false;
+  if(proofPrev)proofPrev.style.display='none';
+  if(proofData)proofData.value='';
+  if(proofStatus)proofStatus.style.display='none';
 };
 window.updDims=()=>{
   const l=Number(document.getElementById('fLft')?.value)||0;
@@ -1626,6 +1792,9 @@ window.submitProperty=async e=>{
       areaSqft:Number(form.areaSqft.value)||0,
       price:Number(document.getElementById('priceHidden')?.value||form.priceVal?.value||0),
       isNegotiable:form.negotiable.checked,
+      isFeatured:false,
+      featuredRequested:!!(document.getElementById('featuredToggleCheck')?.checked),
+      paymentProof:document.getElementById('paymentProofData')?.value||null,
       status:'pending',
       viewsCount:0,
       photos:[],
@@ -1811,10 +1980,15 @@ async function loadAdminTab(tab){
             }
           </div>
           <div class="adm-info">
-            <div class="adm-title">${p.title}</div>
+            <div class="adm-title">${p.title}${p.isFeatured?'<span class="gold-badge-pill" style="margin-left:6px;font-size:9px">&#11088; GOLD</span>':''}</div>
             <div class="adm-city">&#128205; ${p.city}</div>
             <div style="font-size:11px;color:#888;margin-bottom:4px">by ${p.ownerName||p.ownerEmail||'Unknown'} ${p.sellerPhone?'· '+p.sellerPhone:''}</div>
             ${tab==='sold'&&soldHrs?`<div style="font-size:11px;color:#DC2626;font-weight:500">&#128337; Auto-deletes in ${soldHrs}h</div>`:''}
+            ${p.paymentProof&&!p.isFeatured?`<div style="background:#fffbeb;border:1.5px solid #FFD700;border-radius:6px;padding:8px;margin-bottom:6px">
+              <div style="font-size:10px;font-weight:700;color:#92400E;margin-bottom:4px">&#11088; Gold Badge Payment Proof:</div>
+              <img src="${p.paymentProof}" onclick="window.open('${p.paymentProof}')" style="width:100%;max-height:80px;object-fit:contain;border-radius:4px;cursor:pointer;background:#000" onerror="this.style.display='none'"/>
+              <div style="font-size:10px;color:#B45309;margin-top:3px">Tap to enlarge · Verify ₹499 payment before activating</div>
+            </div>`:''}
             <div class="adm-pills">
               <span class="adm-pill">${fp(p.price)}</span>
               ${p.areaSqft?`<span class="adm-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}
@@ -1824,10 +1998,11 @@ async function loadAdminTab(tab){
           <div class="adm-acts">
             ${tab==='pending'?`
               <button class="btn-approve" onclick="window.doApprove('${p.id}')">&#10003; Approve</button>
+              ${p.paymentProof&&!p.isFeatured?`<button class="btn-feature" onclick="window.approveWithGold('${p.id}')" style="background:linear-gradient(135deg,#B8860B,#FFD700);border:none;color:#fff;font-weight:700">&#11088; Approve+Gold</button>`:''}
               <button class="btn-rej-open" onclick="window.showRej('${p.id}')">&#10007; Reject</button>
               <button class="btn-delete" onclick="window.deletePropertyCompletely('${p.id}','${p.coverPhoto||''}')">&#128465; Delete</button>`:''}
             ${tab==='approved'?`
-              <button class="btn-feature" onclick="window.toggleFeatured('${p.id}',${!!p.isFeatured})" style="white-space:nowrap">${p.isFeatured?'&#11088; Unfeature':'&#11088; Feature'}</button>
+              ${p.paymentProof&&!p.isFeatured?`<button class="btn-feature" onclick="window.toggleFeatured('${p.id}',false)" style="background:linear-gradient(135deg,#B8860B,#FFD700);border:none;color:#fff;font-weight:700">&#11088; Activate Gold</button>`:`<button class="btn-feature" onclick="window.toggleFeatured('${p.id}',${!!p.isFeatured})">${p.isFeatured?'&#11088; Remove Gold':'&#11088; Add Gold'}</button>`}
               <button class="btn-sold" onclick="window.markSold('${p.id}')">&#10004; Sold Out</button>
               <button class="btn-delete" onclick="window.deletePropertyCompletely('${p.id}','${p.coverPhoto||''}')">&#128465; Delete</button>`:''}
             ${tab==='sold'?`

@@ -431,6 +431,7 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
       <span class="pchip" data-p="50000000" onclick="window.setPrice(this)">Under ₹5Cr</span>
     </div>
     <button class="bk-btn" id="bkToggle" onclick="window.toggleBookmarks()">&#9825; Saved</button>
+    <button class="bk-btn" id="soldToggle" onclick="window.toggleHideSold()">&#10004; Hide Sold</button>
   </div>
 </div></div>
 <main class="main"><div class="property-grid" id="propGrid"></div></main>
@@ -625,7 +626,7 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 const storage=getStorage(app);
 const provider=new GoogleAuthProvider();
-let currentUser=null,vMode='grid',typeF='',searchQ='',priceF=0,sortF='newest',allProps=[],bookmarks=new Set(JSON.parse(localStorage.getItem('mpm_bk')||'[]')),showBookmarks=false;
+let currentUser=null,vMode='grid',typeF='',searchQ='',priceF=0,sortF='newest',allProps=[],bookmarks=new Set(JSON.parse(localStorage.getItem('mpm_bk')||'[]')),showBookmarks=false,hideSold=false;
 function fp(p){if(p>=10000000)return`\u20b9${(p/10000000).toFixed(1)}Cr`;if(p>=100000)return`\u20b9${(p/100000).toFixed(1)}L`;return`\u20b9${Number(p).toLocaleString('en-IN')}`;}
 function ago(ts){if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);const s=Math.floor((Date.now()-d.getTime())/1000);if(s<86400)return'Today';if(s<172800)return'Yesterday';if(s<604800)return`${Math.floor(s/86400)}d ago`;return`${Math.floor(s/604800)}w ago`;}
 function isNew(ts){if(!ts)return false;const d=ts.toDate?ts.toDate():new Date(ts);return Date.now()-d.getTime()<7*86400000;}
@@ -837,7 +838,8 @@ function getFiltered(){
     const ms=!searchQ||p.title.toLowerCase().includes(searchQ.toLowerCase())||p.city.toLowerCase().includes(searchQ.toLowerCase())||p.address?.toLowerCase().includes(searchQ.toLowerCase());
     const mp=!priceF||p.price<=priceF;
     const mb=!showBookmarks||bookmarks.has(p.id);
-    return mt&&ms&&mp&&mb;
+    const ms2=!hideSold||(p.status!=='sold');
+    return mt&&ms&&mp&&mb&&ms2;
   });
   // Sort
   data.sort((a,b)=>{
@@ -1133,7 +1135,18 @@ window.setSearch=v=>{searchQ=v;render();};
 window.setType=el=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');typeF=el.dataset.t;render();};
 window.setView=v=>{vMode=v;document.getElementById('vbGrid').classList.toggle('on',v==='grid');document.getElementById('vbMap').classList.toggle('on',v==='map');render();};
 window.setPrice=el=>{document.querySelectorAll('.pchip').forEach(c=>c.classList.remove('on'));el.classList.add('on');priceF=Number(el.dataset.p)||0;render();};
-window.toggleBookmarks=()=>{showBookmarks=!showBookmarks;const b=document.getElementById('bkToggle');if(b){b.classList.toggle('on',showBookmarks);b.textContent=showBookmarks?'❤ Saved':'♡ Saved';}render();};
+window.toggleBookmarks=()=>{
+  showBookmarks=!showBookmarks;
+  const b=document.getElementById('bkToggle');
+  if(b){b.classList.toggle('on',showBookmarks);b.textContent=showBookmarks?'❤ Saved':'♡ Saved';}
+  render();
+};
+window.toggleHideSold=()=>{
+  hideSold=!hideSold;
+  const b=document.getElementById('soldToggle');
+  if(b){b.classList.toggle('on',hideSold);b.textContent=hideSold?'✕ Hide Sold':'✔ Hide Sold';}
+  render();
+};
 window.toggleBk=(id,e)=>{if(e)e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();};
 window.openPost=()=>{
   if(!currentUser){window.doSignIn();return;}

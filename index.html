@@ -82,8 +82,10 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .card{background:#fff;border:1px solid var(--g200);border-radius:var(--r-md);overflow:hidden;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;box-shadow:var(--sh-card);animation:fadeUp .3s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .card:hover{border-color:var(--or);box-shadow:0 4px 20px rgba(232,93,4,.12);transform:translateY(-2px)}.card:active{transform:scale(.98)}
-.card-img{height:145px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--g100)}
-.card-img img{width:100%;height:100%;object-fit:cover}.type-icon{font-size:36px}
+.card-img{height:160px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--g100)}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .3s ease}
+.card:hover .card-img img{transform:scale(1.04)}
+.type-icon{font-size:36px}
 .badge-featured{position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#F59E0B,#EF4444);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;letter-spacing:.3px;box-shadow:0 2px 8px rgba(239,68,68,.4)}
 .badge-new{position:absolute;top:8px;left:8px;background:var(--or);color:#fff;font-size:9px;font-weight:600;padding:3px 8px;border-radius:10px;letter-spacing:.4px}
 .badge-type{position:absolute;top:8px;right:8px;font-size:9px;font-weight:600;padding:3px 8px;border-radius:10px;border:1px solid}
@@ -119,7 +121,7 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .bottom-sheet{position:fixed;bottom:0;left:0;right:0;z-index:201;background:#fff;border-radius:20px 20px 0 0;border-top:1px solid var(--g200);max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);box-shadow:0 -4px 32px rgba(0,0,0,.1)}.bottom-sheet.open{transform:translateY(0)}
 .sheet-handle{width:36px;height:4px;background:var(--g200);border-radius:2px;margin:12px auto}
 .sheet-close{position:absolute;top:14px;right:14px;background:var(--g100);border:1px solid var(--g200);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--g600)}
-.detail-img{height:220px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--g100)}.detail-img img{width:100%;height:100%;object-fit:cover}
+.detail-img{height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--g100);position:relative}.detail-img img{width:100%;height:100%;object-fit:cover;object-position:center}
 .detail-content{padding:20px 16px 40px}.detail-price{font-size:28px;font-weight:600;color:var(--or);margin-bottom:6px}.detail-title{font-size:18px;font-weight:500;color:var(--black);margin-bottom:6px;line-height:1.3}.detail-loc{font-size:13px;color:var(--g400);margin-bottom:18px}
 .dims-box{background:var(--ort);border:1px solid #FFD4B3;border-radius:var(--r-md);padding:16px;margin-bottom:18px}.dims-lbl{font-size:10px;color:var(--or);font-weight:600;letter-spacing:.8px;margin-bottom:10px}
 .dims-row{display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap}.dim-item{text-align:center}.dim-val{display:block;font-size:20px;font-weight:600;color:var(--ord)}.dim-lbl{display:block;font-size:11px;color:var(--orl);margin-top:2px}.dim-x{font-size:20px;color:var(--g300)}
@@ -136,6 +138,10 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .finp,.fsel,.ftxt{width:100%;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-sm);padding:10px 12px;font-size:13px;color:var(--black);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
 .finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--or);box-shadow:0 0 0 3px var(--ort)}.finp::placeholder,.ftxt::placeholder{color:var(--g300)}.ftxt{resize:vertical;min-height:80px}
 .frow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.frow2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.price-input-wrap{display:flex;gap:6px;align-items:center}
+.price-unit-sel{background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-sm);padding:10px 8px;font-size:13px;color:var(--black);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;flex-shrink:0;min-width:70px}
+.price-unit-sel:focus{border-color:var(--or);box-shadow:0 0 0 3px var(--ort)}
+.price-preview{font-size:12px;color:var(--or);font-weight:500;margin-top:4px;min-height:18px}
 .dims-preview{font-size:12px;color:var(--or);font-weight:500;margin-top:5px;min-height:18px}
 .ftog{display:flex;align-items:center;justify-content:space-between;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-sm);padding:10px 12px}.ftog-lbl{font-size:13px;color:var(--black)}
 .tog{position:relative;width:44px;height:24px;flex-shrink:0}.tog input{opacity:0;width:0;height:0}.tog-track{position:absolute;inset:0;background:var(--g300);border-radius:12px;cursor:pointer;transition:background .2s}.tog input:checked+.tog-track{background:var(--or)}.tog-track::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s}.tog input:checked+.tog-track::after{transform:translateX(20px)}
@@ -150,12 +156,12 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
 .map-coords-badge{background:var(--ort);border:1px solid #FFD4B3;border-radius:var(--r-sm);padding:7px 10px;font-size:11px;color:var(--ord);margin-top:6px;display:none;align-items:center;gap:6px}
 .map-coords-badge.show{display:flex}
 .map-coords-clear{margin-left:auto;font-size:11px;color:var(--g400);cursor:pointer;text-decoration:underline}
-.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
-.photo-slot{aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;position:relative;background:var(--g50);border:1.5px dashed var(--g200);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s}
-.photo-slot:hover{border-color:var(--or)}
-.photo-slot.has-photo{border-style:solid;border-color:var(--g200)}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.photo-slot{aspect-ratio:4/3;border-radius:var(--r-sm);overflow:hidden;position:relative;background:var(--g50);border:1.5px dashed var(--g200);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.photo-slot:hover{border-color:var(--or);background:var(--ort)}
+.photo-slot.has-photo{border-style:solid;border-color:var(--g200);background:#000}
 .submit-btn{width:100%;background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}.submit-btn:hover{background:var(--ord)}.submit-btn:disabled{opacity:.6;cursor:not-allowed}
-.photo-slot img{width:100%;height:100%;object-fit:cover}
+.photo-slot img{width:100%;height:100%;object-fit:contain;background:#000}
 .photo-slot-add{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--g400);font-size:11px}
 .photo-slot-add span{font-size:22px;color:var(--or);line-height:1}
 .photo-remove{position:absolute;top:3px;right:3px;background:#DC2626;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;z-index:2}
@@ -368,7 +374,19 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:#111111;min-heigh
           <input type="hidden" id="pickedLng" name="lng"/>
         </div>
         <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
-        <div class="fg"><label class="flbl">Price (Rs) *</label><input name="price" class="finp" type="number" placeholder="e.g. 4500000" required/></div>
+        <div class="fg">
+          <label class="flbl">Price *</label>
+          <div class="price-input-wrap">
+            <input name="priceVal" id="priceVal" class="finp" type="number" placeholder="e.g. 45" required style="flex:1" oninput="window.updPrice()"/>
+            <select name="priceUnit" id="priceUnit" class="price-unit-sel" onchange="window.updPrice()">
+              <option value="1">₹ Rs</option>
+              <option value="100000" selected>L (Lakh)</option>
+              <option value="10000000">Cr (Crore)</option>
+            </select>
+          </div>
+          <div class="price-preview" id="pricePreview">= ₹45,00,000</div>
+          <input type="hidden" name="price" id="priceHidden"/>
+        </div>
         <div class="fg"><label class="flbl">Description</label><textarea name="description" class="ftxt" placeholder="Describe your property — location, nearby landmarks, documents available..."></textarea></div>
 
         <div class="fg">
@@ -1275,20 +1293,25 @@ window.toggleFeatured=async(id,current)=>{
     await loadAdminTab(adminTab);
   }catch(e){showToast('Error: '+e.message,'error');}
 };
-function compressImage(file, maxWidth=1200, quality=0.75){
+function compressImage(file, maxWidth=1200, quality=0.78){
   return new Promise((resolve)=>{
     const img=new Image();
     const url=URL.createObjectURL(file);
     img.onload=()=>{
       URL.revokeObjectURL(url);
-      const canvas=document.createElement('canvas');
       let w=img.width, h=img.height;
-      if(w>maxWidth){h=Math.round(h*maxWidth/w);w=maxWidth;}
+      // Smart resize — maintain aspect ratio
+      if(w>maxWidth){h=Math.round(h*(maxWidth/w));w=maxWidth;}
+      if(h>1600){w=Math.round(w*(1600/h));h=1600;}
+      const canvas=document.createElement('canvas');
       canvas.width=w; canvas.height=h;
       const ctx=canvas.getContext('2d');
+      // White background for PNGs
+      ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,w,h);
       ctx.drawImage(img,0,0,w,h);
       canvas.toBlob(blob=>{
-        resolve(blob||file);
+        // Use original if compression made it larger
+        resolve(blob&&blob.size<file.size?blob:file);
       },'image/jpeg',quality);
     };
     img.onerror=()=>resolve(file);
@@ -1374,15 +1397,44 @@ window.closePost=()=>{
   for(let i=0; i<6; i++) selectedPhotos[i]=null;
   renderPhotoGrid();
   window.clearMapPin();
-  const dp=document.getElementById('dimsPreview');
-  if(dp)dp.textContent='';
-  const cl=document.getElementById('photoCountLabel');
-  if(cl)cl.textContent='';
+  const dp=document.getElementById('dimsPreview');if(dp)dp.textContent='';
+  const pp=document.getElementById('pricePreview');if(pp)pp.textContent='= ₹45,00,000';
+  const ph=document.getElementById('priceHidden');if(ph)ph.value='';
+  const cl=document.getElementById('photoCountLabel');if(cl)cl.textContent='';
 };
-window.updDims=()=>{const l=Number(document.getElementById('fLft')?.value)||0,w=Number(document.getElementById('fWft')?.value)||0,pr=document.getElementById('dimsPreview');if(pr)pr.textContent=l&&w?`${l} ft \xd7 ${w} ft = ${(l*w).toLocaleString()} sqft`:'';}
+window.updDims=()=>{
+  const l=Number(document.getElementById('fLft')?.value)||0;
+  const w2=Number(document.getElementById('fWft')?.value)||0;
+  const pr=document.getElementById('dimsPreview');
+  if(pr)pr.textContent=l&&w2?`${l} ft × ${w2} ft = ${(l*w2).toLocaleString('en-IN')} sqft`:'';
+};
+
+window.updPrice=()=>{
+  const val=Number(document.getElementById('priceVal')?.value)||0;
+  const unit=Number(document.getElementById('priceUnit')?.value)||100000;
+  const total=Math.round(val*unit);
+  const hidden=document.getElementById('priceHidden');
+  if(hidden)hidden.value=total||'';
+  const prev=document.getElementById('pricePreview');
+  if(prev&&val>0){
+    let display='';
+    if(total>=10000000)display=`₹${(total/10000000).toFixed(2)} Crore (${total.toLocaleString('en-IN')})`;
+    else if(total>=100000)display=`₹${(total/100000).toFixed(2)} Lakh (${total.toLocaleString('en-IN')})`;
+    else display=`₹${total.toLocaleString('en-IN')}`;
+    prev.textContent='= '+display;
+  } else if(prev){prev.textContent='';}
+};
 window.submitProperty=async e=>{
   e.preventDefault();
   if(!currentUser){showToast('Please sign in first','error');return;}
+  // Validate price
+  const priceHiddenVal=document.getElementById('priceHidden')?.value;
+  if(!priceHiddenVal||Number(priceHiddenVal)<=0){
+    // If user typed in priceVal directly without selecting unit, calculate now
+    window.updPrice();
+    const recalc=document.getElementById('priceHidden')?.value;
+    if(!recalc||Number(recalc)<=0){showToast('Please enter a valid price','error');return;}
+  }
   const form=e.target,btn=form.querySelector('.submit-btn');
   btn.textContent='Submitting...';btn.disabled=true;
   try{
@@ -1401,7 +1453,7 @@ window.submitProperty=async e=>{
       lengthFt:Number(form.lengthFt.value)||0,
       widthFt:Number(form.widthFt.value)||0,
       areaSqft:Number(form.areaSqft.value)||0,
-      price:Number(form.price.value),
+      price:Number(document.getElementById('priceHidden')?.value||form.priceVal?.value||0),
       isNegotiable:form.negotiable.checked,
       status:'pending',
       viewsCount:0,

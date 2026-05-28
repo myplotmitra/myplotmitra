@@ -578,6 +578,128 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
   .hs-btn{padding:12px 16px;font-size:13px}
 }
 
+/* ── SVG ICONS ── */
+.icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.icon svg{display:block}
+.icon-sm svg{width:16px;height:16px}
+.icon-md svg{width:18px;height:18px}
+.icon svg{width:20px;height:20px}
+.icon-lg svg{width:24px;height:24px}
+
+/* ═══ TYPOGRAPHY UPGRADE ═══ */
+body{font-size:15px;line-height:1.6;letter-spacing:-.01em}
+h1,h2,h3,h4{font-family:var(--font-head);letter-spacing:-.03em;line-height:1.2}
+
+/* ═══ HEADER UPGRADE ═══ */
+.header{height:64px;border-bottom:1px solid var(--g150)}
+.header-inner{height:64px;gap:14px}
+.logo-name{font-size:18px;font-weight:800;letter-spacing:-.5px}
+.logo-tagline{font-size:9px;font-weight:500;color:var(--g400);text-transform:uppercase;letter-spacing:1.2px}
+.search-wrap input{height:42px;font-size:14px;border-radius:100px;padding:0 16px 0 42px;font-weight:400}
+.sicon{left:14px;display:flex;align-items:center}
+.btn-post{height:38px;padding:0 18px;font-size:13px;border-radius:100px;gap:6px;letter-spacing:.1px}
+.btn-signin{height:38px;padding:0 16px;font-size:13px;border-radius:100px}
+.btn-admin{height:38px;padding:0 14px;font-size:12px;border-radius:100px;gap:6px}
+
+/* ═══ FILTER BAR UPGRADE ═══ */
+.filter-bar{top:64px;padding:0}
+.filter-inner{padding:10px 20px;gap:10px}
+.chip{padding:7px 18px;font-size:12px;font-weight:600;letter-spacing:.05px;height:36px;display:inline-flex;align-items:center}
+.chip.on{background:var(--ink);border-color:var(--ink)}
+.vbtn{height:32px;padding:0 14px;font-size:12px;font-weight:500}
+.sort-sel{height:34px;font-size:12px;font-weight:500;border-radius:var(--r-md)}
+.bk-btn,.bk-btn+button{height:34px;font-size:11px;font-weight:500;border-radius:var(--r-md);padding:0 12px}
+
+/* ═══ SECTION HEADING ═══ */
+.section-head{padding:36px 24px 0}
+.section-title{font-size:26px;font-weight:800;letter-spacing:-.5px}
+.section-sub{font-size:13px;color:var(--g400);font-weight:400;margin-top:3px}
+.section-link{font-size:13px;font-weight:600;color:var(--or);text-decoration:none;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--or);border-radius:100px;padding:8px 16px;transition:all .2s}
+.section-link:hover{background:var(--or);color:#fff}
+
+/* ═══ PROPERTY CARD UPGRADE ═══ */
+.property-grid{gap:20px;padding:0 4px}
+.card{border-radius:16px;border:1px solid var(--g150);box-shadow:0 1px 4px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.03)}
+.card:hover{box-shadow:0 8px 32px rgba(0,0,0,.12);transform:translateY(-4px);border-color:rgba(255,106,0,.2)}
+.card-img{height:185px;border-radius:16px 16px 0 0}
+.card-img img{border-radius:0}
+
+/* ─ Card image overlay for properties without photo ─ */
+.card-img-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;
+}
+.card-img-placeholder-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+.card-img-placeholder-label{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+
+/* ─ Card body ─ */
+.card-body{padding:16px 16px 12px}
+.card-price{font-size:20px;font-weight:800;letter-spacing:-.5px;line-height:1;margin-bottom:5px}
+.card-title{font-size:13px;font-weight:500;line-height:1.45;color:var(--g600);margin-bottom:6px}
+.card-loc{font-size:12px;color:var(--g400);margin-bottom:8px;display:flex;align-items:center;gap:4px;font-weight:400}
+.card-dims{margin-bottom:10px}
+.dim-pill{font-size:11px;font-weight:600;background:var(--g50);border:1px solid var(--g150);color:var(--g600);padding:3px 10px;letter-spacing:.1px}
+.card-foot{padding:0;border-top:1px solid var(--g100);margin:0 -16px;padding:10px 16px 0;display:flex;align-items:center;justify-content:space-between}
+.card-time{font-size:10px;color:var(--g300);font-weight:400;display:flex;align-items:center;gap:3px}
+.neg-tag{font-size:10px;font-weight:600;color:var(--or);background:var(--ort);padding:3px 9px;border-radius:100px;border:none;letter-spacing:.1px}
+
+/* ─ Card seller row ─ */
+.card-seller-row{
+  margin:0 -16px;padding:10px 16px;
+  border-top:1px solid var(--g100);
+  background:var(--g50);
+  border-radius:0 0 16px 16px;
+}
+.card-seller-avatar{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--g200);color:var(--g600);
+  font-size:10px;font-weight:700;
+}
+.card-seller-name{font-size:11px;color:var(--g500);font-weight:400}
+.card-wa-btn{
+  background:#128C7E;border-radius:var(--r-sm);
+  padding:4px 11px;font-size:11px;font-weight:600;
+  letter-spacing:.1px;gap:4px;display:inline-flex;align-items:center;
+}
+
+/* ─ Badges ─ */
+.badge-new{top:12px;left:12px;background:var(--ink);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 10px}
+.badge-type{top:12px;right:12px;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.bk-heart{bottom:12px;right:12px;width:30px;height:30px;background:rgba(255,255,255,.95)}
+.badge-featured{top:12px;left:12px;padding:4px 10px;font-size:9px;letter-spacing:.5px;text-transform:uppercase}
+
+/* ═══ DETAIL SHEET ═══ */
+.detail-price{font-size:32px;font-weight:800;letter-spacing:-.8px}
+.detail-title{font-size:20px;font-weight:700;letter-spacing:-.3px;line-height:1.25}
+
+/* ═══ BOTTOM NAV UPGRADE ═══ */
+.nav-item{font-size:10px;font-weight:500;letter-spacing:.2px;color:var(--g300);gap:3px}
+.nav-item.on{color:var(--or)}
+.nav-post{width:54px;height:54px;font-size:22px}
+.nav-icon{font-size:14px;height:22px;display:flex;align-items:center;justify-content:center}
+
+/* ═══ ADMIN PANEL ═══ */
+.adm-title{font-size:13px;font-weight:600;letter-spacing:-.1px}
+.adm-tab{font-size:12px;font-weight:600;letter-spacing:.1px;padding:11px 20px}
+
+/* ═══ FORMS ═══ */
+.flbl{font-size:11px;font-weight:600;color:var(--g500);letter-spacing:.7px;text-transform:uppercase;margin-bottom:7px}
+.finp,.fsel,.ftxt{font-size:14px;border-radius:var(--r-md);padding:12px 14px;border:1.5px solid var(--g150)}
+.finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(255,106,0,.1)}
+.submit-btn{font-size:15px;font-weight:700;letter-spacing:.1px;height:52px;border-radius:var(--r-lg)}
+
+/* ═══ MODAL ═══ */
+.modal{border-radius:24px}
+.modal-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.modal-close{border-radius:10px;width:34px;height:34px}
+
+/* ═══ TOAST ═══ */
+.toast{font-size:13px;font-weight:500;padding:13px 24px;border-radius:12px;letter-spacing:.1px}
+
 </style>
 </head>
 <body>
@@ -611,7 +733,7 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
     <div class="logo-tagline">Trusted Property Partner</div>
   </div>
 </div>
-<div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
+<div class="search-wrap"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
 
 <!-- ── HERO SECTION ─────────────────────────────── -->
 <section class="hero" id="heroSection">
@@ -665,7 +787,7 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
           </select>
         </div>
         <button class="hs-btn" onclick="window.heroDoSearch()">
-          &#128269; Search
+          <span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span> Search
         </button>
       </div>
     </div>
@@ -714,8 +836,8 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
       <span class="chip" data-t="flat" onclick="window.setType(this)">Flat</span>
     </div>
     <div class="vtog">
-      <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')">&#8857; Grid</button>
-      <button class="vbtn" id="vbMap" onclick="window.setView('map')">&#9711; Map</button>
+      <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span> Grid</button>
+      <button class="vbtn" id="vbMap" onclick="window.setView('map')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span> Map</button>
     </div>
     <span class="pcnt" id="pcnt">Loading...</span>
   </div>
@@ -732,17 +854,17 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
       <span class="pchip" data-p="10000000" onclick="window.setPrice(this)">Under ₹1Cr</span>
       <span class="pchip" data-p="50000000" onclick="window.setPrice(this)">Under ₹5Cr</span>
     </div>
-    <button class="bk-btn" id="bkToggle" onclick="window.toggleBookmarks()">&#9825; Saved</button>
-    <button class="bk-btn" id="soldToggle" onclick="window.toggleHideSold()">&#10004; Hide Sold</button>
+    <button class="bk-btn" id="bkToggle" onclick="window.toggleBookmarks()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17s-7-4.5-7-9.5C3 4.46 5.46 2 8 2c1.38 0 2.62.56 3.5 1.46A4.5 4.5 0 0110 17z"/><path d="M10 17c0 0 7-4.5 7-9.5C17 4.46 14.54 2 12 2a4.5 4.5 0 00-1.5.27"/></svg></span> Saved</button>
+    <button class="bk-btn" id="soldToggle" onclick="window.toggleHideSold()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> Hide Sold</button>
   </div>
 </div></div>
 <main class="main"><div class="property-grid" id="propGrid"></div></main>
 <nav class="bottom-nav">
-  <button class="nav-item on" id="navHome" onclick="window.navHome()"><span class="nav-icon">&#127968;</span>Home</button>
-  <button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon">&#128269;</span>Search</button>
-  <button class="nav-post" onclick="window.openPost()">+</button>
-  <button class="nav-item" id="navMyListings" onclick="window.openMyListings()"><span class="nav-icon">&#128196;</span>My Posts</button>
-  <button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon">&#128100;</span>Profile</button>
+  <button class="nav-item on" id="navHome" onclick="window.navHome()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8v9h4v-5h2v5h4V8"/></svg></span></span>Home</button>
+  <button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span>Search</button>
+  <button class="nav-post" onclick="window.openPost()" aria-label="Post property"><span class="icon icon-lg" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg></span></button>
+  <button class="nav-item" id="navMyListings" onclick="window.openMyListings()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7z"/><polyline points="12,2 12,8 18,8"/><line x1="8" y1="11" x2="12" y2="11"/><line x1="8" y1="14" x2="14" y2="14"/></svg></span></span>My Posts</button>
+  <button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span></span>Profile</button>
 </nav>
 <!-- My Listings Modal -->
 <div class="modal-overlay" id="myListingsModal">
@@ -1018,6 +1140,38 @@ const TC={plot:'#E85D04',house:'#185FA5',land:'#BA7517',flat:'#7C3AED'};
 const TB={plot:'#FFF0E6',house:'#EFF6FF',land:'#FFFBEB',flat:'#F5F3FF'};
 const TI={plot:'\u25a1',house:'\u2302',land:'\U0001f33f',flat:'\u25a0'};
 
+
+const ICONS = {
+  'search': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg>`,
+  'map-pin': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg>`,
+  'settings': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg>`,
+  'plus': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg>`,
+  'user': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg>`,
+  'grid': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg>`,
+  'map': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg>`,
+  'heart': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17s-7-4.5-7-9.5C3 4.46 5.46 2 8 2c1.38 0 2.62.56 3.5 1.46A4.5 4.5 0 0110 17z"/><path d="M10 17c0 0 7-4.5 7-9.5C17 4.46 14.54 2 12 2a4.5 4.5 0 00-1.5.27"/></svg>`,
+  'heart-filled': `<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 17s-7-4.5-7-9.5C3 4.46 5.46 2 8.5 2A4.5 4.5 0 0110 2.73 4.5 4.5 0 0111.5 2C14.54 2 17 4.46 17 7.5 17 12.5 10 17 10 17z"/></svg>`,
+  'home': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8v9h4v-5h2v5h4V8"/></svg>`,
+  'phone': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg>`,
+  'message': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5a7.8 7.8 0 01-3-.59L3 17l1.59-4A6.29 6.29 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg>`,
+  'camera': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h1.5l1-2h3l1 2H15a2 2 0 012 2z"/><circle cx="10" cy="11" r="2.5"/></svg>`,
+  'star': `<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l2.4 5h5.6l-4.5 3.3 1.7 5.3L10 12.5l-5.2 3.1 1.7-5.3L2 7h5.6z"/></svg>`,
+  'crown': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h14M3 14L2 6l4 3 4-6 4 6 4-3-1 8"/></svg>`,
+  'crown-filled': `<svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 6l4 3 4-6 4 6 4-3-1 8H3L2 6z"/><rect x="3" y="15" width="14" height="2" rx="1"/></svg>`,
+  'trash': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 5,5 17,5"/><path d="M6 5V4a1 1 0 011-1h6a1 1 0 011 1v1M8 9v6M12 9v6M15 5l-1 12H6L5 5"/></svg>`,
+  'check': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg>`,
+  'x': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>`,
+  'list': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="4" y1="6" x2="16" y2="6"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="4" y1="14" x2="16" y2="14"/></svg>`,
+  'bell': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2a6 6 0 00-6 6v3l-1.5 2H17.5L16 11V8a6 6 0 00-6-6z"/><path d="M8.5 17a1.5 1.5 0 003 0"/></svg>`,
+  'eye': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z"/><circle cx="10" cy="10" r="2.5"/></svg>`,
+  'arrow-right': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="10" x2="16" y2="10"/><polyline points="11,5 16,10 11,15"/></svg>`,
+  'shield': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2L4 5v5c0 4.42 2.56 8.57 6 9.44C14.44 18.57 17 14.42 17 10V5l-7-3z"/></svg>`,
+  'refresh': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4a8 8 0 1112.65 1.35"/><polyline points="14,2 16,5 13,6"/></svg>`,
+  'clock': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>`,
+  'logout': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v10a2 2 0 002 2h3M13 7l4 3-4 3M7 10h10"/></svg>`,
+};
+function icon(name, cls=""){return `<span class="icon ${cls}" aria-hidden="true">${ICONS[name]||""}</span>`;}
+
 /* ══ ADMIN EMAIL — always gets admin panel ══ */
 const ADMIN_EMAIL = 'nkhadar@gmail.com';
 
@@ -1262,7 +1416,11 @@ function renderGrid(data){
     const soldHrsLeft=isSold&&p.soldAt?Math.max(0,24-((Date.now()-(p.soldAt.toDate?p.soldAt.toDate():new Date(p.soldAt)).getTime())/3600000)).toFixed(1):null;
     return`<div class="${p.isFeatured?'card card-gold-border':'card'}" style="animation-delay:${i*.04}s;${isSold?'opacity:.8':''}" onclick="window.openDetail('${p.id}')">
       <div class="card-img" style="background:${bg};position:relative">
-        ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${p.title}" loading="lazy" onerror="this.style.display='none'" />`:`<span class="type-icon">${p.type==='plot'?'&#9633;':p.type==='house'?'&#8962;':p.type==='land'?'&#127807;':'&#9632;'}</span>`}
+        ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${p.title}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/>`:
+          `<div class="card-img-placeholder" style="background:${bg}40">
+             <div class="card-img-placeholder-icon" style="background:${c}20">${icon(p.type==='house'?'home':p.type==='flat'?'grid':'map-pin')}</div>
+             <div class="card-img-placeholder-label" style="color:${c};opacity:.7">${(p.type||'PROPERTY').toUpperCase()}</div>
+           </div>`}
         ${isSold?`<div class="badge-sold"><div class="badge-sold-text">SOLD OUT</div>${soldHrsLeft?`<div class="badge-sold-timer">Removes in ${soldHrsLeft}h</div>`:''}</div>`:''}
         ${p.isFeatured?'<span class="badge-featured">&#11088; FEATURED</span>':(!isSold&&isNew(p.createdAt)?'<span class="badge-new">NEW</span>':'')}
         <span class="badge-type" style="color:${c};border-color:${c}44;background:${c}18">${(p.type||'plot').toUpperCase()}</span>

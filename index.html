@@ -26,7 +26,7 @@
 <link rel="canonical" href="https://www.myplotmitra.com"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════════════════
    MYPLOTMITRA — PREMIUM DESIGN SYSTEM
@@ -380,6 +380,204 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
 @media(min-width:768px){.bottom-nav{display:none}.property-grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.bottom-sheet{left:50%;right:auto;width:500px;border-radius:var(--r-2xl) var(--r-2xl) 0 0;transform:translateX(-50%) translateY(100%)}.bottom-sheet.open{transform:translateX(-50%) translateY(0)}.main{padding-bottom:48px}.map-wrap{height:540px}}
 @media(min-width:1024px){.property-grid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}.card-img{height:175px}.main{padding:28px 24px 56px}}
 @supports(padding-bottom:env(safe-area-inset-bottom)){.bottom-nav{padding-bottom:calc(8px + env(safe-area-inset-bottom))}.bottom-sheet{padding-bottom:env(safe-area-inset-bottom)}}
+/* ═══════════════════════════════════════════════════
+   HERO SECTION
+═══════════════════════════════════════════════════ */
+:root{
+  --font-head:'Poppins',var(--font);
+}
+.hero{
+  position:relative;
+  min-height:520px;
+  background:#0A0A0A;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(160deg,rgba(255,106,0,.18) 0%,transparent 50%),
+    linear-gradient(0deg,rgba(10,10,10,.92) 0%,rgba(10,10,10,.55) 60%,rgba(10,10,10,.3) 100%);
+  z-index:1;
+}
+.hero-bg-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  filter:brightness(.45) saturate(1.1);
+  z-index:0;
+}
+.hero-inner{
+  position:relative;z-index:2;
+  max-width:1100px;margin:0 auto;
+  padding:0 24px;
+  width:100%;
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding-top:60px;padding-bottom:48px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,106,0,.15);
+  border:1px solid rgba(255,106,0,.3);
+  border-radius:100px;padding:5px 14px;
+  font-size:12px;font-weight:500;color:rgba(255,255,255,.8);
+  letter-spacing:.3px;margin-bottom:20px;width:fit-content;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:#FF6A00;flex-shrink:0}
+.hero-h1{
+  font-family:var(--font-head);
+  font-size:clamp(36px,5.5vw,58px);
+  font-weight:800;color:#fff;
+  line-height:1.1;letter-spacing:-1.5px;
+  margin-bottom:16px;
+}
+.hero-h1 span{color:#FF6A00}
+.hero-sub{
+  font-size:clamp(14px,1.8vw,17px);
+  color:rgba(255,255,255,.65);
+  line-height:1.7;margin-bottom:36px;
+  max-width:520px;font-weight:400;
+}
+/* ── HERO SEARCH BOX ── */
+.hero-search{
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(20px);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  max-width:680px;
+}
+.hero-search-tabs{
+  display:flex;border-bottom:1px solid #EFEFEF;
+  padding:0 4px;
+}
+.hs-tab{
+  padding:12px 20px;font-size:13px;font-weight:600;
+  color:#9A9A9A;cursor:pointer;border:none;background:none;
+  font-family:var(--font);border-bottom:2px solid transparent;
+  transition:all .2s;letter-spacing:.1px;
+}
+.hs-tab.on{color:#FF6A00;border-bottom-color:#FF6A00}
+.hs-tab:hover:not(.on){color:#0A0A0A}
+.hero-search-body{
+  display:flex;align-items:stretch;gap:0;padding:6px;
+}
+.hs-loc{
+  flex:1;display:flex;align-items:center;
+  padding:0 14px;gap:10px;border-right:1px solid #EFEFEF;
+}
+.hs-loc-icon{font-size:18px;color:#FF6A00;flex-shrink:0}
+.hs-loc input{
+  width:100%;border:none;outline:none;font-size:14px;
+  font-family:var(--font);color:#0A0A0A;background:transparent;
+  font-weight:500;
+}
+.hs-loc input::placeholder{color:#AAAAAA;font-weight:400}
+.hs-type{
+  padding:0 4px;border-right:1px solid #EFEFEF;
+}
+.hs-type select{
+  height:100%;border:none;outline:none;
+  font-size:13px;font-family:var(--font);
+  color:#555;background:transparent;padding:0 12px;
+  cursor:pointer;font-weight:500;min-width:120px;
+}
+.hs-btn{
+  background:#FF6A00;color:#fff;border:none;
+  border-radius:10px;padding:14px 24px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  font-family:var(--font);transition:all .2s;
+  display:flex;align-items:center;gap:8px;
+  letter-spacing:.1px;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(255,106,0,.35);
+}
+.hs-btn:hover{background:#D95A00;transform:translateY(-1px)}
+/* ── HERO STATS ── */
+.hero-stats{
+  display:flex;gap:28px;margin-top:28px;
+  flex-wrap:wrap;
+}
+.h-stat{
+  display:flex;flex-direction:column;
+  border-left:2px solid rgba(255,106,0,.4);
+  padding-left:14px;
+}
+.h-stat-n{font-size:22px;font-weight:700;color:#fff;font-family:var(--font-head);line-height:1}
+.h-stat-l{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;font-weight:400;letter-spacing:.2px}
+
+/* ── FLOATING WHATSAPP ── */
+.wa-float{
+  position:fixed;bottom:88px;right:16px;z-index:150;
+  width:52px;height:52px;border-radius:50%;
+  background:#25D366;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(37,211,102,.45);
+  transition:all .2s;border:none;
+  animation:waPulse 3s ease-in-out infinite;
+}
+.wa-float:hover{background:#1DAA56;transform:scale(1.08)}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.45)}50%{box-shadow:0 4px 28px rgba(37,211,102,.7),0 0 0 8px rgba(37,211,102,.1)}}
+
+/* ── SECTION HEADING ── */
+.section-head{
+  max-width:1200px;margin:0 auto;
+  padding:32px 20px 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.section-title{
+  font-family:var(--font-head);
+  font-size:22px;font-weight:700;
+  color:var(--ink);letter-spacing:-.4px;
+}
+.section-sub{font-size:13px;color:var(--g400);margin-top:2px}
+.section-link{
+  font-size:13px;font-weight:600;color:var(--or);
+  text-decoration:none;display:flex;align-items:center;gap:4px;
+  transition:gap .2s;
+}
+.section-link:hover{gap:8px}
+
+/* ── IMPROVED CARD ── */
+.card-seller-row{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;border-top:1px solid var(--g150);
+  margin-top:4px;
+}
+.card-seller-avatar{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--g100);display:flex;
+  align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:var(--g500);
+  flex-shrink:0;
+}
+.card-seller-name{font-size:10px;color:var(--g400);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-wa-btn{
+  background:#25D366;color:#fff;border:none;
+  border-radius:100px;padding:3px 9px;
+  font-size:10px;font-weight:600;cursor:pointer;
+  font-family:var(--font);transition:background .15s;
+  white-space:nowrap;
+}
+.card-wa-btn:hover{background:#1DAA56}
+
+/* ── MOBILE BREAKPOINTS ── */
+@media(max-width:480px){
+  .hero{min-height:460px}
+  .hero-inner{padding:20px 16px 36px}
+  .hero-search{border-radius:12px}
+  .hero-search-tabs{display:none}
+  .hs-type{display:none}
+  .hero-stats{gap:16px}
+  .h-stat-n{font-size:18px}
+  .section-head{padding:24px 16px 0}
+  .section-title{font-size:18px}
+}
+@media(max-width:320px){
+  .hero-h1{font-size:28px;letter-spacing:-1px}
+  .hero-sub{font-size:13px}
+  .hs-btn{padding:12px 16px;font-size:13px}
+}
+
 </style>
 </head>
 <body>
@@ -414,7 +612,99 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
   </div>
 </div>
 <div class="search-wrap"><span class="sicon">&#128269;</span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()">&#9881; Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
-<div class="filter-bar"><div class="filter-inner">
+
+<!-- ── HERO SECTION ─────────────────────────────── -->
+<section class="hero" id="heroSection">
+  <!-- Background: real estate image from Unsplash (free) -->
+  <img class="hero-bg-img"
+    src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80&auto=format&fit=crop"
+    alt="Properties in Hyderabad"
+    loading="eager"
+    onerror="this.style.display='none'"
+  />
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Hyderabad's trusted property platform
+    </div>
+    <h1 class="hero-h1">
+      Find Your Perfect<br>
+      <span>Plot, House</span> or Flat
+    </h1>
+    <p class="hero-sub">
+      Direct from owners. Zero brokerage. Verified listings across Hyderabad, Anantapur and nearby areas.
+    </p>
+
+    <!-- Hero Search Box -->
+    <div class="hero-search" id="heroSearch">
+      <div class="hero-search-tabs">
+        <button class="hs-tab on" onclick="window.setHeroTab(this,'')">All</button>
+        <button class="hs-tab" onclick="window.setHeroTab(this,'plot')">Plots</button>
+        <button class="hs-tab" onclick="window.setHeroTab(this,'house')">Houses</button>
+        <button class="hs-tab" onclick="window.setHeroTab(this,'flat')">Flats</button>
+        <button class="hs-tab" onclick="window.setHeroTab(this,'land')">Land</button>
+      </div>
+      <div class="hero-search-body">
+        <div class="hs-loc">
+          <span class="hs-loc-icon">&#128205;</span>
+          <input
+            id="heroSearchInput"
+            type="search"
+            placeholder="Search city, area or locality..."
+            autocomplete="off"
+            oninput="window.heroSearch(this.value)"
+          />
+        </div>
+        <div class="hs-type">
+          <select id="heroPriceFilter" onchange="window.heroSetPrice(this.value)">
+            <option value="">Any budget</option>
+            <option value="5000000">Under ₹50L</option>
+            <option value="10000000">Under ₹1Cr</option>
+            <option value="50000000">Under ₹5Cr</option>
+          </select>
+        </div>
+        <button class="hs-btn" onclick="window.heroDoSearch()">
+          &#128269; Search
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="hero-stats">
+      <div class="h-stat">
+        <span class="h-stat-n" id="heroStatCount">100+</span>
+        <span class="h-stat-l">Properties Listed</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-n">0%</span>
+        <span class="h-stat-l">Brokerage</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-n">24h</span>
+        <span class="h-stat-l">Listing Approval</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-n">Direct</span>
+        <span class="h-stat-l">Owner Contact</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION HEADING ──────────────────────────── -->
+<div class="section-head" id="listingsHead">
+  <div>
+    <div class="section-title">Latest Properties</div>
+    <div class="section-sub" id="sectionSubCount">Loading...</div>
+  </div>
+  <a class="section-link" onclick="window.openPost()">+ Post Property &#8594;</a>
+</div>
+
+<!-- ── FLOATING WHATSAPP ────────────────────────── -->
+<button class="wa-float" onclick="window.open('https://wa.me/919989083321?text=Hi, I am looking for a property on MyPlotMitra. Can you help?')" title="WhatsApp us">
+  &#128172;
+</button><div class="filter-bar"><div class="filter-inner">
   <div class="filter-row1">
     <div class="chips">
       <span class="chip on" data-t="" onclick="window.setType(this)">All</span>
@@ -947,7 +1237,18 @@ function getFiltered(){
   });
   return data;
 }
-function render(){const data=getFiltered();document.getElementById('pcnt').textContent=`${data.length} propert${data.length===1?'y':'ies'}`;if(vMode==='grid')renderGrid(data);else renderMap(data);}
+function render(){
+  const data=getFiltered();
+  const count=data.length;
+  document.getElementById('pcnt').textContent=`${count} propert${count===1?'y':'ies'}`;
+  // Update section subtitle
+  const sub=document.getElementById('sectionSubCount');
+  if(sub) sub.textContent=searchQ||typeF||priceF?`${count} propert${count===1?'y':'ies'} found`:`${count} verified propert${count===1?'y':'ies'}`;
+  // Update hero stat
+  const heroStat=document.getElementById('heroStatCount');
+  if(heroStat&&allProps.length>0) heroStat.textContent=allProps.length+'+';
+  if(vMode==='grid')renderGrid(data);else renderMap(data);
+}
 
 function renderGrid(data){
   const g=document.getElementById('propGrid');
@@ -975,7 +1276,13 @@ function renderGrid(data){
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time">${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
         ${p.sellerPhone?`<div style="font-size:10px;color:var(--g400);margin-top:4px;display:flex;align-items:center;gap:3px">&#128222; <span>${p.sellerPhone}</span></div>`:''}
-      </div></div>`;
+      </div>
+      ${p.sellerPhone?`<div class="card-seller-row">
+        <div class="card-seller-avatar">${(p.ownerName||'O')[0].toUpperCase()}</div>
+        <span class="card-seller-name">${p.ownerName||'Owner'}</span>
+        <button class="card-wa-btn" onclick="event.stopPropagation();window.open('https://wa.me/91${p.sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your listing *${encodeURIComponent(p.title||'')}* on MyPlotMitra. Is it available?')">&#128172; Chat</button>
+      </div>`:''}
+    </div>`;
   }).join('');
 }
 
@@ -1216,7 +1523,40 @@ window.goSlide=function(dir){
   if(img)img.src=currentSlidePhotos[currentSlide];
   document.querySelectorAll('.slide-dot').forEach((d,i)=>{d.style.background=i===currentSlide?'#fff':'rgba(255,255,255,.5)';});
 };
-// ── SEARCH + FILTERS ────────────────────────────────
+// ── HERO SEARCH ─────────────────────────────────────
+window.setHeroTab=function(el,type){
+  document.querySelectorAll('.hs-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  typeF=type;
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.classList.toggle('on', c.dataset.t===type);
+  });
+  render();
+  // Scroll to listings
+  document.getElementById('listingsHead')?.scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+window.heroSearch=function(v){
+  searchQ=v;
+  window.debounceSearch(v);
+};
+
+window.heroSetPrice=function(v){
+  priceF=Number(v)||0;
+  document.querySelectorAll('.pchip').forEach(c=>{
+    c.classList.toggle('on', c.dataset.p===(v||''));
+  });
+  render();
+};
+
+window.heroDoSearch=function(){
+  const val=document.getElementById('heroSearchInput')?.value||'';
+  const price=document.getElementById('heroPriceFilter')?.value||'';
+  searchQ=val;
+  priceF=Number(price)||0;
+  render();
+  document.getElementById('listingsHead')?.scrollIntoView({behavior:'smooth',block:'start'});
+};
 let searchTimer=null;
 window.setSort=v=>{sortF=v;render();};
 window.debounceSearch=v=>{

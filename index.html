@@ -11,7 +11,31 @@
 <link rel="manifest" href="/manifest.json"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <title>MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad</title>
-<meta name="keywords" content="plots in Hyderabad, houses for sale Hyderabad, flats Hyderabad, agricultural land Hyderabad, HMDA plots, property for sale Hyderabad"/>
+<meta name="keywords" content="plots in Hyderabad, houses for sale Hyderabad, flats Hyderabad, agricultural land Hyderabad, HMDA plots, property for sale Hyderabad, plots in Anantapur, buy plot Telangana, direct owner property, zero brokerage property Hyderabad"/>
+<meta name="robots" content="index, follow, max-image-preview:large"/>
+<meta name="author" content="MyPlotMitra"/>
+<meta name="copyright" content="MyPlotMitra 2026"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<!-- Schema.org RealEstateListing -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "MyPlotMitra",
+  "url": "https://www.myplotmitra.com",
+  "logo": "https://www.myplotmitra.com/icons/icon-512.png",
+  "description": "Buy and sell plots, houses, flats and agricultural land across Hyderabad and Andhra Pradesh. Direct from owners, zero brokerage.",
+  "telephone": "+919989083321",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Hyderabad",
+    "addressRegion": "Telangana",
+    "addressCountry": "IN"
+  },
+  "areaServed": ["Hyderabad", "Anantapur", "Telangana", "Andhra Pradesh"],
+  "sameAs": ["https://www.myplotmitra.com", "https://myplotmitra.vercel.app"]
+}
+</script>
 <meta property="og:title" content="MyPlotMitra — Buy &amp; Sell Properties in Hyderabad"/>
 <meta property="og:description" content="Find verified plots, houses, flats and land in Hyderabad. Direct from owners. Zero brokerage. Call 9989083321"/>
 <meta property="og:url" content="https://www.myplotmitra.com"/>
@@ -1090,6 +1114,14 @@ body{background:#F7F7F7;color:#0A0A0A}
   .main{padding:24px 28px 60px!important}
 }
 
+@keyframes pulseDot{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.card-stats-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.card-stat-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;color:#666;background:#F5F5F5;border:1px solid #EBEBEB;padding:3px 8px;border-radius:100px}
+.card-stat-pill svg{flex-shrink:0}
+.card-type-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.card-type-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#9A9A9A}
+.card-posted{font-size:10px;color:#CCCCCC;display:flex;align-items:center;gap:3px}
+
 </style>
 </head>
 <body>
@@ -1208,7 +1240,7 @@ body{background:#F7F7F7;color:#0A0A0A}
 <div class="section-head" id="listingsHead">
   <div>
     <div class="section-title">Latest Properties</div>
-    <div class="section-sub" id="sectionSubCount">Loading...</div>
+    <div class="section-sub" id="sectionSubCount">Finding properties near you...</div>
   </div>
   <a class="section-link" onclick="window.openPost()">+ Post Property <span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span></a>
 </div>
@@ -1229,7 +1261,7 @@ body{background:#F7F7F7;color:#0A0A0A}
       <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span> Grid</button>
       <button class="vbtn" id="vbMap" onclick="window.setView('map')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span> Map</button>
     </div>
-    <span class="pcnt" id="pcnt">Loading...</span>
+    <span class="pcnt" id="pcnt"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#FF6A00;animation:pulseDot .8s ease-in-out infinite"></span>Loading</span></span>
   </div>
   <div class="filter-row2">
     <select class="sort-sel" id="sortSel" onchange="window.setSort(this.value)">
@@ -1267,7 +1299,12 @@ body{background:#F7F7F7;color:#0A0A0A}
       <button class="modal-close" onclick="document.getElementById('myListingsModal').classList.remove('open')">x</button>
     </div>
     <div class="modal-body" id="myListingsBody">
-      <div style="text-align:center;padding:40px;color:#AAA">Loading...</div>
+      <div id="myListingsSkeletonLoader" style="padding:16px">
+      ${[1,2,3].map(()=>`<div style="background:#fff;border:1px solid #EFEFEF;border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;animation:fadeUp .3s ease both">
+        <div style="width:76px;height:64px;border-radius:10px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;flex-shrink:0"></div>
+        <div style="flex:1"><div style="height:14px;width:60%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;margin-bottom:8px"></div><div style="height:11px;width:40%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;margin-bottom:8px"></div><div style="height:16px;width:30%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div></div>
+      </div>`).join('')}
+    </div>
     </div>
   </div>
 </div>
@@ -1496,7 +1533,13 @@ body{background:#F7F7F7;color:#0A0A0A}
   <span class="modal-title">Admin — Approvals</span>
 </div>
 <button class="modal-close" onclick="window.closeAdmin()">x</button>
-</div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
+</div><div class="modal-body" id="pendingList"><div style="padding:16px" id="adminSkeletonLoader">
+      ${[1,2,3].map(()=>`<div style="background:#fff;border:1px solid #EFEFEF;border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px">
+        <div style="width:58px;height:50px;border-radius:10px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;flex-shrink:0"></div>
+        <div style="flex:1"><div style="height:14px;width:55%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;margin-bottom:8px"></div><div style="height:11px;width:35%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;margin-bottom:8px"></div><div style="height:22px;width:80px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:30px;width:80px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div><div style="height:28px;width:70px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div></div>
+      </div>`).join('')}
+    </div></div></div></div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -1671,11 +1714,10 @@ async function loadProps(){
       return db2-da;
     });
     render();
+    showFooter();
   }catch(e){
     console.warn('Firebase error:',e.message);
-    const isConfigError = e.message?.includes('invalid-api-key')
-      || e.message?.includes('app/no-app')
-      || e.message?.includes('YOUR_API_KEY');
+    const isConfigError=e.message?.includes('invalid-api-key')||e.message?.includes('app/no-app')||e.message?.includes('YOUR_API_KEY');
     if(isConfigError){
       loadDemo(); // Only show demo if Firebase not configured
     } else {
@@ -1754,7 +1796,7 @@ function loadDemo(){
       createdAt:{toDate:()=>new Date(Date.now()-604800000)},
       px:488,py:200
     },
-  ];render();
+  ];render();showFooter();
 }
 
 function showSkeleton(){document.getElementById('propGrid').innerHTML=Array.from({length:8}).map((_,i)=>`
@@ -1830,11 +1872,23 @@ function renderGrid(data){
         <span class="bk-heart${isSaved?' saved':''}" onclick="window.toggleBk('${p.id}',event)">${isSaved?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>'}</span>
       </div>
       <div class="card-body">
+        <div class="card-type-row">
+          <span class="card-type-label">${p.type||'Property'}</span>
+          <span class="card-posted">
+            <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>
+            ${ago(p.createdAt)}
+          </span>
+        </div>
         <div class="card-price-wrap">
           <div class="card-price" style="${isSold?'opacity:.4':''}">${fp(p.price)}</div>
         </div>
         ${isSold?'<div style="font-size:11px;font-weight:600;color:#DC2626;margin-bottom:4px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>':''}
         <div class="card-title">${p.title}</div>
+        <div class="card-stats-row">
+          ${p.areaSqft?`<span class="card-stat-pill"><svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="16" height="16" rx="2"/><path d="M2 8h16M8 2v16"/></svg>${Number(p.areaSqft).toLocaleString('en-IN')} sqft</span>`:''}
+          ${p.lengthFt>0?`<span class="card-stat-pill">${p.lengthFt}×${p.widthFt} ft</span>`:''}
+          ${p.viewsCount>0?`<span class="card-stat-pill"><svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z"/><circle cx="10" cy="10" r="2.5"/></svg>${p.viewsCount}</span>`:''}
+        </div>
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time" style="display:flex;align-items:center;gap:3px"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
@@ -2086,7 +2140,149 @@ window.goSlide=function(dir){
   if(img)img.src=currentSlidePhotos[currentSlide];
   document.querySelectorAll('.slide-dot').forEach((d,i)=>{d.style.background=i===currentSlide?'#fff':'rgba(255,255,255,.5)';});
 };
-// ── HERO SEARCH ─────────────────────────────────────
+// ── LEGAL PAGES ─────────────────────────────────────
+const LEGAL_PAGES = {
+  about: {
+    title: 'About MyPlotMitra',
+    content: `
+      <div style="font-size:14px;color:#555;line-height:1.8">
+        <p style="font-size:16px;font-weight:600;color:#0A0A0A;margin-bottom:12px">Your Trusted Property Partner in Hyderabad</p>
+        <p style="margin-bottom:14px">MyPlotMitra is a direct property platform connecting buyers and sellers across Hyderabad, Anantapur, and nearby areas — with zero brokerage and full transparency.</p>
+        <p style="margin-bottom:14px">We believe property transactions should be simple, honest, and accessible. Every listing on our platform is reviewed by our admin team before going live, ensuring you only see genuine properties from real owners.</p>
+        <div style="background:#FFF9F5;border:1px solid rgba(255,106,0,.15);border-radius:12px;padding:16px;margin-bottom:14px">
+          <div style="font-weight:700;color:#0A0A0A;margin-bottom:8px">Why MyPlotMitra?</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div>✓ <strong>Zero brokerage</strong> — no hidden fees or commissions</div>
+            <div>✓ <strong>Verified listings</strong> — every property reviewed by admin</div>
+            <div>✓ <strong>Direct owner contact</strong> — speak to the owner directly</div>
+            <div>✓ <strong>Map-based discovery</strong> — find properties by location</div>
+            <div>✓ <strong>Fast approval</strong> — listings go live within 24 hours</div>
+          </div>
+        </div>
+        <p style="margin-bottom:6px"><strong>Contact us:</strong></p>
+        <p>📞 <a href="tel:9989083321" style="color:#FF6A00;text-decoration:none">9989083321</a></p>
+        <p>💬 <a href="https://wa.me/919989083321" style="color:#FF6A00;text-decoration:none">WhatsApp us</a></p>
+        <p>🌐 www.myplotmitra.com</p>
+      </div>`
+  },
+  contact: {
+    title: 'Contact Us',
+    content: `
+      <div style="font-size:14px;color:#555;line-height:1.8">
+        <p style="font-size:16px;font-weight:600;color:#0A0A0A;margin-bottom:16px">We're here to help</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:#FAFAFA;border:1px solid #EFEFEF;border-radius:12px;padding:16px">
+            <div style="font-weight:700;color:#0A0A0A;margin-bottom:4px">📞 Call / WhatsApp</div>
+            <div><a href="tel:9989083321" style="color:#FF6A00;font-size:18px;font-weight:700;text-decoration:none">9989083321</a></div>
+            <div style="font-size:12px;color:#9A9A9A;margin-top:3px">Available Mon–Sat, 9am–7pm IST</div>
+          </div>
+          <div style="background:#FAFAFA;border:1px solid #EFEFEF;border-radius:12px;padding:16px">
+            <div style="font-weight:700;color:#0A0A0A;margin-bottom:4px">💬 WhatsApp</div>
+            <a href="https://wa.me/919989083321" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border-radius:100px;padding:9px 18px;font-size:13px;font-weight:700;text-decoration:none;margin-top:4px">Chat on WhatsApp</a>
+          </div>
+          <div style="background:#FAFAFA;border:1px solid #EFEFEF;border-radius:12px;padding:16px">
+            <div style="font-weight:700;color:#0A0A0A;margin-bottom:4px">📍 Location</div>
+            <div>Anantapur, Andhra Pradesh, India</div>
+            <div style="font-size:12px;color:#9A9A9A;margin-top:3px">Serving Hyderabad, Telangana & AP</div>
+          </div>
+        </div>
+      </div>`
+  },
+  privacy: {
+    title: 'Privacy Policy',
+    content: `
+      <div style="font-size:13px;color:#555;line-height:1.8">
+        <p style="color:#9A9A9A;font-size:12px;margin-bottom:16px">Last updated: January 2026</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Information We Collect</p>
+        <p style="margin-bottom:14px">When you sign in, we collect your name, email address, and profile photo from Google. When you post a property, we collect the property details and your phone number to display to potential buyers.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">How We Use Your Information</p>
+        <p style="margin-bottom:14px">Your information is used solely to operate the MyPlotMitra platform — to display your listings, verify your identity, and enable buyers to contact you. We never sell your data to third parties.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Data Storage</p>
+        <p style="margin-bottom:14px">All data is stored securely on Google Firebase (Firestore and Storage), which complies with international data protection standards including GDPR.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Your Rights</p>
+        <p style="margin-bottom:14px">You can delete your listings at any time from the "My Posts" section. To delete your account and all associated data, contact us at 9989083321.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Contact</p>
+        <p>For privacy concerns: <a href="tel:9989083321" style="color:#FF6A00">9989083321</a></p>
+      </div>`
+  },
+  terms: {
+    title: 'Terms & Conditions',
+    content: `
+      <div style="font-size:13px;color:#555;line-height:1.8">
+        <p style="color:#9A9A9A;font-size:12px;margin-bottom:16px">Last updated: January 2026</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Acceptance of Terms</p>
+        <p style="margin-bottom:14px">By using MyPlotMitra, you agree to these terms. The platform is provided as-is for property listing and discovery purposes.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Listing Rules</p>
+        <ul style="margin-left:16px;margin-bottom:14px">
+          <li>All listings must be genuine properties that you own or have authority to sell</li>
+          <li>Price, dimensions, and location must be accurate</li>
+          <li>No fraudulent, duplicate, or misleading listings</li>
+          <li>Admin reserves the right to remove any listing without notice</li>
+        </ul>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Featured Listings</p>
+        <p style="margin-bottom:14px">Featured listing fees (₹499) are non-refundable once activated. Activation occurs within 2 hours of verified payment.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Disclaimer</p>
+        <p style="margin-bottom:14px">MyPlotMitra is a listing platform only. We do not verify property ownership documents or guarantee transaction safety. Buyers and sellers transact at their own risk.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Governing Law</p>
+        <p>These terms are governed by the laws of India, jurisdiction of Hyderabad, Telangana.</p>
+      </div>`
+  },
+  refund: {
+    title: 'Refund Policy',
+    content: `
+      <div style="font-size:13px;color:#555;line-height:1.8">
+        <p style="color:#9A9A9A;font-size:12px;margin-bottom:16px">Last updated: January 2026</p>
+        <div style="background:#FFF9F5;border:1px solid rgba(255,106,0,.15);border-radius:12px;padding:16px;margin-bottom:16px">
+          <p style="font-weight:700;color:#0A0A0A;margin-bottom:8px">Featured Listing Fee — ₹499</p>
+          <ul style="margin-left:16px;color:#555">
+            <li style="margin-bottom:6px">Payment is <strong>non-refundable</strong> once the featured badge is activated</li>
+            <li style="margin-bottom:6px">If your property is rejected after payment, a <strong>full refund</strong> will be issued within 3 business days</li>
+            <li style="margin-bottom:6px">If activation is delayed beyond 24 hours, contact us for a refund</li>
+          </ul>
+        </div>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Free Listings</p>
+        <p style="margin-bottom:14px">Standard property listings are completely free. No refund process applies.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Refund Process</p>
+        <p style="margin-bottom:14px">Refunds are processed back to the original UPI / bank account within 3–5 business days.</p>
+        <p style="font-weight:700;color:#0A0A0A;margin-bottom:6px">Contact for Refunds</p>
+        <p>📞 <a href="tel:9989083321" style="color:#FF6A00">9989083321</a> or WhatsApp with your payment screenshot.</p>
+      </div>`
+  },
+  faq: {
+    title: 'Frequently Asked Questions',
+    content: `
+      <div style="font-size:13px;color:#555;line-height:1.8">
+        ${[
+          ['Is MyPlotMitra free to use?', 'Yes! Posting and browsing properties is completely free. The only paid feature is the optional Featured Badge (₹499/30 days) which boosts your listing to the top.'],
+          ['How long does approval take?', 'Our admin team reviews and approves listings within 24 hours. You will be notified by WhatsApp once your listing goes live.'],
+          ['Can I post from anywhere in India?', 'Currently we focus on Hyderabad, Anantapur, and surrounding areas of Telangana and Andhra Pradesh.'],
+          ['How do I contact a property owner?', 'Each listing shows the owner\'s phone number. You can call directly or use the WhatsApp button to chat instantly.'],
+          ['What types of properties can I list?', 'You can list Plots, Houses, Flats, and Agricultural Land.'],
+          ['Is my personal data safe?', 'Yes. We use Google Firebase for secure data storage. Your phone number is shown only on your listings. We never sell your data.'],
+          ['How do I delete my listing?', 'Go to "My Posts" in the bottom navigation → tap the delete button on any listing.'],
+          ['What is the Featured Badge?', 'Featured listings appear at the top of all property searches with a gold border and crown badge. Pay ₹499 via UPI to 9989083321@upi and send the screenshot on WhatsApp.'],
+        ].map(([q,a])=>`
+          <div style="border-bottom:1px solid #F5F5F5;padding:14px 0">
+            <div style="font-weight:700;color:#0A0A0A;margin-bottom:6px">${q}</div>
+            <div style="color:#666">${a}</div>
+          </div>`).join('')}
+      </div>`
+  }
+};
+
+window.openLegalPage = function(page) {
+  const data = LEGAL_PAGES[page];
+  if(!data) return;
+  document.getElementById('legalModalTitle').textContent = data.title;
+  document.getElementById('legalModalBody').innerHTML = data.content;
+  document.getElementById('legalModal').classList.add('open');
+};
+
+// Show footer after properties load
+function showFooter(){
+  const footer = document.getElementById('siteFooter');
+  if(footer) footer.style.display = 'block';
+}
 window.setHeroTab=function(el,type){
   document.querySelectorAll('.hs-tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
@@ -2344,7 +2540,7 @@ window.openMyListings=async function(){
   }
   document.getElementById('myListingsModal').classList.add('open');
   const body=document.getElementById('myListingsBody');
-  body.innerHTML='<div style="text-align:center;padding:40px;color:#AAA">Loading your listings...</div>';
+  body.innerHTML=`<div style="padding:16px">${[1,2,3].map((_,i)=>`<div style="background:#fff;border:1px solid #EFEFEF;border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;animation-delay:${i*.08}s" class="sk-card"><div style="width:76px;height:64px;border-radius:10px;flex-shrink:0" class="sk-img"></div><div style="flex:1"><div class="sk-line" style="height:14px;width:60%;margin-bottom:8px"></div><div class="sk-line" style="height:11px;width:40%;margin-bottom:8px"></div><div class="sk-line" style="height:16px;width:30%"></div></div></div>`).join('')}</div>`;
 
   try{
     const snap=await getDocs(collection(db,'properties'));
@@ -2974,5 +3170,71 @@ loadProps();
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- ── FOOTER ────────────────────────────────── -->
+<footer id="siteFooter" style="background:#0A0A0A;color:rgba(255,255,255,.7);padding:48px 24px 32px;margin-top:0;display:none">
+  <div style="max-width:1100px;margin:0 auto">
+    <!-- Top row -->
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;flex-wrap:wrap">
+      <!-- Brand -->
+      <div>
+        <div style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:10px">
+          <span style="color:#FF6A00">My</span>PlotMitra
+        </div>
+        <div style="font-size:13px;line-height:1.7;color:rgba(255,255,255,.55);max-width:260px;margin-bottom:16px">
+          Hyderabad's trusted platform to buy, sell and discover plots, houses, flats and agricultural land. Direct owners. Zero brokerage.
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,.7)">
+          <div style="margin-bottom:4px">📞 <a href="tel:9989083321" style="color:#FF6A00;text-decoration:none;font-weight:600">9989083321</a></div>
+          <div>🌐 <a href="https://www.myplotmitra.com" style="color:rgba(255,255,255,.5);text-decoration:none">www.myplotmitra.com</a></div>
+        </div>
+      </div>
+      <!-- Quick links -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.4);margin-bottom:14px">Browse</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <a href="#" onclick="window.setType(document.querySelector('[data-t=plot]'))" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Plots</a>
+          <a href="#" onclick="window.setType(document.querySelector('[data-t=house]'))" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Houses</a>
+          <a href="#" onclick="window.setType(document.querySelector('[data-t=flat]'))" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Flats</a>
+          <a href="#" onclick="window.setType(document.querySelector('[data-t=land]'))" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Agricultural Land</a>
+        </div>
+      </div>
+      <!-- Company -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.4);margin-bottom:14px">Company</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <a href="#" onclick="window.openLegalPage('about')" style="color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">About Us</a>
+          <a href="#" onclick="window.openLegalPage('contact')" style="color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Contact Us</a>
+          <a href="#" onclick="window.openLegalPage('faq')" style="color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">FAQ</a>
+        </div>
+      </div>
+      <!-- Legal -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.4);margin-bottom:14px">Legal</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <a href="#" onclick="window.openLegalPage('privacy')" style="color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Privacy Policy</a>
+          <a href="#" onclick="window.openLegalPage('terms')" style="color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Terms & Conditions</a>
+          <a href="#" onclick="window.openLegalPage('refund')" style="color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:color .15s" onmouseover="this.style.color='#FF6A00'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom row -->
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;gap:12px">
+      <div style="font-size:12px;color:rgba(255,255,255,.3)">© 2026 MyPlotMitra. All rights reserved.</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.3)">Made in India 🇮🇳 · Hyderabad, Telangana</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── LEGAL PAGES MODAL ─────────────────────── -->
+<div class="modal-overlay" id="legalModal">
+  <div class="modal" style="max-width:600px;max-height:85vh;overflow-y:auto">
+    <div class="modal-header">
+      <span class="modal-title" id="legalModalTitle">About Us</span>
+      <button class="modal-close" onclick="document.getElementById('legalModal').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="modal-body" id="legalModalBody"></div>
+  </div>
+</div>
 </body>
 </html>

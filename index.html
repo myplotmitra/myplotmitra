@@ -1114,7 +1114,7 @@ body{background:#F7F7F7;color:#0A0A0A}
   .main{padding:24px 28px 60px!important}
 }
 
-@keyframes pulseDot{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+
 .card-stats-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
 .card-stat-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;color:#666;background:#F5F5F5;border:1px solid #EBEBEB;padding:3px 8px;border-radius:100px}
 .card-stat-pill svg{flex-shrink:0}
@@ -1240,7 +1240,7 @@ body{background:#F7F7F7;color:#0A0A0A}
 <div class="section-head" id="listingsHead">
   <div>
     <div class="section-title">Latest Properties</div>
-    <div class="section-sub" id="sectionSubCount">Finding properties near you...</div>
+    <div class="section-sub" id="sectionSubCount"><span style="display:inline-block;width:140px;height:12px;border-radius:100px;background:linear-gradient(90deg,#E8E8E8 25%,#F5F5F5 50%,#E8E8E8 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></span></div>
   </div>
   <a class="section-link" onclick="window.openPost()">+ Post Property <span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span></a>
 </div>
@@ -1261,7 +1261,7 @@ body{background:#F7F7F7;color:#0A0A0A}
       <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span> Grid</button>
       <button class="vbtn" id="vbMap" onclick="window.setView('map')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span> Map</button>
     </div>
-    <span class="pcnt" id="pcnt"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#FF6A00;animation:pulseDot .8s ease-in-out infinite"></span>Loading</span></span>
+    <span class="pcnt" id="pcnt" style="display:inline-flex;align-items:center;gap:6px"><span style="width:60px;height:12px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite;display:inline-block"></span></span>
   </div>
   <div class="filter-row2">
     <select class="sort-sel" id="sortSel" onchange="window.setSort(this.value)">
@@ -1799,20 +1799,36 @@ function loadDemo(){
   ];render();showFooter();
 }
 
-function showSkeleton(){document.getElementById('propGrid').innerHTML=Array.from({length:8}).map((_,i)=>`
-  <div class="sk-card" style="animation-delay:${i*.06}s;animation:fadeUp .4s ease both">
-    <div class="sk-img" style="height:190px"></div>
-    <div class="sk-body">
-      <div class="sk-line" style="height:22px;width:45%;margin-bottom:8px;border-radius:6px"></div>
-      <div class="sk-line" style="height:14px;width:80%;margin-bottom:6px;border-radius:4px"></div>
-      <div class="sk-line" style="height:12px;width:55%;margin-bottom:12px;border-radius:4px"></div>
+function showSkeleton(){
+  const g=document.getElementById('propGrid');
+  if(!g)return;
+  g.innerHTML=Array.from({length:8}).map((_,i)=>`
+  <div class="sk-card" style="animation-delay:${i*.05}s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:20%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:48%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:78%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:42%;border-radius:4px;margin-bottom:12px"></div>
       <div style="display:flex;gap:6px">
         <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
-        <div class="sk-line" style="height:22px;width:80px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:50px;border-radius:100px;margin:0"></div>
       </div>
     </div>
-    <div style="height:42px;background:linear-gradient(90deg,#F5F5F5 25%,#FAFAFA 50%,#F5F5F5 75%);background-size:200% 100%;animation:sweep 1.6s infinite;border-top:1px solid #F5F5F5"></div>
-  </div>`).join('');}
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:60px;border-radius:8px;margin:0"></div>
+    </div>
+  </div>`).join('');
+}
+showSkeleton(); // Show skeletons immediately on paint
+
 function getFiltered(){
   let data=allProps.filter(p=>{
     const mt=!typeF||p.type===typeF;
@@ -1839,7 +1855,8 @@ function getFiltered(){
 function render(){
   const data=getFiltered();
   const count=data.length;
-  document.getElementById('pcnt').textContent=`${count} propert${count===1?'y':'ies'}`;
+  const pcntEl=document.getElementById('pcnt');
+  if(pcntEl) pcntEl.innerHTML=`<span style="font-weight:600;color:#0A0A0A">${count}</span>&nbsp;propert${count===1?'y':'ies'}`;
   // Update section subtitle
   const sub=document.getElementById('sectionSubCount');
   if(sub) sub.textContent=searchQ||typeF||priceF?`${count} propert${count===1?'y':'ies'} found`:`${count} verified propert${count===1?'y':'ies'}`;
@@ -3050,7 +3067,19 @@ async function loadAdminTab(tab){
     modal.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
   }
 
-  list.innerHTML='<div style="text-align:center;padding:30px;color:#AAA">Loading...</div>';
+  list.innerHTML=`<div style="padding:4px">${Array.from({length:4},(_,i)=>`
+  <div style="background:#fff;border:1px solid #F0F0F0;border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;animation:fadeUp .3s ease ${i*.07}s both">
+    <div style="width:58px;height:50px;border-radius:10px;flex-shrink:0;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:7px;justify-content:center">
+      <div style="height:13px;width:58%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div>
+      <div style="height:11px;width:38%;border-radius:4px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div>
+      <div style="display:flex;gap:5px"><div style="height:20px;width:60px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div><div style="height:20px;width:50px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;justify-content:center">
+      <div style="height:28px;width:80px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div>
+      <div style="height:26px;width:68px;border-radius:100px;background:linear-gradient(90deg,#F0F0F0 25%,#F8F8F8 50%,#F0F0F0 75%);background-size:200% 100%;animation:sweep 1.6s infinite"></div>
+    </div>
+  </div>`).join('')}</div>`;
 
   try{
     const snap=await getDocs(collection(db,'properties'));
@@ -3166,6 +3195,35 @@ window.showToast=showToast;
 let dPr=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dPr=e;document.getElementById('installBar')?.classList.add('show');document.getElementById('installBtn').onclick=async()=>{dPr.prompt();await dPr.userChoice;document.getElementById('installBar')?.classList.remove('show');dPr=null;};});
 if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW:',e));});}
+// ── SHOW SKELETON IMMEDIATELY ──────────────────────
+(function(){
+  const g=document.getElementById('propGrid');
+  if(!g)return;
+  const sk=i=>`
+  <div class="sk-card" style="animation:fadeUp .3s ease ${i*.05}s both">
+    <div class="sk-img" style="height:195px"></div>
+    <div class="sk-body">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <div class="sk-line" style="height:11px;width:30%;border-radius:100px"></div>
+        <div class="sk-line" style="height:11px;width:20%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:50%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:80%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:55%;border-radius:4px;margin-bottom:10px"></div>
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <div class="sk-line" style="height:22px;width:72px;border-radius:100px"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px"></div>
+      </div>
+      <div style="height:1px;background:#F5F5F5;margin:0 -16px 10px"></div>
+      <div style="display:flex;justify-content:space-between">
+        <div class="sk-line" style="height:11px;width:32%;border-radius:4px"></div>
+        <div class="sk-line" style="height:11px;width:18%;border-radius:4px"></div>
+      </div>
+    </div>
+    <div style="height:40px;background:linear-gradient(90deg,#F5F5F5 25%,#FAFAFA 50%,#F5F5F5 75%);background-size:200% 100%;animation:sweep 1.6s infinite;border-top:1px solid #F5F5F5;border-radius:0 0 20px 20px"></div>
+  </div>`;
+  g.innerHTML=Array.from({length:8},(_,i)=>sk(i)).join('');
+})();
 loadProps();
 </script>
 

@@ -367,7 +367,16 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
 .rej-input{width:100%;background:#fff;border:1.5px solid var(--g200);border-radius:var(--r-md);padding:10px 13px;font-size:13px;color:var(--ink);font-family:var(--font);outline:none;margin-bottom:10px;transition:border-color .2s}.rej-input:focus{border-color:var(--or)}
 .rej-btns{display:flex;gap:8px}
 .btn-rej-confirm{background:#fff;color:#C0392B;border:1.5px solid #FADBD8;border-radius:var(--r-sm);padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .2s}.btn-rej-confirm:hover{background:#FDEDEC}
-.empty-adm{text-align:center;padding:48px;font-size:14px;color:var(--g400);font-weight:500}
+.empty-adm{
+  text-align:center;padding:56px 24px;
+  display:flex;flex-direction:column;align-items:center;gap:12px
+}
+.empty-adm .empty-icon-wrap{
+  width:64px;height:64px;background:#F5F5F5;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:4px
+}
+.empty-adm-title{font-size:16px;font-weight:700;color:#0A0A0A;letter-spacing:-.2px}
+.empty-adm-sub{font-size:13px;color:#9A9A9A;line-height:1.6;max-width:240px}
 
 /* ── MY LISTINGS ─────────────────────────────────── */
 .my-listings-modal{max-width:680px}
@@ -1122,6 +1131,76 @@ body{background:#F7F7F7;color:#0A0A0A}
 .card-type-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#9A9A9A}
 .card-posted{font-size:10px;color:#CCCCCC;display:flex;align-items:center;gap:3px}
 
+/* ═══ NEW FEATURES CSS ════════════════════════════ */
+
+/* ── SHOW NUMBER PROTECTION ── */
+.phone-hidden{display:flex;align-items:center;gap:8px;background:#F5F5F5;border:1px solid #EBEBEB;border-radius:var(--r-md);padding:10px 14px;margin-bottom:10px}
+.show-num-btn{background:#0A0A0A;color:#fff;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.show-num-btn:hover{background:#333}
+.phone-revealed{display:flex;align-items:center;gap:8px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--r-md);padding:10px 14px;margin-bottom:10px}
+.phone-number-text{font-size:18px;font-weight:700;color:#0A0A0A;letter-spacing:.5px}
+
+/* ── RECENTLY VIEWED ── */
+.recent-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.recent-strip::-webkit-scrollbar{display:none}
+.recent-chip{flex-shrink:0;background:#fff;border:1px solid #EBEBEB;border-radius:var(--r-lg);padding:10px 14px;cursor:pointer;transition:all .2s;min-width:140px}
+.recent-chip:hover{border-color:#FF6A00;box-shadow:0 2px 12px rgba(255,106,0,.1)}
+.recent-chip-price{font-size:14px;font-weight:700;color:#FF6A00;letter-spacing:-.3px}
+.recent-chip-title{font-size:11px;color:#555;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-chip-img{width:100%;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px;background:#F5F5F5}
+
+/* ── SHARE BUTTON IN DETAIL ── */
+.share-btn{background:#F5F5F5;border:1px solid #EBEBEB;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;display:inline-flex;align-items:center;gap:6px;color:#0A0A0A}
+.share-btn:hover{background:#EBEBEB}
+
+/* ── PROPERTY ID TAG ── */
+.prop-id-tag{font-size:10px;color:#AAAAAA;font-weight:500;font-family:monospace;letter-spacing:.5px}
+
+/* ── EMI CALCULATOR ── */
+.emi-calculator{background:#F8F8F8;border:1px solid #EBEBEB;border-radius:var(--r-lg);padding:18px;margin-bottom:18px}
+.emi-title{font-size:14px;font-weight:700;color:#0A0A0A;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.emi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.emi-input-wrap{display:flex;flex-direction:column;gap:4px}
+.emi-label{font-size:10px;font-weight:700;color:#9A9A9A;text-transform:uppercase;letter-spacing:.6px}
+.emi-input{border:1.5px solid #EBEBEB;border-radius:var(--r-sm);padding:9px 12px;font-size:13px;font-family:inherit;background:#fff;outline:none;transition:border-color .2s;width:100%}
+.emi-input:focus{border-color:#FF6A00}
+.emi-result{background:#fff;border:1.5px solid #FF6A00;border-radius:var(--r-md);padding:14px;text-align:center}
+.emi-amount{font-size:26px;font-weight:800;color:#FF6A00;letter-spacing:-.5px;font-family:'Poppins',sans-serif}
+.emi-sub{font-size:11px;color:#9A9A9A;margin-top:3px;font-weight:400}
+.emi-breakdown{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.emi-bk-item{text-align:center;background:#FAFAFA;border-radius:var(--r-sm);padding:8px 4px}
+.emi-bk-val{font-size:12px;font-weight:700;color:#0A0A0A}
+.emi-bk-lbl{font-size:9px;color:#9A9A9A;margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── CITY STATS STRIP ── */
+.city-stats-wrap{max-width:1200px;margin:0 auto;padding:20px 20px 0;overflow-x:auto}
+.city-stats{display:flex;gap:10px;padding-bottom:4px;min-width:min-content}
+.city-pill{flex-shrink:0;background:#fff;border:1.5px solid #EBEBEB;border-radius:100px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;color:#555}
+.city-pill:hover{border-color:#FF6A00;color:#FF6A00}
+.city-pill.on{background:#0A0A0A;color:#fff;border-color:#0A0A0A}
+.city-pill-count{background:rgba(255,255,255,.2);border-radius:100px;padding:1px 7px;font-size:10px;font-weight:700}
+.city-pill:not(.on) .city-pill-count{background:#F5F5F5;color:#9A9A9A}
+
+/* ── COMPARE BUTTON ── */
+.compare-btn{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.95);backdrop-filter:blur(4px);border:1px solid #EBEBEB;border-radius:100px;padding:4px 10px;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s;color:#555;display:none}
+.card:hover .compare-btn{display:flex;align-items:center;gap:4px}
+.compare-btn.selected{background:#0A0A0A;color:#fff;border-color:#0A0A0A;display:flex}
+.compare-bar{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(100px);z-index:150;background:#0A0A0A;color:#fff;border-radius:var(--r-lg);padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.3);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-size:13px;font-weight:500;white-space:nowrap}
+.compare-bar.show{transform:translateX(-50%) translateY(0)}
+.compare-bar-count{background:#FF6A00;border-radius:100px;padding:2px 10px;font-size:12px;font-weight:700}
+.compare-bar-btn{background:#FF6A00;color:#fff;border:none;border-radius:100px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.compare-bar-clear{background:transparent;color:rgba(255,255,255,.6);border:none;font-size:12px;cursor:pointer;font-family:inherit;padding:4px}
+
+/* ── COMPARE MODAL ── */
+.compare-grid{display:grid;gap:16px;margin-top:4px}
+.compare-card{background:#FAFAFA;border:1px solid #EBEBEB;border-radius:var(--r-lg);overflow:hidden}
+.compare-img{height:140px;object-fit:cover;width:100%;background:#F0F0F0}
+.compare-body{padding:14px}
+.compare-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F0F0F0;font-size:13px}
+.compare-row:last-child{border-bottom:none}
+.compare-row-label{color:#9A9A9A;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.compare-row-val{font-weight:600;color:#0A0A0A;text-align:right}
+
 </style>
 </head>
 <body>
@@ -1280,7 +1359,136 @@ body{background:#F7F7F7;color:#0A0A0A}
     <button class="bk-btn" id="soldToggle" onclick="window.toggleHideSold()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> Hide Sold</button>
   </div>
 </div></div>
-<main class="main"><div class="property-grid" id="propGrid"></div></main>
+<main class="main"><div class="property-grid" id="propGrid">
+  <!-- Skeleton cards shown before JS loads -->
+  <div class="sk-card" style="animation-delay:0.0s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:18%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:45%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:75%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:40%;border-radius:4px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+      </div>
+    </div>
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:58px;border-radius:8px;margin:0"></div>
+    </div>
+  </div><div class="sk-card" style="animation-delay:0.05s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:18%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:45%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:75%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:40%;border-radius:4px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+      </div>
+    </div>
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:58px;border-radius:8px;margin:0"></div>
+    </div>
+  </div><div class="sk-card" style="animation-delay:0.1s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:18%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:45%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:75%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:40%;border-radius:4px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+      </div>
+    </div>
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:58px;border-radius:8px;margin:0"></div>
+    </div>
+  </div><div class="sk-card" style="animation-delay:0.15000000000000002s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:18%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:45%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:75%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:40%;border-radius:4px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+      </div>
+    </div>
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:58px;border-radius:8px;margin:0"></div>
+    </div>
+  </div><div class="sk-card" style="animation-delay:0.2s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:18%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:45%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:75%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:40%;border-radius:4px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+      </div>
+    </div>
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:58px;border-radius:8px;margin:0"></div>
+    </div>
+  </div><div class="sk-card" style="animation-delay:0.25s;animation:fadeUp .35s ease both">
+    <div class="sk-img" style="height:195px;border-radius:20px 20px 0 0"></div>
+    <div class="sk-body" style="padding:16px 18px 0">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="sk-line" style="height:10px;width:28%;border-radius:100px"></div>
+        <div class="sk-line" style="height:10px;width:18%;border-radius:100px"></div>
+      </div>
+      <div class="sk-line" style="height:24px;width:45%;border-radius:6px;margin-bottom:8px"></div>
+      <div class="sk-line" style="height:13px;width:75%;border-radius:4px;margin-bottom:6px"></div>
+      <div class="sk-line" style="height:12px;width:40%;border-radius:4px;margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px">
+        <div class="sk-line" style="height:22px;width:70px;border-radius:100px;margin:0"></div>
+        <div class="sk-line" style="height:22px;width:60px;border-radius:100px;margin:0"></div>
+      </div>
+    </div>
+    <div style="margin:12px 0 0;height:1px;background:#F5F5F5"></div>
+    <div style="padding:10px 18px;display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0" class="sk-line"></div>
+      <div class="sk-line" style="height:11px;flex:1;border-radius:100px;margin:0"></div>
+      <div class="sk-line" style="height:26px;width:58px;border-radius:8px;margin:0"></div>
+    </div>
+  </div>
+</div></main>
 <nav class="bottom-nav">
   <button class="nav-item on" id="navHome" onclick="window.navHome()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8v9h4v-5h2v5h4V8"/></svg></span></span>Home</button>
   <button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span>Search</button>
@@ -3092,11 +3300,21 @@ async function loadAdminTab(tab){
     });
 
     if(!items.length){
-      list.innerHTML=`<div class="empty-adm">${
-        tab==='pending'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> No pending listings!':
-        tab==='approved'?'No approved listings yet.':
-        'No sold out listings.'
-      }</div>`;
+      list.innerHTML=`<div class="empty-adm">
+  <div class="empty-icon-wrap">${
+    tab==='pending'?'<svg viewBox="0 0 20 20" width="32" height="32" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>':
+    tab==='approved'?'<svg viewBox="0 0 20 20" width="32" height="32" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg>':
+    '<svg viewBox="0 0 20 20" width="32" height="32" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg>'
+  }</div>
+  <div class="empty-adm-title">${
+    tab==='pending'?'No pending listings':'No '+tab+' listings yet'
+  }</div>
+  <div class="empty-adm-sub">${
+    tab==='pending'?'All caught up! New submissions will appear here.':
+    tab==='approved'?'Approved properties will show here once you review pending listings.':
+    'Properties marked as sold will appear here.'
+  }</div>
+</div>`;
       return;
     }
 

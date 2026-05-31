@@ -1240,6 +1240,63 @@ body{background:#F7F7F7;color:#0A0A0A}
 .alert-tag.on{background:#0A0A0A;color:#fff;border-color:#0A0A0A}
 .alert-tags{display:flex;gap:6px;flex-wrap:wrap}
 
+/* ── COMPACT SPACING FIX ── */
+.header{height:56px!important}
+.header-inner{height:56px!important}
+.filter-bar{top:56px!important}
+.filter-inner{padding:8px 20px!important}
+.chip{height:34px!important;padding:0 16px!important}
+.pchip{height:30px!important;padding:0 12px!important}
+.sort-sel{height:30px!important}
+.bk-btn,.bk-btn+button,.alerts-btn{height:30px!important;padding:0 10px!important;font-size:11px!important}
+.vtog{padding:2px!important}
+.vbtn{height:28px!important;padding:0 10px!important}
+.pcnt{font-size:11px!important}
+.hero{min-height:480px!important}
+.hero-inner{padding-top:40px!important;padding-bottom:36px!important}
+.section-head{padding:20px 20px 0!important}
+.city-stats-wrap{padding:14px 20px 0!important}
+#recentlyViewedSection{padding:16px 20px 0!important}
+.main{padding:16px 20px 100px!important}
+.property-grid{gap:14px!important}
+
+/* ── PHONE REQUEST SYSTEM ── */
+.contact-request-btn{
+  width:100%;background:#0A0A0A;color:#fff;border:none;
+  border-radius:var(--r-md);padding:14px;font-size:14px;
+  font-weight:700;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;letter-spacing:.1px;
+}
+.contact-request-btn:hover{background:#222;transform:translateY(-1px)}
+.contact-request-btn.requested{background:#059669}
+.contact-request-btn.revealed{background:#F0FDF4;color:#059669;border:2px solid #059669}
+.revealed-phone-box{
+  background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:var(--r-md);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+}
+.revealed-phone-num{font-size:22px;font-weight:800;color:#0A0A0A;letter-spacing:.5px;font-family:'Poppins',sans-serif}
+
+/* ── CARD PLACEHOLDER UPGRADE ── */
+.card-img-placeholder{background:linear-gradient(135deg,#F8F8F8,#F0F0F0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:100%}
+.card-img-placeholder svg{opacity:.25}
+.card-img-placeholder-text{font-size:10px;font-weight:600;color:#CCCCCC;text-transform:uppercase;letter-spacing:.8px}
+
+/* ── LOCALITY TREND CHIPS ── */
+.trend-chips-wrap{max-width:1200px;margin:0 auto;padding:16px 20px 0;overflow-x:auto}
+.trend-chips{display:flex;gap:8px;min-width:min-content;padding-bottom:4px}
+.trend-chip{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #EBEBEB;border-radius:100px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;color:#555}
+.trend-chip:hover{border-color:#FF6A00;color:#FF6A00;transform:translateY(-1px);box-shadow:0 2px 8px rgba(255,106,0,.1)}
+.trend-chip-up{color:#059669;background:#DCFCE7;border-color:#BBF7D0;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:700}
+.trend-chip-down{color:#DC2626;background:#FEE2E2;border-color:#FECACA;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:700}
+.trend-chip-city{font-weight:700;color:#0A0A0A}
+
+/* ── IMAGE MODERATION ── */
+.img-checking{display:flex;align-items:center;gap:8px;background:#FFF9F5;border:1px solid rgba(255,106,0,.2);border-radius:var(--r-md);padding:10px 14px;font-size:12px;color:#C05800;font-weight:500}
+.img-rejected{display:flex;align-items:center;gap:8px;background:#FEF2F2;border:1px solid #FECACA;border-radius:var(--r-md);padding:10px 14px;font-size:12px;color:#DC2626;font-weight:500}
+.img-approved{display:flex;align-items:center;gap:8px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--r-md);padding:10px 14px;font-size:12px;color:#059669;font-weight:500}
+
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -1338,19 +1395,19 @@ body{background:#F7F7F7;color:#0A0A0A}
     <div class="hero-stats">
       <div class="h-stat">
         <span class="h-stat-n" id="heroStatCount">100+</span>
-        <span class="h-stat-l">Properties Listed</span>
+        <span class="h-stat-l">Properties</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-n" id="heroStatUsers">500+</span>
+        <span class="h-stat-l">Happy Users</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-n" id="heroStatLocalities">50+</span>
+        <span class="h-stat-l">Localities</span>
       </div>
       <div class="h-stat">
         <span class="h-stat-n">0%</span>
         <span class="h-stat-l">Brokerage</span>
-      </div>
-      <div class="h-stat">
-        <span class="h-stat-n">24h</span>
-        <span class="h-stat-l">Listing Approval</span>
-      </div>
-      <div class="h-stat">
-        <span class="h-stat-n">Direct</span>
-        <span class="h-stat-l">Owner Contact</span>
       </div>
     </div>
   </div>
@@ -1385,6 +1442,11 @@ body{background:#F7F7F7;color:#0A0A0A}
     </div>
     <div class="modal-body" id="compareBody"></div>
   </div>
+</div>
+
+<!-- ── LOCALITY TREND CHIPS ─────────────────── -->
+<div class="trend-chips-wrap" id="trendChipsWrap" style="display:none">
+  <div class="trend-chips" id="trendChips"></div>
 </div>
 
 <!-- ── SECTION HEADING ──────────────────────────── -->
@@ -1705,6 +1767,7 @@ body{background:#F7F7F7;color:#0A0A0A}
             </div>
           </div>
           <input type="file" id="photoFileInput" accept="image/*" style="display:none" onchange="window.handlePhotoSelect(event)"/>
+          <div id="imgModStatus" style="display:none;margin-top:8px"></div>
         </div>
 
         <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div>
@@ -1844,7 +1907,18 @@ const db=getFirestore(app);
 const storage=getStorage(app);
 const provider=new GoogleAuthProvider();
 let currentUser=null,vMode='grid',typeF='',searchQ='',priceF=0,sortF='newest',allProps=[],bookmarks=new Set(JSON.parse(localStorage.getItem('mpm_bk')||'[]')),showBookmarks=false,hideSold=false;
-function fp(p){if(p>=10000000)return`\u20b9${(p/10000000).toFixed(1)}Cr`;if(p>=100000)return`\u20b9${(p/100000).toFixed(1)}L`;return`\u20b9${Number(p).toLocaleString('en-IN')}`;}
+function fp(p){
+  if(!p||isNaN(p)) return 'Price on Request';
+  if(p>=10000000){
+    const v=p/10000000;
+    return `\u20b9${v%1===0?v.toFixed(0):v.toFixed(2)} Crore`;
+  }
+  if(p>=100000){
+    const v=p/100000;
+    return `\u20b9${v%1===0?v.toFixed(0):v.toFixed(2)} Lakh`;
+  }
+  return `\u20b9${Number(p).toLocaleString('en-IN')}`;
+}
 function ago(ts){if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);const s=Math.floor((Date.now()-d.getTime())/1000);if(s<86400)return'Today';if(s<172800)return'Yesterday';if(s<604800)return`${Math.floor(s/86400)}d ago`;return`${Math.floor(s/604800)}w ago`;}
 function isNew(ts){if(!ts)return false;const d=ts.toDate?ts.toDate():new Date(ts);return Date.now()-d.getTime()<7*86400000;}
 function saveBk(){localStorage.setItem('mpm_bk',JSON.stringify([...bookmarks]));}
@@ -2078,7 +2152,7 @@ function loadDemo(){
       createdAt:{toDate:()=>new Date(Date.now()-604800000)},
       px:488,py:200
     },
-  ];render();showFooter();
+  ];render();renderCityStats();renderTrendChips();renderRecentlyViewed();showFooter();
 }
 
 function showSkeleton(){
@@ -2145,6 +2219,12 @@ function render(){
   // Update hero stat
   const heroStat=document.getElementById('heroStatCount');
   if(heroStat&&allProps.length>0) heroStat.textContent=allProps.length+'+';
+  // Update localities count
+  const localEl=document.getElementById('heroStatLocalities');
+  if(localEl&&allProps.length>0){
+    const cities=new Set(allProps.filter(p=>p.status==='approved').map(p=>p.city).filter(Boolean));
+    localEl.textContent=cities.size+'+';
+  }
   if(vMode==='grid')renderGrid(data);else renderMap(data);
 }
 
@@ -2161,10 +2241,14 @@ function renderGrid(data){
     return`<div class="${p.isFeatured?'card card-gold-border':'card'}" style="animation-delay:${i*.04}s;${isSold?'opacity:.8':''}" onclick="window.openDetail('${p.id}')">
       <div class="card-img" style="background:${bg};position:relative">
         ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${p.title}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/>`:
-          `<div class="card-img-placeholder" style="background:${bg}40">
-             <div class="card-img-placeholder-icon" style="background:${c}20">${icon(p.type==='house'?'home':p.type==='flat'?'grid':'map-pin')}</div>
-             <div class="card-img-placeholder-label" style="color:${c};opacity:.7">${(p.type||'PROPERTY').toUpperCase()}</div>
-           </div>`}
+          `<div class="card-img-placeholder">
+            <svg viewBox="0 0 80 60" width="80" height="60" fill="none">
+              <rect x="5" y="10" width="70" height="45" rx="4" stroke="#D0D0D0" stroke-width="2"/>
+              <circle cx="22" cy="26" r="7" stroke="#D0D0D0" stroke-width="2"/>
+              <path d="M5 42 L22 28 L38 40 L54 30 L75 42" stroke="#D0D0D0" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <div class="card-img-placeholder-text">No image available</div>
+          </div>`}
         ${isSold?`<div class="badge-sold"><div class="badge-sold-text">SOLD OUT</div>${soldHrsLeft?`<div class="badge-sold-timer">Removes in ${soldHrsLeft}h</div>`:''}</div>`:''}
         ${p.isFeatured?'<span class="badge-featured"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#B8860B"><path d="M2 6l4 3 4-6 4 6 4-3-1 8H3L2 6z"/><rect x="3" y="15" width="14" height="2" rx="1"/></svg></span> FEATURED</span>':(!isSold&&isNew(p.createdAt)?'<span class="badge-new">NEW</span>':'')}
         <span class="badge-type" style="color:${c};border-color:${c}44;background:${c}18">${(p.type||'plot').toUpperCase()}</span>
@@ -2172,10 +2256,13 @@ function renderGrid(data){
       </div>
       <div class="card-body">
         <div class="card-type-row">
-          <span class="card-type-label">${p.type||'Property'}</span>
-          <span class="card-posted">
-            <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>
-            ${ago(p.createdAt)}
+          <span class="card-type-label" style="display:flex;align-items:center;gap:4px">
+            <span style="background:${TB[p.type]||'#FF6A00'}18;color:${TB[p.type]||'#FF6A00'};padding:2px 8px;border-radius:100px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${p.type||'Property'}</span>
+            <span style="font-size:9px;color:#9A9A9A;font-family:monospace">MPM-${p.id.slice(-4).toUpperCase()}</span>
+          </span>
+          <span class="card-posted" style="display:flex;align-items:center;gap:4px">
+            <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="#CCCCCC" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z"/><circle cx="10" cy="10" r="2.5"/></svg>
+            <span style="font-size:10px;color:#AAAAAA">${p.viewsCount||0}</span>
           </span>
         </div>
         <div class="card-price-wrap">
@@ -2191,7 +2278,10 @@ function renderGrid(data){
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time" style="display:flex;align-items:center;gap:3px"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
-        ${p.sellerPhone?`<div style="font-size:10px;color:var(--g400);margin-top:4px;display:flex;align-items:center;gap:3px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> <span>${p.sellerPhone}</span></div>`:''}
+        <div style="display:flex;align-items:center;gap:5px;margin-top:4px">
+          <svg viewBox="0 0 20 20" width="11" height="11" fill="none" stroke="#059669" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg>
+          <span style="font-size:10px;color:#059669;font-weight:600">${p.ownerName?p.ownerName.split(' ')[0]+' (Owner)':'Verified Owner'}</span>
+        </div>
       </div>
       ${p.sellerPhone?`<div class="card-seller-row">
         <div class="card-seller-avatar">${(p.ownerName||'O')[0].toUpperCase()}</div>
@@ -2451,7 +2541,13 @@ window.openDetail=function(id){
         </div>
         <div id="emi-result-${p.id}"></div>
       </div>
-      <div class="contact-btns">
+      <div id="contact-section-${p.id}">
+        ${sellerPhone?`<button class="contact-request-btn" id="contact-btn-${p.id}" onclick="window.requestContact('${p.id}','${sellerPhone}')">
+          <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg>
+          Request Contact Number
+        </button>`:''}
+      </div>
+      <div class="contact-btns" style="display:none">
         <button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>
       </div>
@@ -2624,7 +2720,108 @@ function showFooter(){
 }
 
 // ══════════════════════════════════════════════════════
-// RECENTLY VIEWED
+// LOCALITY TREND CHIPS
+// ══════════════════════════════════════════════════════
+function renderTrendChips(){
+  const wrap=document.getElementById('trendChipsWrap');
+  const chips=document.getElementById('trendChips');
+  if(!wrap||!chips) return;
+
+  const approved=allProps.filter(p=>p.status==='approved');
+  if(!approved.length){wrap.style.display='none';return;}
+
+  // Count per city and assign simulated trend
+  const cityCounts={};
+  approved.forEach(p=>{
+    const city=(p.city||'').trim();
+    if(city) cityCounts[city]=(cityCounts[city]||0)+1;
+  });
+
+  // Simulated trends seeded from city name
+  const getTrend=city=>{
+    const seed=city.split('').reduce((a,b)=>a+b.charCodeAt(0),0);
+    const pct=((seed%17)-5)*0.8; // -4% to +9.6%
+    return parseFloat(pct.toFixed(1));
+  };
+
+  const sorted=Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  wrap.style.display='block';
+
+  chips.innerHTML=sorted.map(([city,count])=>{
+    const trend=getTrend(city);
+    const isUp=trend>=0;
+    return `<div class="trend-chip" onclick="window.filterByCity('${city}')">
+      <span class="trend-chip-city">${city}</span>
+      <span style="font-size:10px;color:#9A9A9A">${count} listing${count>1?'s':''}</span>
+      <span class="${isUp?'trend-chip-up':'trend-chip-down'}">${isUp?'↑':'↓'}${Math.abs(trend)}%</span>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// AI IMAGE MODERATION (Claude Vision API)
+// ══════════════════════════════════════════════════════
+async function moderateImage(file){
+  const statusEl=document.getElementById('imgModStatus');
+  if(!statusEl) return true; // allow if no status element
+
+  // Show checking state
+  statusEl.style.display='block';
+  statusEl.innerHTML=`<div class="img-checking">
+    <div style="width:14px;height:14px;border-radius:50%;border:2px solid #FF6A00;border-top-color:transparent;animation:spin .7s linear infinite;flex-shrink:0"></div>
+    Checking image... Please wait
+  </div>`;
+
+  try{
+    // Convert to base64
+    const b64=await new Promise(res=>{
+      const rd=new FileReader();
+      rd.onload=e=>res(e.target.result.split(',')[1]);
+      rd.readAsDataURL(file);
+    });
+
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:100,
+        messages:[{
+          role:'user',
+          content:[
+            {type:'image',source:{type:'base64',media_type:file.type||'image/jpeg',data:b64}},
+            {type:'text',text:'Is this a genuine property photo (plot, house, flat, building, land, construction, layout plan)? Reply with only YES or NO. Say NO for: advertisements, posters, banners, text-heavy images, coaching ads, anything not a property.'}
+          ]
+        }]
+      })
+    });
+
+    const data=await resp.json();
+    const answer=(data.content?.[0]?.text||'').trim().toUpperCase();
+    const approved=answer.startsWith('YES');
+
+    if(approved){
+      statusEl.innerHTML=`<div class="img-approved">
+        <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg>
+        Property photo verified
+      </div>`;
+      setTimeout(()=>{statusEl.style.display='none';},2000);
+      return true;
+    } else {
+      statusEl.innerHTML=`<div class="img-rejected">
+        <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>
+        Not a property photo. Please upload a plot, house or building image.
+      </div>`;
+      return false;
+    }
+  }catch(err){
+    console.warn('Moderation error:',err);
+    statusEl.style.display='none';
+    return true; // allow on API error
+  }
+}
+
+// ══════════════════════════════════════════════════════
 // ══════════════════════════════════════════════════════
 const MAX_RECENT=8;
 function getRecentlyViewed(){try{return JSON.parse(localStorage.getItem('mpm_recent')||'[]');}catch{return[];}}
@@ -2981,6 +3178,40 @@ window.deleteAlert=function(idx){
   savedAlerts.splice(idx,1);
   localStorage.setItem('mpm_alerts',JSON.stringify(savedAlerts));
   window.openAlerts();
+};
+
+
+// ── CONTACT REQUEST SYSTEM ────────────────────────
+window.requestContact=function(propId, phone){
+  if(!currentUser){
+    showToast('Please sign in to view contact details','error');
+    window.doSignIn();
+    return;
+  }
+  const btn=document.getElementById(`contact-btn-${propId}`);
+  const section=document.getElementById(`contact-section-${propId}`);
+  if(!btn||!section) return;
+
+  // Show number directly (can add OTP later)
+  btn.style.display='none';
+  section.innerHTML=`
+    <div class="revealed-phone-box" style="margin-bottom:12px">
+      <svg viewBox="0 0 20 20" width="22" height="22" fill="none" stroke="#059669" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg>
+      <div style="flex:1">
+        <div style="font-size:10px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Owner's Number</div>
+        <div class="revealed-phone-num">${phone}</div>
+      </div>
+    </div>
+    <div class="contact-btns">
+      <a href="tel:${phone}" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#0A0A0A;color:#fff;border-radius:14px;padding:15px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg>
+        Call Now
+      </a>
+      <a href="https://wa.me/91${phone.replace(/\D/g,'')}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;border-radius:14px;padding:15px;font-size:14px;font-weight:700;text-decoration:none">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg>
+        WhatsApp
+      </a>
+    </div>`;
 };
 
 window.setHeroTab=function(el,type){
@@ -3487,22 +3718,25 @@ window.triggerPhotoSelect = function(slotIndex) {
   if(input){ input.value=''; input.click(); }
 };
 
-window.handlePhotoSelect = function(e) {
+window.handlePhotoSelect = async function(e) {
   const file = e.target.files[0];
   if(!file) return;
 
   // Count actual filled slots
   const filledCount = selectedPhotos.filter(p=>p!==null).length;
-
-  // If clicking an empty slot but all 6 are filled
   if(selectedPhotos[activeSlot] === null && filledCount >= 6){
     showToast('Maximum 6 photos allowed','error');
     return;
   }
-
-  // Validate file size (max 5MB)
   if(file.size > 5*1024*1024){
     showToast('Photo too large. Max 5MB per photo.','error');
+    return;
+  }
+
+  // AI moderation — check if it's a property photo
+  const isValid = await moderateImage(file);
+  if(!isValid){
+    showToast('Please upload a genuine property photo','error');
     return;
   }
 

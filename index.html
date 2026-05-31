@@ -2192,12 +2192,13 @@ function getFiltered(){
   });
   // Sort
   data.sort((a,b)=>{
+    // Featured ALWAYS on top — regardless of sort selection
+    const featDiff=(b.isFeatured?1:0)-(a.isFeatured?1:0);
+    if(featDiff!==0) return featDiff;
+
+    // Then apply selected sort among non-featured (or among featured)
     if(sortF==='price-asc') return (a.price||0)-(b.price||0);
     if(sortF==='price-desc') return (b.price||0)-(a.price||0);
-    if(sortF==='featured'){
-      const fd=(b.isFeatured?1:0)-(a.isFeatured?1:0);
-      if(fd!==0)return fd;
-    }
     const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(0);
     const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(0);
     return db2-da;

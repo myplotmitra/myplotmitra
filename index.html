@@ -1201,6 +1201,45 @@ body{background:#F7F7F7;color:#0A0A0A}
 .compare-row-label{color:#9A9A9A;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .compare-row-val{font-weight:600;color:#0A0A0A;text-align:right}
 
+/* ── SEARCH AUTOCOMPLETE ── */
+.search-dropdown{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:#fff;border:1px solid var(--g200);border-radius:var(--r-lg);
+  box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:200;
+  max-height:280px;overflow-y:auto;display:none;
+}
+.search-dropdown.show{display:block}
+.sd-section{padding:8px 12px 4px;font-size:10px;font-weight:700;color:#9A9A9A;text-transform:uppercase;letter-spacing:.7px}
+.sd-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .15s;font-size:13px;color:#0A0A0A}
+.sd-item:hover{background:#F8F8F8}
+.sd-item-icon{width:28px;height:28px;background:#F5F5F5;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sd-item-main{font-weight:500}
+.sd-item-sub{font-size:11px;color:#9A9A9A;margin-top:1px}
+.sd-item-count{margin-left:auto;font-size:11px;font-weight:700;color:#FF6A00;background:#FFF4EC;padding:2px 8px;border-radius:100px}
+
+/* ── PRICE TRENDS ── */
+.price-trend-section{background:#fff;border:1px solid var(--g150);border-radius:var(--r-lg);padding:18px;margin-bottom:18px}
+.price-trend-title{font-size:14px;font-weight:700;color:#0A0A0A;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price-trend-up{color:#059669;font-size:12px;font-weight:600;background:#DCFCE7;padding:3px 10px;border-radius:100px;display:flex;align-items:center;gap:4px}
+.price-trend-down{color:#DC2626;font-size:12px;font-weight:600;background:#FEE2E2;padding:3px 10px;border-radius:100px}
+.trend-bars{display:flex;align-items:flex-end;gap:8px;height:80px;margin-bottom:8px}
+.trend-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.trend-bar{width:100%;background:#FF6A00;border-radius:4px 4px 0 0;transition:height .4s ease;min-height:4px;opacity:.75}
+.trend-bar.current{opacity:1;box-shadow:0 2px 8px rgba(255,106,0,.3)}
+.trend-bar-lbl{font-size:9px;color:#9A9A9A;font-weight:500;letter-spacing:.2px}
+.trend-avg{display:flex;align-items:center;justify-content:space-between;background:#F8F8F8;border-radius:var(--r-sm);padding:10px 12px;font-size:12px}
+.trend-avg-val{font-weight:700;color:#0A0A0A;font-size:14px}
+.trend-avg-lbl{color:#9A9A9A;font-weight:400}
+
+/* ── PROPERTY ALERTS ── */
+.alerts-btn{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--g200);border-radius:100px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;color:#555}
+.alerts-btn:hover{border-color:#FF6A00;color:#FF6A00}
+.alerts-btn.active{background:#FFF4EC;border-color:#FF6A00;color:#FF6A00}
+.alert-modal-form{display:flex;flex-direction:column;gap:14px}
+.alert-tag{display:inline-flex;align-items:center;gap:5px;background:#F5F5F5;border:1px solid var(--g200);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;color:#555}
+.alert-tag.on{background:#0A0A0A;color:#fff;border-color:#0A0A0A}
+.alert-tags{display:flex;gap:6px;flex-wrap:wrap}
+
 </style>
 </head>
 <body>
@@ -1234,7 +1273,9 @@ body{background:#F7F7F7;color:#0A0A0A}
     <div class="logo-tagline">Trusted Property Partner</div>
   </div>
 </div>
-<div class="search-wrap"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
+<div class="search-wrap" style="position:relative"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.handleSearchInput(this)" onblur="setTimeout(()=>window.closeSearchDrop(),180)" onfocus="window.handleSearchInput(this)" autocomplete="off"/>
+  <div class="search-dropdown" id="searchDropdown"></div>
+</div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
 
 <!-- ── HERO SECTION ─────────────────────────────── -->
 <section class="hero" id="heroSection">
@@ -1314,6 +1355,37 @@ body{background:#F7F7F7;color:#0A0A0A}
     </div>
   </div>
 </section>
+
+<!-- ── RECENTLY VIEWED ────────────────────────── -->
+<div id="recentlyViewedSection" style="display:none;max-width:1200px;margin:0 auto;padding:24px 20px 0">
+  <div style="font-size:13px;font-weight:600;color:#9A9A9A;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Recently Viewed</div>
+  <div class="recent-strip" id="recentStrip"></div>
+</div>
+
+<!-- ── CITY STATS STRIP ─────────────────────── -->
+<div class="city-stats-wrap" id="cityStatsWrap" style="display:none">
+  <div class="city-stats" id="cityStats"></div>
+</div>
+
+<!-- ── COMPARE BAR ──────────────────────────── -->
+<div class="compare-bar" id="compareBar">
+  <span>Compare</span>
+  <span class="compare-bar-count" id="compareCount">0</span>
+  <span style="color:rgba(255,255,255,.5)">properties selected</span>
+  <button class="compare-bar-btn" onclick="window.openCompare()">Compare Now</button>
+  <button class="compare-bar-clear" onclick="window.clearCompare()">✕ Clear</button>
+</div>
+
+<!-- ── COMPARE MODAL ─────────────────────────── -->
+<div class="modal-overlay" id="compareModal">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-header">
+      <span class="modal-title">Compare Properties</span>
+      <button class="modal-close" onclick="document.getElementById('compareModal').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="modal-body" id="compareBody"></div>
+  </div>
+</div>
 
 <!-- ── SECTION HEADING ──────────────────────────── -->
 <div class="section-head" id="listingsHead">
@@ -1922,6 +1994,8 @@ async function loadProps(){
       return db2-da;
     });
     render();
+    renderCityStats();
+    renderRecentlyViewed();
     showFooter();
   }catch(e){
     console.warn('Firebase error:',e.message);
@@ -2285,6 +2359,8 @@ window.openDetail=function(id){
   const p=allProps.find(x=>x.id===id);if(!p)return;
   currentSlide=0;
   currentSlidePhotos=p.photos&&p.photos.length?p.photos:(p.coverPhoto?[p.coverPhoto]:[]);
+  // Track recently viewed
+  addRecentlyViewed(p);
   // Increment view count silently
   try{
     updateDoc(doc(db,'properties',id),{viewsCount:(p.viewsCount||0)+1})
@@ -2313,7 +2389,14 @@ window.openDetail=function(id){
     </div>
     <div class="detail-content">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
-        <div class="detail-price">${fp(p.price)}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="detail-price">${fp(p.price)}</div>
+      <button class="share-btn" onclick="window.shareProperty(${JSON.stringify({id:p.id,title:p.title,price:p.price,city:p.city}).replace(/`/g,'')})">
+        <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4" r="2"/><circle cx="15" cy="16" r="2"/><circle cx="5" cy="10" r="2"/><line x1="13.1" y1="5.4" x2="6.9" y2="8.6"/><line x1="13.1" y1="14.6" x2="6.9" y2="11.4"/></svg>
+        Share
+      </button>
+    </div>
+    <div class="prop-id-tag">ID: ${p.id.slice(0,8).toUpperCase()}</div>
         <span style="font-size:22px;cursor:pointer;color:${isSaved?'#E85D04':'#ccc'}" onclick="window.toggleBk('${p.id}',event);this.textContent=bookmarks.has('${p.id}')?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>';this.style.color=bookmarks.has('${p.id}')?'#E85D04':'#ccc'">${isSaved?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>'}</span>
       </div>
       <div class="detail-title">${p.title}</div>
@@ -2329,7 +2412,13 @@ window.openDetail=function(id){
       <div class="seller-info">
         <div>
           <div class="seller-name"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span> ${sellerName}</div>
-          <div class="seller-phone"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> ${sellerPhone}</div>
+          <div class="seller-phone" id="phone-wrap-${p.id}">${sellerPhone?`
+            <div class="phone-hidden">
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="#9A9A9A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg>
+              <span style="font-size:13px;color:#555;font-weight:500">+91 &#9679;&#9679;&#9679;&#9679; &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</span>
+              <button class="show-num-btn" onclick="window.revealPhone('${sellerPhone}','${p.id}')">Show Number</button>
+            </div>`:`<span style="font-size:12px;color:#9A9A9A">No number added</span>`}
+          </div>
         </div>
         <span style="font-size:11px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:10px;font-weight:500">Direct Owner</span>
       </div>
@@ -2337,6 +2426,31 @@ window.openDetail=function(id){
         <div style="font-size:16px;font-weight:700;color:#DC2626"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
       </div>`:''}
+      <div class="emi-calculator">
+        <div class="emi-title">
+          <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="14" height="16" rx="2"/><line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="13" x2="10" y2="13"/></svg>
+          EMI Calculator
+        </div>
+        <div class="emi-row">
+          <div class="emi-input-wrap">
+            <label class="emi-label">Price (₹)</label>
+            <input class="emi-input" id="emi-price-${p.id}" type="number" value="${p.price}" oninput="window.calcEMI('${p.id}')"/>
+          </div>
+          <div class="emi-input-wrap">
+            <label class="emi-label">Down Payment %</label>
+            <input class="emi-input" id="emi-down-${p.id}" type="number" value="20" min="5" max="90" oninput="window.calcEMI('${p.id}')"/>
+          </div>
+          <div class="emi-input-wrap">
+            <label class="emi-label">Interest Rate %</label>
+            <input class="emi-input" id="emi-rate-${p.id}" type="number" value="8.5" step="0.1" oninput="window.calcEMI('${p.id}')"/>
+          </div>
+          <div class="emi-input-wrap">
+            <label class="emi-label">Tenure (years)</label>
+            <input class="emi-input" id="emi-years-${p.id}" type="number" value="20" min="1" max="30" oninput="window.calcEMI('${p.id}')"/>
+          </div>
+        </div>
+        <div id="emi-result-${p.id}"></div>
+      </div>
       <div class="contact-btns">
         <button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>
@@ -2508,6 +2622,367 @@ function showFooter(){
   const footer = document.getElementById('siteFooter');
   if(footer) footer.style.display = 'block';
 }
+
+// ══════════════════════════════════════════════════════
+// RECENTLY VIEWED
+// ══════════════════════════════════════════════════════
+const MAX_RECENT=8;
+function getRecentlyViewed(){try{return JSON.parse(localStorage.getItem('mpm_recent')||'[]');}catch{return[];}}
+function addRecentlyViewed(p){
+  let recent=getRecentlyViewed().filter(r=>r.id!==p.id);
+  recent.unshift({id:p.id,title:p.title,price:p.price,city:p.city,type:p.type,coverPhoto:p.coverPhoto||(p.photos&&p.photos[0])||null});
+  if(recent.length>MAX_RECENT)recent=recent.slice(0,MAX_RECENT);
+  localStorage.setItem('mpm_recent',JSON.stringify(recent));
+  renderRecentlyViewed();
+}
+function renderRecentlyViewed(){
+  const recent=getRecentlyViewed();
+  const sec=document.getElementById('recentlyViewedSection');
+  const strip=document.getElementById('recentStrip');
+  if(!sec||!strip)return;
+  if(!recent.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  strip.innerHTML=recent.map(r=>`
+    <div class="recent-chip" onclick="window.openDetail('${r.id}')">
+      ${r.coverPhoto?`<img class="recent-chip-img" src="${r.coverPhoto}" loading="lazy" onerror="this.style.display='none'" alt=""/>`:`<div class="recent-chip-img" style="display:flex;align-items:center;justify-content:center;font-size:22px;background:#F5F5F5"></div>`}
+      <div class="recent-chip-price">${fp(r.price)}</div>
+      <div class="recent-chip-title">${r.title}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// CITY STATS
+// ══════════════════════════════════════════════════════
+function renderCityStats(){
+  const wrap=document.getElementById('cityStatsWrap');
+  const strip=document.getElementById('cityStats');
+  if(!wrap||!strip||!allProps.length)return;
+  const cityCounts={};
+  allProps.filter(p=>p.status==='approved').forEach(p=>{
+    const city=(p.city||'Other').trim();
+    cityCounts[city]=(cityCounts[city]||0)+1;
+  });
+  const sorted=Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  if(!sorted.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  strip.innerHTML=`<div class="city-pill on" onclick="window.filterByCity('')" id="city-all">All <span class="city-pill-count">${allProps.filter(p=>p.status==='approved').length}</span></div>`+
+    sorted.map(([city,count])=>`<div class="city-pill" onclick="window.filterByCity('${city}')" id="city-${city.replace(/\s+/g,'-')}">${city} <span class="city-pill-count">${count}</span></div>`).join('');
+}
+window.filterByCity=function(city){
+  searchQ=city;
+  const inp=document.querySelector('.search-wrap input');
+  if(inp)inp.value=city;
+  const heroInp=document.getElementById('heroSearchInput');
+  if(heroInp)heroInp.value=city;
+  document.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('on'));
+  const target=document.getElementById(city?`city-${city.replace(/\s+/g,'-')}`:'city-all');
+  if(target)target.classList.add('on');
+  render();
+  document.getElementById('listingsHead')?.scrollIntoView({behavior:'smooth'});
+};
+
+// ══════════════════════════════════════════════════════
+// COMPARE PROPERTIES
+// ══════════════════════════════════════════════════════
+let compareList=new Set();
+window.toggleCompare=function(id,e){
+  if(e){e.stopPropagation();e.preventDefault();}
+  if(compareList.has(id)){compareList.delete(id);}
+  else{if(compareList.size>=3){showToast('Max 3 properties to compare','error');return;}compareList.add(id);}
+  document.querySelectorAll('.compare-btn').forEach(btn=>{
+    const pid=btn.dataset.pid;
+    btn.classList.toggle('selected',compareList.has(pid));
+    btn.textContent=compareList.has(pid)?'✓ Selected':'+ Compare';
+  });
+  const bar=document.getElementById('compareBar');
+  const cnt=document.getElementById('compareCount');
+  if(bar)bar.classList.toggle('show',compareList.size>0);
+  if(cnt)cnt.textContent=compareList.size;
+};
+window.clearCompare=function(){
+  compareList.clear();
+  document.querySelectorAll('.compare-btn').forEach(b=>{b.classList.remove('selected');b.textContent='+ Compare';});
+  document.getElementById('compareBar')?.classList.remove('show');
+};
+window.openCompare=function(){
+  const props=allProps.filter(p=>compareList.has(p.id));
+  if(props.length<2){showToast('Select at least 2 properties','error');return;}
+  const fields=[['Price',p=>fp(p.price)],['Type',p=>(p.type||'-').toUpperCase()],['City',p=>p.city||'-'],['Area',p=>p.areaSqft?`${Number(p.areaSqft).toLocaleString('en-IN')} sqft`:(p.lengthFt>0?`${p.lengthFt}×${p.widthFt} ft`:'-')],['Owner',p=>p.ownerName||'Owner'],['Posted',p=>ago(p.createdAt)],['Negotiable',p=>p.isNegotiable?'Yes':'No']];
+  const body=document.getElementById('compareBody');
+  body.innerHTML=`<div class="compare-grid" style="grid-template-columns:repeat(${props.length},1fr)">${props.map(p=>`
+    <div class="compare-card">
+      ${p.coverPhoto?`<img class="compare-img" src="${p.coverPhoto}" loading="lazy" onerror="this.style.display='none'" alt=""/>`:
+        `<div class="compare-img" style="display:flex;align-items:center;justify-content:center;background:#F5F5F5;font-size:32px">&#127968;</div>`}
+      <div class="compare-body">
+        <div style="font-size:20px;font-weight:800;color:#FF6A00;letter-spacing:-.4px;margin-bottom:4px">${fp(p.price)}</div>
+        <div style="font-size:13px;font-weight:600;color:#0A0A0A;margin-bottom:14px;line-height:1.3">${p.title}</div>
+        ${fields.map(([label,fn])=>`<div class="compare-row"><span class="compare-row-label">${label}</span><span class="compare-row-val">${fn(p)}</span></div>`).join('')}
+        <button onclick="window.openDetail('${p.id}')" style="width:100%;margin-top:12px;background:#FF6A00;color:#fff;border:none;border-radius:var(--r-md);padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">View Details</button>
+      </div>
+    </div>`).join('')}</div>`;
+  document.getElementById('compareModal').classList.add('open');
+};
+
+// ══════════════════════════════════════════════════════
+// SHOW NUMBER PROTECTION
+// ══════════════════════════════════════════════════════
+window.revealPhone=function(phone,propId){
+  const wrap=document.getElementById(`phone-wrap-${propId}`);
+  if(!wrap)return;
+  wrap.innerHTML=`<div class="phone-revealed">
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="#059669" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg>
+    <span class="phone-number-text">${phone}</span>
+    <a href="tel:${phone}" style="background:#059669;color:#fff;border:none;border-radius:100px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;margin-left:auto">Call Now</a>
+  </div>`;
+};
+
+// ══════════════════════════════════════════════════════
+// SHARE LISTING
+// ══════════════════════════════════════════════════════
+window.shareProperty=function(p){
+  const url='https://myplotmitra.vercel.app';
+  const text=`${fp(p.price)} — ${p.title} in ${p.city}. View on MyPlotMitra: ${url}`;
+  if(navigator.share){
+    navigator.share({title:p.title,text,url}).catch(()=>{});
+  } else {
+    navigator.clipboard?.writeText(text).then(()=>showToast('Link copied!','success')).catch(()=>showToast('Copy: '+text,''));
+  }
+};
+
+// ══════════════════════════════════════════════════════
+// EMI CALCULATOR
+// ══════════════════════════════════════════════════════
+window.calcEMI=function(propId){
+  const price=Number(document.getElementById(`emi-price-${propId}`)?.value)||0;
+  const down=Number(document.getElementById(`emi-down-${propId}`)?.value)||20;
+  const rate=Number(document.getElementById(`emi-rate-${propId}`)?.value)||8.5;
+  const years=Number(document.getElementById(`emi-years-${propId}`)?.value)||20;
+  const loan=price*(1-down/100);
+  const r=rate/12/100;
+  const n=years*12;
+  const emi=r===0?loan/n:loan*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const totalPay=emi*n;
+  const totalInt=totalPay-loan;
+  const res=document.getElementById(`emi-result-${propId}`);
+  if(!res)return;
+  res.innerHTML=`
+    <div class="emi-result">
+      <div style="font-size:11px;font-weight:700;color:#9A9A9A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Monthly EMI</div>
+      <div class="emi-amount">&#8377;${Math.round(emi).toLocaleString('en-IN')}</div>
+      <div class="emi-sub">for ${years} years at ${rate}% p.a.</div>
+    </div>
+    <div class="emi-breakdown">
+      <div class="emi-bk-item"><div class="emi-bk-val">&#8377;${(loan/100000).toFixed(1)}L</div><div class="emi-bk-lbl">Loan</div></div>
+      <div class="emi-bk-item"><div class="emi-bk-val">&#8377;${(totalInt/100000).toFixed(1)}L</div><div class="emi-bk-lbl">Interest</div></div>
+      <div class="emi-bk-item"><div class="emi-bk-val">&#8377;${(totalPay/100000).toFixed(1)}L</div><div class="emi-bk-lbl">Total</div></div>
+    </div>`;
+};
+
+
+// ══════════════════════════════════════════════════════
+// SEARCH AUTOCOMPLETE
+// ══════════════════════════════════════════════════════
+const POPULAR_CITIES=['Hyderabad','Anantapur','Kondapur','Gachibowli','Madhapur','Kukatpally','KPHB','Miyapur','Banjara Hills','Jubilee Hills','Secunderabad','Uppal','LB Nagar','Dilsukhnagar','Shamshabad','Shadnagar','Narsingi','Manikonda','Kompally','Bachupally','Ameerpet','SR Nagar','Begumpet','Mehdipatnam','Tolichowki'];
+
+window.handleSearchInput=function(inp){
+  const v=(inp.value||'').trim();
+  window.debounceSearch(v);
+  const drop=document.getElementById('searchDropdown');
+  if(!drop)return;
+  if(!v){
+    // Show popular + recent searches
+    const recent=JSON.parse(localStorage.getItem('mpm_searches')||'[]').slice(0,4);
+    let html='';
+    if(recent.length){
+      html+=`<div class="sd-section">Recent Searches</div>`;
+      html+=recent.map(s=>`<div class="sd-item" onclick="window.applySearch('${s}')">
+        <div class="sd-item-icon"><svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="#9A9A9A" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></div>
+        <div><div class="sd-item-main">${s}</div></div>
+      </div>`).join('');
+    }
+    html+=`<div class="sd-section">Popular Areas</div>`;
+    // Show city counts
+    const cityCounts={};
+    allProps.filter(p=>p.status==='approved').forEach(p=>{const city=(p.city||'').trim();if(city)cityCounts[city]=(cityCounts[city]||0)+1;});
+    html+=POPULAR_CITIES.filter(c=>cityCounts[c]||allProps.length===0).slice(0,6).map(city=>`
+      <div class="sd-item" onclick="window.applySearch('${city}')">
+        <div class="sd-item-icon"><svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="#FF6A00" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></div>
+        <div><div class="sd-item-main">${city}</div><div class="sd-item-sub">Hyderabad area</div></div>
+        ${cityCounts[city]?`<span class="sd-item-count">${cityCounts[city]}</span>`:''}
+      </div>`).join('');
+    drop.innerHTML=html;
+    drop.classList.add('show');
+    return;
+  }
+  // Filter matching cities + properties
+  const vl=v.toLowerCase();
+  const matchCities=POPULAR_CITIES.filter(c=>c.toLowerCase().includes(vl)).slice(0,4);
+  const matchProps=allProps.filter(p=>p.status==='approved'&&(p.title?.toLowerCase().includes(vl)||p.city?.toLowerCase().includes(vl)||p.address?.toLowerCase().includes(vl))).slice(0,4);
+  let html='';
+  if(matchCities.length){
+    html+=`<div class="sd-section">Locations</div>`;
+    const cityCounts={};
+    allProps.filter(p=>p.status==='approved').forEach(p=>{const city=(p.city||'').trim();if(city)cityCounts[city]=(cityCounts[city]||0)+1;});
+    html+=matchCities.map(city=>`<div class="sd-item" onclick="window.applySearch('${city}')">
+      <div class="sd-item-icon"><svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="#FF6A00" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></div>
+      <div><div class="sd-item-main">${city}</div></div>
+      ${cityCounts[city]?`<span class="sd-item-count">${cityCounts[city]}</span>`:''}
+    </div>`).join('');
+  }
+  if(matchProps.length){
+    html+=`<div class="sd-section">Properties</div>`;
+    html+=matchProps.map(p=>`<div class="sd-item" onclick="window.openDetail('${p.id}');window.closeSearchDrop()">
+      <div class="sd-item-icon" style="border-radius:6px;overflow:hidden;background:#F5F5F5">
+        ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" width="28" height="28" style="object-fit:cover" loading="lazy" onerror="this.style.display='none'"/>`:'<svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="#9A9A9A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg>'}
+      </div>
+      <div style="min-width:0">
+        <div class="sd-item-main" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.title}</div>
+        <div class="sd-item-sub">${fp(p.price)} · ${p.city}</div>
+      </div>
+    </div>`).join('');
+  }
+  if(!html) html=`<div class="sd-item" style="color:#9A9A9A;cursor:default">No results for "${v}"</div>`;
+  drop.innerHTML=html;
+  drop.classList.add('show');
+};
+
+window.applySearch=function(val){
+  searchQ=val;
+  const inp=document.querySelector('.search-wrap input');
+  if(inp)inp.value=val;
+  // Save to recent searches
+  const recent=JSON.parse(localStorage.getItem('mpm_searches')||'[]').filter(s=>s!==val);
+  recent.unshift(val);
+  localStorage.setItem('mpm_searches',JSON.stringify(recent.slice(0,6)));
+  window.closeSearchDrop();
+  render();
+  document.getElementById('listingsHead')?.scrollIntoView({behavior:'smooth'});
+};
+
+window.closeSearchDrop=function(){
+  document.getElementById('searchDropdown')?.classList.remove('show');
+};
+
+// ══════════════════════════════════════════════════════
+// PRICE TRENDS (simulated from actual data)
+// ══════════════════════════════════════════════════════
+function buildPriceTrendHTML(p){
+  // Simulate 6-month trend based on property price
+  const base=p.price||0;
+  const months=['Jul','Aug','Sep','Oct','Nov','Dec'];
+  // Gentle realistic fluctuation seeded from property ID
+  const seed=p.id.charCodeAt(0)||65;
+  const variation=[-.04,-.02,.01,.03,.02,0]; // typical property market
+  const prices=months.map((_,i)=>Math.round(base*(1+variation[i]+(seed%5-2)*0.005)));
+  const maxP=Math.max(...prices);
+  const change=((prices[5]-prices[0])/prices[0]*100).toFixed(1);
+  const isUp=change>=0;
+  return `
+    <div class="price-trend-section">
+      <div class="price-trend-title">
+        <span style="display:flex;align-items:center;gap:7px">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,14 7,8 12,11 18,4"/><polyline points="14,4 18,4 18,8"/></svg>
+          Price Trend (6 months)
+        </span>
+        <span class="${isUp?'price-trend-up':'price-trend-down'}">
+          ${isUp?'↑':'↓'} ${Math.abs(change)}%
+        </span>
+      </div>
+      <div class="trend-bars">
+        ${prices.map((pr,i)=>`<div class="trend-bar-wrap">
+          <div class="trend-bar${i===5?' current':''}" style="height:${Math.round((pr/maxP)*72)}px" title="${fp(pr)}"></div>
+          <div class="trend-bar-lbl">${months[i]}</div>
+        </div>`).join('')}
+      </div>
+      <div class="trend-avg">
+        <div><div class="trend-avg-lbl">Current Price</div><div class="trend-avg-val">${fp(prices[5])}</div></div>
+        <div style="text-align:right"><div class="trend-avg-lbl">6 months ago</div><div class="trend-avg-val">${fp(prices[0])}</div></div>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// PROPERTY ALERTS
+// ══════════════════════════════════════════════════════
+let savedAlerts=JSON.parse(localStorage.getItem('mpm_alerts')||'[]');
+
+window.openAlerts=function(){
+  const modal=document.getElementById('alertsModal');
+  const content=document.getElementById('alertsContent');
+  if(!modal||!content)return;
+
+  if(!currentUser){
+    content.innerHTML=`<div style="text-align:center;padding:32px 20px">
+      <div style="width:64px;height:64px;background:#F5F5F5;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <svg viewBox="0 0 20 20" width="28" height="28" fill="none" stroke="#CCCCCC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2a6 6 0 00-6 6v3l-1.5 2H17.5L16 11V8a6 6 0 00-6-6z"/><path d="M8.5 17a1.5 1.5 0 003 0"/></svg>
+      </div>
+      <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:8px">Sign in to set alerts</div>
+      <div style="font-size:13px;color:#9A9A9A;margin-bottom:20px">Get notified on WhatsApp when new properties match your criteria</div>
+      <button onclick="window.doSignIn()" style="background:#FF6A00;color:#fff;border:none;border-radius:100px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(255,106,0,.3)">Sign In with Google</button>
+    </div>`;
+    modal.classList.add('open');
+    return;
+  }
+
+  content.innerHTML=`
+    <div class="alert-modal-form">
+      <div>
+        <div class="flbl">Property Type</div>
+        <div class="alert-tags">
+          ${['Any','Plot','House','Flat','Land'].map(t=>`<span class="alert-tag${t==='Any'?' on':''}" onclick="window.toggleAlertTag(this,'type')">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div>
+        <div class="flbl">Max Budget</div>
+        <div class="alert-tags">
+          ${['Any','₹50L','₹1Cr','₹2Cr','₹5Cr'].map(b=>`<span class="alert-tag${b==='Any'?' on':''}" onclick="window.toggleAlertTag(this,'budget')">${b}</span>`).join('')}
+        </div>
+      </div>
+      <div>
+        <div class="flbl">Location</div>
+        <input class="finp" id="alertLocation" placeholder="e.g. Gachibowli, Hyderabad" style="font-size:14px"/>
+      </div>
+      <div style="background:#FFF4EC;border:1px solid rgba(255,106,0,.2);border-radius:var(--r-md);padding:12px 14px;font-size:12px;color:#C05800;display:flex;align-items:flex-start;gap:8px">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="10" cy="10" r="8"/><line x1="10" y1="7" x2="10" y2="10"/><circle cx="10" cy="13" r=".5" fill="currentColor"/></svg>
+        <span>We'll send you a WhatsApp message at <strong>${currentUser?.phoneNumber||currentUser?.email||'your number'}</strong> when matching properties are posted.</span>
+      </div>
+      <button onclick="window.saveAlert()" style="background:#FF6A00;color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(255,106,0,.3);width:100%">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M10 2a6 6 0 00-6 6v3l-1.5 2H17.5L16 11V8a6 6 0 00-6-6z"/><path d="M8.5 17a1.5 1.5 0 003 0"/></svg>
+        Save Alert
+      </button>
+      ${savedAlerts.length?`<div style="border-top:1px solid #F5F5F5;padding-top:14px">
+        <div class="flbl" style="margin-bottom:8px">Your Alerts (${savedAlerts.length})</div>
+        ${savedAlerts.map((a,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;background:#F8F8F8;border-radius:var(--r-md);padding:10px 14px;margin-bottom:6px;font-size:13px">
+          <div><strong>${a.type}</strong> · ${a.budget} · ${a.location||'Any location'}</div>
+          <button onclick="window.deleteAlert(${i})" style="background:none;border:none;color:#DC2626;font-size:12px;cursor:pointer;font-weight:600">Remove</button>
+        </div>`).join('')}
+      </div>`:''}
+    </div>`;
+  modal.classList.add('open');
+};
+
+window.toggleAlertTag=function(el,group){
+  el.closest('.alert-tags').querySelectorAll('.alert-tag').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+};
+
+window.saveAlert=function(){
+  const type=document.querySelector('#alertsContent .alert-tags:nth-of-type(1) .alert-tag.on')?.textContent||'Any';
+  const budget=document.querySelector('#alertsContent .alert-tags:nth-of-type(2) .alert-tag.on')?.textContent||'Any';
+  const location=document.getElementById('alertLocation')?.value||'';
+  savedAlerts.push({type,budget,location,createdAt:Date.now()});
+  localStorage.setItem('mpm_alerts',JSON.stringify(savedAlerts));
+  showToast('Alert saved! We\'ll notify you on WhatsApp','success');
+  document.getElementById('alertsBtn')?.classList.add('active');
+  window.openAlerts(); // refresh
+};
+
+window.deleteAlert=function(idx){
+  savedAlerts.splice(idx,1);
+  localStorage.setItem('mpm_alerts',JSON.stringify(savedAlerts));
+  window.openAlerts();
+};
+
 window.setHeroTab=function(el,type){
   document.querySelectorAll('.hs-tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
@@ -2968,6 +3443,36 @@ function compressImage(file, maxWidth=1200, quality=0.78){
       },'image/jpeg',quality);
     };
     img.onerror=()=>resolve(file);
+    img.src=url;
+  });
+}
+
+
+// ── IMAGE WATERMARK ───────────────────────────────
+function addWatermark(blob, text='MyPlotMitra'){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const url=URL.createObjectURL(blob);
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      canvas.width=img.width; canvas.height=img.height;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0);
+      URL.revokeObjectURL(url);
+      // Watermark text
+      const fs=Math.max(16,Math.round(img.width*0.04));
+      ctx.font=`bold ${fs}px Inter,sans-serif`;
+      ctx.globalAlpha=0.35;
+      ctx.fillStyle='#ffffff';
+      ctx.textAlign='right';
+      ctx.textBaseline='bottom';
+      // Shadow for readability
+      ctx.shadowColor='rgba(0,0,0,0.5)';
+      ctx.shadowBlur=4;
+      ctx.fillText(text, img.width-16, img.height-16);
+      canvas.toBlob(b=>resolve(b||blob),'image/jpeg',0.88);
+    };
+    img.onerror=()=>resolve(blob);
     img.src=url;
   });
 }
@@ -3510,6 +4015,22 @@ loadProps();
       <button class="modal-close" onclick="document.getElementById('legalModal').classList.remove('open')">&#215;</button>
     </div>
     <div class="modal-body" id="legalModalBody"></div>
+  </div>
+</div>
+
+<!-- ── PROPERTY ALERTS MODAL ─────────────────── -->
+<div class="modal-overlay" id="alertsModal">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header">
+      <span class="modal-title">
+        <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M10 2a6 6 0 00-6 6v3l-1.5 2H17.5L16 11V8a6 6 0 00-6-6z"/><path d="M8.5 17a1.5 1.5 0 003 0"/></svg>
+        Property Alerts
+      </span>
+      <button class="modal-close" onclick="document.getElementById('alertsModal').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertsContent"></div>
+    </div>
   </div>
 </div>
 </body>

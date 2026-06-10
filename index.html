@@ -3364,6 +3364,30 @@ window.renderPremiumAdmin=async function(list){
   const pending=reqs.filter(r=>r.status==='pending')
     .sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
   const approved=reqs.filter(r=>r.status==='approved').length;
+  // Active / expiring members
+  let members=[];
+  try{const us=await getDocs(collection(db,'users'));
+    members=us.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(u=>u.premiumUntil)
+      .map(u=>{const t=u.premiumUntil;const ms=t.toMillis?t.toMillis():new Date(t.seconds?t.seconds*1000:t).getTime();
+        return{...u,_exp:ms,_days:Math.ceil((ms-Date.now())/86400000)};})
+      .sort((a,b)=>a._exp-b._exp);
+  }catch(e){}
+  const fmtD=ms=>new Date(ms).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+  const membersHtml=members.length?`
+    <div style="font-size:12px;font-weight:700;color:#1A1A1A;margin:18px 0 8px;border-top:1px solid var(--g150);padding-top:14px">PREMIUM MEMBERS (${members.filter(m=>m._days>0).length} active)</div>
+    ${members.map(m=>{
+      const exp=m._days<=0, soon=m._days>0&&m._days<=5;
+      return `<div class="sub-req" style="${exp?'opacity:.55':''}">
+        <div class="sub-req-h">
+          <div><div class="sub-req-n">${m.name||m.displayName||'User'}</div><div class="sub-req-e">${m.email||m.id}</div></div>
+          <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;${exp?'background:#F3F4F6;color:#6B7280':soon?'background:#FEF2F2;color:#DC2626':'background:#ECFDF5;color:#059669'}">
+            ${exp?'Expired '+fmtD(m._exp):soon?m._days+'d left ⚠':'till '+fmtD(m._exp)}</span>
+        </div>
+        <div class="sub-req-btns" style="margin-top:8px">
+          <button class="sub-ok" onclick="window.renewSub('${m.id}',${m._exp})">${exp?'Reactivate':'Renew'} +30 days</button>
+        </div>
+      </div>`;}).join('')}`:'';
   list.innerHTML=`
     <div class="prem-toggle">
       <div><div class="prem-toggle-t">Premium Lock</div>
@@ -3379,7 +3403,8 @@ window.renderPremiumAdmin=async function(list){
           <button class="sub-ok" onclick="window.approveSub('${r.uid}')">Activate 30 days</button>
           <button class="sub-no" onclick="window.rejectSub('${r.uid}')">Reject</button>
         </div>
-      </div>`).join(''):'<div style="text-align:center;color:#AAA;padding:24px;font-size:13px">No pending subscription requests</div>'}`;
+      </div>`).join(''):'<div style="text-align:center;color:#AAA;padding:24px;font-size:13px">No pending subscription requests</div>'}
+    ${membersHtml}`;
 };
 window.togglePremLock=async function(on){
   try{await setDoc(doc(db,'settings','app'),{premiumLock:on},{merge:true});
@@ -3393,6 +3418,14 @@ window.approveSub=async function(uid){
     showToast('Premium activated for 30 days','success');
     window.renderPremiumAdmin(document.getElementById('pendingList'));
   }catch(e){console.error(e);showToast('Activation failed','error');}
+};
+window.renewSub=async function(uid,curExp){
+  try{
+    const base=Math.max(Date.now(),curExp||0);
+    await setDoc(doc(db,'users',uid),{premiumUntil:new Date(base+30*86400000)},{merge:true});
+    showToast('Extended by 30 days','success');
+    window.renderPremiumAdmin(document.getElementById('pendingList'));
+  }catch(e){console.error(e);showToast('Renew failed','error');}
 };
 window.rejectSub=async function(uid){
   try{await updateDoc(doc(db,'subRequests',uid),{status:'rejected'});

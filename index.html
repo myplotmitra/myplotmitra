@@ -1177,6 +1177,39 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .chat-empty{text-align:center;color:#999;padding:50px 20px;font-size:13.5px}
 @media (max-width:520px){.chat-conv-modal{height:88vh;max-width:100%}}
 </style>
+
+<style>
+/* ── Premium lock ── */
+.lock-cta{display:flex;align-items:center;gap:12px;background:#0A0A0A;border-radius:var(--r-md,12px);padding:14px;cursor:pointer;margin-bottom:4px}
+.lock-cta-ico{font-size:24px}
+.lock-cta-t{flex:1;min-width:0}
+.lock-cta-h{color:#fff;font-size:13.5px;font-weight:700}
+.lock-cta-s{color:#bbb;font-size:11.5px;margin-top:2px;line-height:1.4}
+.lock-cta-btn{background:#FF6A00;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
+.sub-benefit{display:flex;gap:10px;align-items:center;font-size:13px;color:#333;padding:6px 0}
+.sub-benefit b{color:#FF6A00}
+.sub-price{display:flex;align-items:baseline;gap:6px;justify-content:center;margin:10px 0 2px}
+.sub-price .amt{font-size:40px;font-weight:800;color:#FF6A00;font-family:'Poppins',sans-serif}
+.sub-price .per{font-size:13px;color:#777}
+.prem-toggle{display:flex;align-items:center;justify-content:space-between;background:#FFF4EC;border:1px solid #FFD9BD;border-radius:12px;padding:14px;margin-bottom:16px}
+.prem-toggle-t{font-size:13.5px;font-weight:700;color:#1A1A1A}
+.prem-toggle-s{font-size:11.5px;color:#777;margin-top:2px}
+.tgl{position:relative;width:48px;height:26px;flex-shrink:0}
+.tgl input{opacity:0;width:0;height:0}
+.tgl .sl{position:absolute;inset:0;background:#ccc;border-radius:13px;transition:.2s;cursor:pointer}
+.tgl .sl:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.tgl input:checked + .sl{background:#FF6A00}
+.tgl input:checked + .sl:before{transform:translateX(22px)}
+.sub-req{border:1px solid var(--g200,#E8E8E8);border-radius:12px;padding:12px;margin-bottom:10px}
+.sub-req-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sub-req-n{font-size:13.5px;font-weight:700}
+.sub-req-e{font-size:11.5px;color:#777}
+.sub-req img{width:100%;max-height:140px;object-fit:contain;background:#000;border-radius:8px;margin:8px 0;cursor:pointer}
+.sub-req-btns{display:flex;gap:8px}
+.sub-ok{flex:1;background:#16A34A;color:#fff;border:none;border-radius:8px;padding:9px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
+.sub-no{flex:1;background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:9px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
+.prem-badge{display:inline-block;background:linear-gradient(90deg,#FF6A00,#FFB300);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:8px}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1598,6 +1631,16 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
     </div>
   </div>
 </div>
+<!-- Premium subscribe -->
+<div class="modal-overlay" id="subModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title">⭐ MyPlotMitra Premium</span>
+      <button class="modal-close" onclick="document.getElementById('subModal').classList.remove('open')">x</button>
+    </div>
+    <div class="modal-body" id="subModalBody"></div>
+  </div>
+</div>
 <div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header">
 <div style="display:flex;align-items:center;gap:8px">
   <svg width="28" height="28" viewBox="0 0 48 48">
@@ -1959,7 +2002,7 @@ function renderGrid(data){
       ${p.sellerPhone?`<div class="card-seller-row">
         <div class="card-seller-avatar">${(p.ownerName||'O')[0].toUpperCase()}</div>
         <span class="card-seller-name">${p.ownerName||'Owner'}</span>
-        <button class="card-wa-btn" onclick="event.stopPropagation();window.open('https://wa.me/91${p.sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your listing *${encodeURIComponent(p.title||'')}* on MyPlotMitra. Is it available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> Chat</button>
+        <button class="card-wa-btn" onclick="window.cardContact('${p.id}',event)"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> Chat</button>
       </div>`:''}
     </div>`;
   }).join('');
@@ -2131,6 +2174,8 @@ window.openDetail=function(id){
   const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6',isSaved=bookmarks.has(p.id);
   const sellerPhone=p.sellerPhone||p.ownerPhone||'9989083321';
   const sellerName=p.ownerName||p.sellerName||'Owner';
+  const canContact=window.__canContact(p);
+  const shownPhone=canContact?sellerPhone:String(sellerPhone).slice(0,4)+'XXXXXX';
   document.getElementById('detailBody').innerHTML=`
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
@@ -2166,7 +2211,7 @@ window.openDetail=function(id){
       <div class="seller-info">
         <div>
           <div class="seller-name"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span> ${sellerName}</div>
-          <div class="seller-phone"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> ${sellerPhone}</div>
+          <div class="seller-phone"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> ${shownPhone}</div>
         </div>
         <span style="font-size:11px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:10px;font-weight:500">Direct Owner</span>
       </div>
@@ -2174,11 +2219,18 @@ window.openDetail=function(id){
         <div style="font-size:16px;font-weight:700;color:#DC2626"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
       </div>`:''}
-      <div class="contact-btns">
+      ${canContact?`<div class="contact-btns">
         <button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>
         <button class="btn-chat-app" onclick="window.startChat('${p.id}')"><span class="ico" style="display:inline-flex;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/><circle cx="7" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="9.5" r=".8" fill="currentColor"/><circle cx="13" cy="9.5" r=".8" fill="currentColor"/></svg></span> Chat</button>
-      </div>
+      </div>`:`<div class="lock-cta" onclick="window.openSubscribe()">
+        <div class="lock-cta-ico">🔒</div>
+        <div class="lock-cta-t">
+          <div class="lock-cta-h">Contact &amp; Chat are Premium</div>
+          <div class="lock-cta-s">Subscribe for ₹25/month to view seller numbers, call, WhatsApp and chat in app</div>
+        </div>
+        <button class="lock-cta-btn">Unlock ₹25/mo</button>
+      </div>`}
       ${currentUser&&(currentUser.email===ADMIN_EMAIL||currentUser.uid===p.ownerId)?`
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--g200)">
         <div style="font-size:11px;color:var(--g400);margin-bottom:8px;font-weight:500">${currentUser.email===ADMIN_EMAIL?'ADMIN ACTIONS':'OWNER ACTIONS'}</div>
@@ -2965,13 +3017,15 @@ async function loadAdminTab(tab){
     tabBar.innerHTML=`
       <button class="adm-tab${tab==='pending'?' on':''}" data-tab="pending" onclick="window.switchAdminTab('pending')">Pending</button>
       <button class="adm-tab${tab==='approved'?' on':''}" data-tab="approved" onclick="window.switchAdminTab('approved')">Approved</button>
-      <button class="adm-tab${tab==='sold'?' on':''}" data-tab="sold" onclick="window.switchAdminTab('sold')">Sold Out</button>`;
+      <button class="adm-tab${tab==='sold'?' on':''}" data-tab="sold" onclick="window.switchAdminTab('sold')">Sold Out</button>
+      <button class="adm-tab${tab==='premium'?' on':''}" data-tab="premium" onclick="window.switchAdminTab('premium')">Premium</button>`;
     body.insertBefore(tabBar,body.firstChild);
   } else if(modal){
     modal.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
   }
 
   list.innerHTML='<div style="text-align:center;padding:30px;color:#AAA">Loading...</div>';
+  if(tab==='premium'){return window.renderPremiumAdmin(list);}
 
   try{
     const snap=await getDocs(collection(db,'properties'));
@@ -3139,6 +3193,7 @@ window.startChat=async function(propId){
   const p=allProps.find(x=>x.id===propId);if(!p)return;
   if(!p.ownerId){showToast('Chat unavailable — contact via Call or WhatsApp','error');return;}
   if(currentUser.uid===p.ownerId){window.closeDetail();window.openChats();return;}
+  if(!window.__canContact(p)){window.openSubscribe();return;}
   const cid=propId+'_'+currentUser.uid;
   try{
     const cref=doc(db,'chats',cid);
@@ -3210,6 +3265,142 @@ window.sendChatMsg=async function(){
 document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.sendChatMsg();}});
 onAuthStateChanged(auth,()=>{setTimeout(startInboxListener,400);});
 /* ════════ END CHAT ════════ */
+
+/* ════════ PREMIUM LOCK (₹25/month) ════════ */
+let appSettings={premiumLock:false},myProfile=null;
+try{onSnapshot(doc(db,'settings','app'),sn=>{appSettings=sn.exists()?sn.data():{premiumLock:false};},()=>{});}catch(e){}
+onAuthStateChanged(auth,async u=>{
+  if(!u){myProfile=null;return;}
+  try{const d=await getDoc(doc(db,'users',u.uid));myProfile=d.exists()?d.data():null;}catch(e){myProfile=null;}
+});
+window.__isPremium=()=>{const t=myProfile&&myProfile.premiumUntil;if(!t)return false;
+  const ms=t.toMillis?t.toMillis():new Date(t.seconds?t.seconds*1000:t).getTime();return ms>Date.now();};
+window.__canContact=(p)=>{
+  if(!appSettings.premiumLock)return true;
+  if(!currentUser)return false;
+  if(currentUser.email===ADMIN_EMAIL)return true;
+  if(p&&p.ownerId&&p.ownerId===currentUser.uid)return true;
+  return window.__isPremium();
+};
+window.cardContact=function(id,ev){
+  ev&&ev.stopPropagation();
+  const p=allProps.find(x=>x.id===id);if(!p)return;
+  if(!window.__canContact(p)){window.openSubscribe();return;}
+  const ph=(p.sellerPhone||'9989083321').replace(/\D/g,'');
+  window.open('https://wa.me/91'+ph+'?text=Hi, I saw your listing *'+encodeURIComponent(p.title||'')+'* on MyPlotMitra. Is it available?');
+};
+
+window.openSubscribe=async function(){
+  const body=document.getElementById('subModalBody');
+  document.getElementById('subModal').classList.add('open');
+  if(!currentUser){
+    body.innerHTML=`<div style="text-align:center;padding:10px 0">
+      <div class="sub-price"><span class="amt">₹25</span><span class="per">/month</span></div>
+      <p style="font-size:13px;color:#666;margin:6px 0 16px">Sign in with Google to subscribe and unlock seller contacts &amp; chat.</p>
+      <button class="btn-post" style="width:100%" onclick="window.doSignIn()">Sign in to continue</button></div>`;
+    return;
+  }
+  if(window.__isPremium()){
+    const t=myProfile.premiumUntil;const d=t.toDate?t.toDate():new Date(t.seconds*1000);
+    body.innerHTML=`<div style="text-align:center;padding:14px 0">
+      <span class="prem-badge">PREMIUM ACTIVE</span>
+      <p style="font-size:13.5px;margin-top:12px">You have full access to seller contacts and chat.</p>
+      <p style="font-size:12px;color:#777">Valid till <b>${d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</b></p></div>`;
+    return;
+  }
+  let pending=false;
+  try{const r=await getDoc(doc(db,'subRequests',currentUser.uid));pending=r.exists()&&r.data().status==='pending';}catch(e){}
+  if(pending){
+    body.innerHTML=`<div style="text-align:center;padding:14px 0">
+      <div style="font-size:34px">⏳</div>
+      <p style="font-size:13.5px;font-weight:700;margin-top:8px">Payment under review</p>
+      <p style="font-size:12.5px;color:#777">Admin activates your Premium within 2 hours of payment confirmation. You'll get access automatically after approval — just refresh.</p></div>`;
+    return;
+  }
+  body.innerHTML=`
+    <div class="sub-price"><span class="amt">₹25</span><span class="per">/month</span></div>
+    <div style="margin:6px 0 14px">
+      <div class="sub-benefit"><b>✓</b> View seller phone numbers</div>
+      <div class="sub-benefit"><b>✓</b> Call &amp; WhatsApp owners directly</div>
+      <div class="sub-benefit"><b>✓</b> Unlimited in-app chat with sellers</div>
+      <div class="sub-benefit"><b>✓</b> Valid 30 days from activation</div>
+    </div>
+    <div style="background:#FAFAFA;border:1px solid var(--g200);border-radius:12px;padding:12px;margin-bottom:12px">
+      <div style="font-size:11px;color:#777;font-weight:600;margin-bottom:4px">PAY ₹25 VIA UPI / PhonePe / GPay</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <b style="font-size:14px">9989083321@upi</b>
+        <button onclick="navigator.clipboard.writeText('9989083321@upi');showToast('UPI ID copied','success')" style="background:#0A0A0A;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11.5px;cursor:pointer;font-family:inherit">Copy</button>
+      </div>
+      <div style="font-size:11px;color:#999;margin-top:4px">Amount: ₹25 · Name: MyPlotMitra</div>
+    </div>
+    <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px">Upload payment screenshot *</label>
+    <input type="file" id="subProofFile" accept="image/*" style="font-size:12px;margin-bottom:12px;width:100%"/>
+    <button class="btn-post" style="width:100%" id="subSubmitBtn" onclick="window.submitSub()">Submit for activation</button>
+    <p style="font-size:11px;color:#999;text-align:center;margin-top:8px">Admin activates within 2 hours after payment confirmation</p>`;
+};
+
+window.submitSub=async function(){
+  const f=document.getElementById('subProofFile').files[0];
+  if(!f){showToast('Attach your payment screenshot','error');return;}
+  if(f.size>5*1024*1024){showToast('Screenshot too large (max 5MB)','error');return;}
+  const btn=document.getElementById('subSubmitBtn');btn.disabled=true;btn.textContent='Uploading…';
+  try{
+    const r=ref(storage,'subscriptions/'+currentUser.uid+'_'+Date.now()+'.jpg');
+    await uploadBytes(r,f);
+    const url=await getDownloadURL(r);
+    await setDoc(doc(db,'subRequests',currentUser.uid),{
+      uid:currentUser.uid,name:currentUser.displayName||'',email:currentUser.email||'',
+      proof:url,status:'pending',createdAt:serverTimestamp()});
+    window.openSubscribe();
+    showToast('Submitted! Premium activates after admin approval.','success');
+  }catch(e){console.error(e);showToast('Upload failed — try again','error');btn.disabled=false;btn.textContent='Submit for activation';}
+};
+
+/* ── Admin: Premium tab ── */
+window.renderPremiumAdmin=async function(list){
+  let reqs=[];
+  try{const snap=await getDocs(collection(db,'subRequests'));
+    reqs=snap.docs.map(d=>({id:d.id,...d.data()}));}catch(e){}
+  const pending=reqs.filter(r=>r.status==='pending')
+    .sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
+  const approved=reqs.filter(r=>r.status==='approved').length;
+  list.innerHTML=`
+    <div class="prem-toggle">
+      <div><div class="prem-toggle-t">Premium Lock</div>
+      <div class="prem-toggle-s">When ON, only ₹25/month subscribers can view contacts &amp; chat</div></div>
+      <label class="tgl"><input type="checkbox" id="premLockTgl" ${appSettings.premiumLock?'checked':''} onchange="window.togglePremLock(this.checked)"/><span class="sl"></span></label>
+    </div>
+    <div style="font-size:12px;color:#777;margin-bottom:10px">Pending requests: <b>${pending.length}</b> · Activated: <b>${approved}</b></div>
+    ${pending.length?pending.map(r=>`
+      <div class="sub-req">
+        <div class="sub-req-h"><div><div class="sub-req-n">${r.name||'User'}</div><div class="sub-req-e">${r.email||r.uid}</div></div></div>
+        ${r.proof?`<img src="${r.proof}" loading="lazy" onclick="window.open('${r.proof}')"/>`:''}
+        <div class="sub-req-btns">
+          <button class="sub-ok" onclick="window.approveSub('${r.uid}')">Activate 30 days</button>
+          <button class="sub-no" onclick="window.rejectSub('${r.uid}')">Reject</button>
+        </div>
+      </div>`).join(''):'<div style="text-align:center;color:#AAA;padding:24px;font-size:13px">No pending subscription requests</div>'}`;
+};
+window.togglePremLock=async function(on){
+  try{await setDoc(doc(db,'settings','app'),{premiumLock:on},{merge:true});
+    showToast('Premium lock '+(on?'ENABLED':'disabled'),'success');}
+  catch(e){console.error(e);showToast('Could not update setting','error');}
+};
+window.approveSub=async function(uid){
+  try{
+    await setDoc(doc(db,'users',uid),{premiumUntil:new Date(Date.now()+30*86400000)},{merge:true});
+    await updateDoc(doc(db,'subRequests',uid),{status:'approved',activatedAt:serverTimestamp()});
+    showToast('Premium activated for 30 days','success');
+    window.renderPremiumAdmin(document.getElementById('pendingList'));
+  }catch(e){console.error(e);showToast('Activation failed','error');}
+};
+window.rejectSub=async function(uid){
+  try{await updateDoc(doc(db,'subRequests',uid),{status:'rejected'});
+    showToast('Request rejected','success');
+    window.renderPremiumAdmin(document.getElementById('pendingList'));}
+  catch(e){showToast('Failed','error');}
+};
+/* ════════ END PREMIUM ════════ */
 loadProps();
 </script>
 

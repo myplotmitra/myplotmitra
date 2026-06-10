@@ -16,45 +16,21 @@
 <meta property="og:description" content="Find verified plots, houses, flats and land in Hyderabad &amp; Anantapur. Direct from owners. Zero brokerage. Call 9989083321"/>
 <meta property="og:url" content="https://www.myplotmitra.com"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="https://www.myplotmitra.com/icons/icon-512.png"/>
-<meta property="og:image:width" content="512"/>
-<meta property="og:image:height" content="512"/>
-<meta name="twitter:image" content="https://www.myplotmitra.com/icons/icon-512.png"/>
+<meta property="og:image" content="https://www.myplotmitra.com/og-banner.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.myplotmitra.com/og-banner.png"/>
 <meta name="twitter:title" content="MyPlotMitra — Properties in Hyderabad &amp; Anantapur"/>
 <meta name="geo.region" content="IN-TG"/>
 <meta name="geo.placename" content="Hyderabad, Telangana, India"/>
 <link rel="canonical" href="https://www.myplotmitra.com"/>
 <link rel="preload" as="image" fetchpriority="high" href="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80&auto=format&fit=crop"/>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  "name": "MyPlotMitra",
-  "url": "https://www.myplotmitra.com",
-  "logo": "https://www.myplotmitra.com/icons/icon-512.png",
-  "image": "https://www.myplotmitra.com/icons/icon-512.png",
-  "description": "Buy, sell and discover verified plots, houses, flats and land in Hyderabad and Anantapur. Zero brokerage, direct from owners.",
-  "telephone": "+919989083321",
-  "priceRange": "₹₹",
-  "areaServed": [
-    {"@type": "City", "name": "Hyderabad"},
-    {"@type": "City", "name": "Anantapur"}
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressRegion": "Telangana",
-    "addressCountry": "IN"
-  },
-  "sameAs": ["https://wa.me/919989083321"]
-}
+{"@context":"https://schema.org","@type":"RealEstateAgent","name":"MyPlotMitra","url":"https://www.myplotmitra.com","logo":"https://www.myplotmitra.com/icons/icon-512.png","image":"https://www.myplotmitra.com/og-banner.png","description":"Buy, sell and discover verified plots, houses, flats and land in Hyderabad and Anantapur. Zero brokerage, direct from owners.","telephone":"+919989083321","priceRange":"₹₹","areaServed":[{"@type":"City","name":"Hyderabad"},{"@type":"City","name":"Anantapur"}],"address":{"@type":"PostalAddress","addressRegion":"Telangana","addressCountry":"IN"},"sameAs":["https://wa.me/919989083321"]}
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "MyPlotMitra",
-  "url": "https://www.myplotmitra.com"
-}
+{"@context":"https://schema.org","@type":"WebSite","name":"MyPlotMitra","url":"https://www.myplotmitra.com"}
 </script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -1164,6 +1140,43 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .modal{background:rgba(255,255,255,.97)!important}
 @supports not (backdrop-filter:blur(1px)){.header,.filter-bar,.bottom-nav{background:rgba(255,255,255,.97)!important}}
 </style>
+
+<style>
+/* ── In-app chat ── */
+.btn-chats{position:relative;background:var(--g100,#F5F5F5);border:1px solid var(--g200,#E8E8E8);border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1A1A1A;flex-shrink:0}
+.btn-chats:hover{background:#FFF4EC;border-color:#FF6A00}
+#chatBadge{display:none;position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;line-height:17px;text-align:center}
+.btn-chat-app{flex:1;background:#0A0A0A;color:#fff;border:none;border-radius:var(--r-md,10px);padding:13px 10px;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
+.btn-chat-app:hover{background:#FF6A00}
+.chat-list-item{display:flex;gap:12px;padding:13px 6px;border-bottom:1px solid var(--g150,#EFEFEF);cursor:pointer;align-items:center}
+.chat-list-item:hover{background:#FAFAFA}
+.cli-img{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#FFF0E6;flex-shrink:0}
+.cli-mid{flex:1;min-width:0}
+.cli-title{font-size:13.5px;font-weight:700;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cli-name{font-size:11.5px;color:#FF6A00;font-weight:600;margin:1px 0}
+.cli-last{font-size:12px;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cli-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.cli-time{font-size:10.5px;color:#A3A3A3}
+.cli-unread{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#FF6A00;color:#fff;font-size:10.5px;font-weight:700;line-height:18px;text-align:center}
+.chat-conv-modal{display:flex;flex-direction:column;max-width:480px;width:100%;height:min(640px,86vh)}
+.chat-conv-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--g200,#E8E8E8);flex-shrink:0}
+.cch-img{width:40px;height:40px;border-radius:8px;object-fit:cover;background:#FFF0E6}
+.cch-t{flex:1;min-width:0;cursor:pointer}
+.cch-title{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cch-sub{font-size:11px;color:#FF6A00;font-weight:600}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;background:#FAFAFA;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:78%;padding:9px 13px;border-radius:14px;font-size:13.5px;line-height:1.45;word-wrap:break-word;position:relative}
+.msg.me{align-self:flex-end;background:#FF6A00;color:#fff;border-bottom-right-radius:4px}
+.msg.them{align-self:flex-start;background:#fff;color:#1A1A1A;border:1px solid var(--g200,#E8E8E8);border-bottom-left-radius:4px}
+.msg-time{display:block;font-size:9.5px;opacity:.65;margin-top:3px;text-align:right}
+.chat-input-row{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--g200,#E8E8E8);flex-shrink:0;background:#fff}
+.chat-input-row input{flex:1;border:1.5px solid var(--g200,#E8E8E8);border-radius:22px;padding:11px 16px;font-size:14px;outline:none;font-family:inherit}
+.chat-input-row input:focus{border-color:#FF6A00}
+.chat-send{width:44px;height:44px;border-radius:50%;background:#FF6A00;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-send:disabled{opacity:.5;cursor:default}
+.chat-empty{text-align:center;color:#999;padding:50px 20px;font-size:13.5px}
+@media (max-width:520px){.chat-conv-modal{height:88vh;max-width:100%}}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1196,7 +1209,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
     <div class="logo-tagline">Trusted Property Partner</div>
   </div>
 </div>
-<div class="search-wrap"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
+<div class="search-wrap"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><button class="btn-chats" id="chatsBtn" title="My chats" onclick="window.openChats()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span><span id="chatBadge"></span></button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
 
 <!-- ── HERO SECTION ─────────────────────────────── -->
 <section class="hero" id="heroSection">
@@ -1555,6 +1568,36 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
         <button onclick="window.closePost()" style="background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:12px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">Done</button>
       </div>
     </div></div></div>
+<!-- Chat inbox -->
+<div class="modal-overlay" id="chatsModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <span class="modal-title">My Chats</span>
+      <button class="modal-close" onclick="document.getElementById('chatsModal').classList.remove('open')">x</button>
+    </div>
+    <div class="modal-body" id="chatsListBody" style="padding:6px 14px 14px">
+      <div class="chat-empty">Loading…</div>
+    </div>
+  </div>
+</div>
+<!-- Chat conversation -->
+<div class="modal-overlay" id="convModal">
+  <div class="modal chat-conv-modal">
+    <div class="chat-conv-head">
+      <button class="modal-close" style="position:static" onclick="window.closeConversation()">&#8249;</button>
+      <img class="cch-img" id="convImg" src="" alt="" onerror="this.style.visibility='hidden'"/>
+      <div class="cch-t" id="convHeadTap">
+        <div class="cch-title" id="convTitle"></div>
+        <div class="cch-sub" id="convSub"></div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-input-row">
+      <input id="chatInput" type="text" maxlength="800" placeholder="Type a message…" autocomplete="off"/>
+      <button class="chat-send" id="chatSendBtn" onclick="window.sendChatMsg()"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l14-7-4 7 4 7z"/></svg></button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="adminModal"><div class="modal adm-modal"><div class="modal-header">
 <div style="display:flex;align-items:center;gap:8px">
   <svg width="28" height="28" viewBox="0 0 48 48">
@@ -1574,7 +1617,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,deleteDoc,doc,serverTimestamp,onSnapshot,increment}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import{getStorage,ref,uploadBytes,getDownloadURL,deleteObject,listAll}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 /* ══ FIREBASE CONFIG ══════════════════════════════════════════════════ */
@@ -2134,6 +2177,7 @@ window.openDetail=function(id){
       <div class="contact-btns">
         <button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>
+        <button class="btn-chat-app" onclick="window.startChat('${p.id}')"><span class="ico" style="display:inline-flex;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/><circle cx="7" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="9.5" r=".8" fill="currentColor"/><circle cx="13" cy="9.5" r=".8" fill="currentColor"/></svg></span> Chat</button>
       </div>
       ${currentUser&&(currentUser.email===ADMIN_EMAIL||currentUser.uid===p.ownerId)?`
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--g200)">
@@ -3043,6 +3087,129 @@ window.showToast=showToast;
 let dPr=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dPr=e;document.getElementById('installBar')?.classList.add('show');document.getElementById('installBtn').onclick=async()=>{dPr.prompt();await dPr.userChoice;document.getElementById('installBar')?.classList.remove('show');dPr=null;};});
 if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW:',e));});}
+
+/* ════════ IN-APP CHAT (buyer <-> seller) ════════ */
+let convUnsub=null,inboxUnsub=null,activeChat=null,inboxCache=[];
+const escH=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const msgTime=ts=>{if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'});};
+
+function startInboxListener(){
+  if(inboxUnsub){inboxUnsub();inboxUnsub=null;}
+  const badge=document.getElementById('chatBadge');
+  if(!currentUser){if(badge)badge.style.display='none';inboxCache=[];return;}
+  const qy=query(collection(db,'chats'),where('participants','array-contains',currentUser.uid));
+  inboxUnsub=onSnapshot(qy,snap=>{
+    inboxCache=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>(b.lastMessageAt?.toMillis?.()||0)-(a.lastMessageAt?.toMillis?.()||0));
+    let un=0;inboxCache.forEach(c=>{un+=(c.unread&&c.unread[currentUser.uid])||0;});
+    if(badge){badge.textContent=un>99?'99+':un;badge.style.display=un>0?'block':'none';}
+    if(document.getElementById('chatsModal').classList.contains('open'))renderInbox();
+  },e=>console.log('chat inbox:',e));
+}
+
+function renderInbox(){
+  const el=document.getElementById('chatsListBody');
+  if(!currentUser){el.innerHTML='<div class="chat-empty">Sign in to see your chats.</div>';return;}
+  if(!inboxCache.length){el.innerHTML='<div class="chat-empty">No chats yet.<br>Open any property and tap <b>Chat</b> to message the seller.</div>';return;}
+  el.innerHTML=inboxCache.map(c=>{
+    const other=currentUser.uid===c.buyerId?(c.sellerName||'Seller'):(c.buyerName||'Buyer');
+    const un=(c.unread&&c.unread[currentUser.uid])||0;
+    return `<div class="chat-list-item" onclick="window.openConversation('${c.id}')">
+      ${c.coverPhoto?`<img class="cli-img" src="${c.coverPhoto}" loading="lazy" onerror="this.style.visibility='hidden'"/>`:`<div class="cli-img"></div>`}
+      <div class="cli-mid">
+        <div class="cli-title">${escH(c.propertyTitle||'Property')}</div>
+        <div class="cli-name">${escH(other)}</div>
+        <div class="cli-last">${escH(c.lastMessage||'Say hi 👋')}</div>
+      </div>
+      <div class="cli-right">
+        <span class="cli-time">${c.lastMessageAt?ago(c.lastMessageAt):''}</span>
+        ${un>0?`<span class="cli-unread">${un>99?'99+':un}</span>`:''}
+      </div>
+    </div>`;}).join('');
+}
+
+window.openChats=function(){
+  if(!currentUser){showToast('Sign in to use chat','error');window.doSignIn();return;}
+  renderInbox();
+  document.getElementById('chatsModal').classList.add('open');
+};
+
+window.startChat=async function(propId){
+  if(!currentUser){showToast('Sign in to chat with the seller','error');window.doSignIn();return;}
+  const p=allProps.find(x=>x.id===propId);if(!p)return;
+  if(!p.ownerId){showToast('Chat unavailable — contact via Call or WhatsApp','error');return;}
+  if(currentUser.uid===p.ownerId){window.closeDetail();window.openChats();return;}
+  const cid=propId+'_'+currentUser.uid;
+  try{
+    const cref=doc(db,'chats',cid);
+    const snap=await getDoc(cref);
+    if(!snap.exists()){
+      await setDoc(cref,{
+        propertyId:propId,propertyTitle:p.title||'',
+        coverPhoto:p.coverPhoto||(p.photos&&p.photos[0])||'',
+        buyerId:currentUser.uid,buyerName:currentUser.displayName||'Buyer',
+        sellerId:p.ownerId,sellerName:p.ownerName||p.sellerName||'Seller',
+        participants:[currentUser.uid,p.ownerId],
+        lastMessage:'',lastMessageAt:serverTimestamp(),
+        unread:{[currentUser.uid]:0,[p.ownerId]:0}
+      });
+    }
+    window.closeDetail();
+    window.openConversation(cid);
+  }catch(e){console.error(e);showToast('Could not start chat','error');}
+};
+
+window.openConversation=async function(cid){
+  if(!currentUser)return;
+  document.getElementById('chatsModal').classList.remove('open');
+  let c=inboxCache.find(x=>x.id===cid);
+  if(!c){const sn=await getDoc(doc(db,'chats',cid));if(!sn.exists())return;c={id:cid,...sn.data()};}
+  activeChat=c;
+  const other=currentUser.uid===c.buyerId?(c.sellerName||'Seller'):(c.buyerName||'Buyer');
+  document.getElementById('convTitle').textContent=c.propertyTitle||'Property';
+  document.getElementById('convSub').textContent='with '+other+' · tap to view property';
+  const im=document.getElementById('convImg');
+  im.style.visibility=c.coverPhoto?'visible':'hidden';if(c.coverPhoto)im.src=c.coverPhoto;
+  document.getElementById('convHeadTap').onclick=()=>{window.closeConversation();window.openDetail(c.propertyId);};
+  document.getElementById('chatMsgs').innerHTML='<div class="chat-empty">Loading…</div>';
+  document.getElementById('convModal').classList.add('open');
+  setTimeout(()=>document.getElementById('chatInput').focus(),200);
+  // clear my unread
+  updateDoc(doc(db,'chats',cid),{['unread.'+currentUser.uid]:0}).catch(()=>{});
+  if(convUnsub)convUnsub();
+  convUnsub=onSnapshot(query(collection(db,'chats',cid,'messages'),orderBy('createdAt','asc'),limit(200)),snap=>{
+    const box=document.getElementById('chatMsgs');
+    if(snap.empty){box.innerHTML='<div class="chat-empty">Start the conversation —<br>ask about price, site visit, documents…</div>';return;}
+    box.innerHTML=snap.docs.map(d=>{const m=d.data();const me=m.senderId===currentUser.uid;
+      return `<div class="msg ${me?'me':'them'}">${escH(m.text)}<span class="msg-time">${msgTime(m.createdAt)}</span></div>`;}).join('');
+    box.scrollTop=box.scrollHeight;
+    updateDoc(doc(db,'chats',cid),{['unread.'+currentUser.uid]:0}).catch(()=>{});
+  },e=>console.log('conv:',e));
+};
+
+window.closeConversation=function(){
+  document.getElementById('convModal').classList.remove('open');
+  if(convUnsub){convUnsub();convUnsub=null;}
+  activeChat=null;
+};
+
+window.sendChatMsg=async function(){
+  const inp=document.getElementById('chatInput');
+  const text=inp.value.trim();
+  if(!text||!activeChat||!currentUser)return;
+  const btn=document.getElementById('chatSendBtn');btn.disabled=true;inp.value='';
+  const otherUid=currentUser.uid===activeChat.buyerId?activeChat.sellerId:activeChat.buyerId;
+  try{
+    await addDoc(collection(db,'chats',activeChat.id,'messages'),
+      {senderId:currentUser.uid,text,createdAt:serverTimestamp()});
+    await updateDoc(doc(db,'chats',activeChat.id),
+      {lastMessage:text.slice(0,80),lastMessageAt:serverTimestamp(),['unread.'+otherUid]:increment(1)});
+  }catch(e){console.error(e);showToast('Message not sent — try again','error');inp.value=text;}
+  btn.disabled=false;inp.focus();
+};
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.sendChatMsg();}});
+onAuthStateChanged(auth,()=>{setTimeout(startInboxListener,400);});
+/* ════════ END CHAT ════════ */
 loadProps();
 </script>
 

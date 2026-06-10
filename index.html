@@ -2,28 +2,60 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#FF6A00"/>
-<meta name="description" content="MyPlotMitra — Buy, sell and discover plots, houses, flats and land in Hyderabad. Call 9989083321"/>
+<meta name="description" content="MyPlotMitra — Buy, sell and discover verified plots, houses, flats and land in Hyderabad and Anantapur. Zero brokerage, direct from owners. Call 9989083321"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="MyPlotMitra"/>
 <link rel="manifest" href="/manifest.json"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
-<title>MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad</title>
-<meta name="keywords" content="plots in Hyderabad, houses for sale Hyderabad, flats Hyderabad, agricultural land Hyderabad, HMDA plots, property for sale Hyderabad"/>
-<meta property="og:title" content="MyPlotMitra — Buy &amp; Sell Properties in Hyderabad"/>
-<meta property="og:description" content="Find verified plots, houses, flats and land in Hyderabad. Direct from owners. Zero brokerage. Call 9989083321"/>
+<title>MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad &amp; Anantapur</title>
+<meta name="keywords" content="plots in Hyderabad, plots in Anantapur, houses for sale Hyderabad, houses for sale Anantapur, flats Hyderabad, agricultural land Anantapur, HMDA plots, DTCP plots, open plots Shadnagar, property for sale Hyderabad, real estate Anantapur"/>
+<meta property="og:title" content="MyPlotMitra — Buy &amp; Sell Properties in Hyderabad &amp; Anantapur"/>
+<meta property="og:description" content="Find verified plots, houses, flats and land in Hyderabad &amp; Anantapur. Direct from owners. Zero brokerage. Call 9989083321"/>
 <meta property="og:url" content="https://www.myplotmitra.com"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="https://myplotmitra.vercel.app/icons/icon-512.png"/>
+<meta property="og:image" content="https://www.myplotmitra.com/icons/icon-512.png"/>
 <meta property="og:image:width" content="512"/>
 <meta property="og:image:height" content="512"/>
-<meta name="twitter:image" content="https://myplotmitra.vercel.app/icons/icon-512.png"/>
-<meta name="twitter:title" content="MyPlotMitra — Properties in Hyderabad"/>
+<meta name="twitter:image" content="https://www.myplotmitra.com/icons/icon-512.png"/>
+<meta name="twitter:title" content="MyPlotMitra — Properties in Hyderabad &amp; Anantapur"/>
 <meta name="geo.region" content="IN-TG"/>
 <meta name="geo.placename" content="Hyderabad, Telangana, India"/>
 <link rel="canonical" href="https://www.myplotmitra.com"/>
+<link rel="preload" as="image" fetchpriority="high" href="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80&auto=format&fit=crop"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "MyPlotMitra",
+  "url": "https://www.myplotmitra.com",
+  "logo": "https://www.myplotmitra.com/icons/icon-512.png",
+  "image": "https://www.myplotmitra.com/icons/icon-512.png",
+  "description": "Buy, sell and discover verified plots, houses, flats and land in Hyderabad and Anantapur. Zero brokerage, direct from owners.",
+  "telephone": "+919989083321",
+  "priceRange": "₹₹",
+  "areaServed": [
+    {"@type": "City", "name": "Hyderabad"},
+    {"@type": "City", "name": "Anantapur"}
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "Telangana",
+    "addressCountry": "IN"
+  },
+  "sameAs": ["https://wa.me/919989083321"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "MyPlotMitra",
+  "url": "https://www.myplotmitra.com"
+}
+</script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet"/>
@@ -1169,7 +1201,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 <!-- ── HERO SECTION ─────────────────────────────── -->
 <section class="hero" id="heroSection">
   <!-- Background: real estate image from Unsplash (free) -->
-  <img class="hero-bg-img"
+  <img class="hero-bg-img" fetchpriority="high" decoding="async"
     src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80&auto=format&fit=crop"
     alt="Properties in Hyderabad"
     loading="eager"
@@ -2060,7 +2092,7 @@ window.openDetail=function(id){
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
         ? `<div id="photoSlider" style="width:100%;height:100%;position:relative;overflow:hidden">
-            <img id="slideImg" src="${p.photos[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>
+            <img id="slideImg" src="${p.photos[0]}" loading="lazy" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>
             <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px">
               ${p.photos.map((_,i)=>`<div class="slide-dot${i===0?' active':''}" onclick="window.goSlide(${i})" style="width:6px;height:6px;border-radius:50%;background:${i===0?'#fff':'rgba(255,255,255,.5)'};cursor:pointer"></div>`).join('')}
             </div>
@@ -2069,7 +2101,7 @@ window.openDetail=function(id){
             <button onclick="window.goSlide(1)"  style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px">&#8250;</button>`:''}
           </div>`
         : p.coverPhoto
-          ? `<img src="${p.coverPhoto}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
+          ? `<img src="${p.coverPhoto}" loading="lazy" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
           : `<span style="font-size:64px">${p.type==='plot'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span>':p.type==='house'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>':p.type==='land'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>'}</span>`
       }
     </div>
@@ -2420,7 +2452,7 @@ window.openMyListings=async function(){
       <div class="my-listing-card" id="ml-${p.id}">
         <div class="my-listing-thumb">
           ${(p.coverPhoto||(p.photos&&p.photos[0]))?
-            `<img src="${p.coverPhoto||p.photos[0]}" onerror="this.style.display='none'" alt="${p.title}"/>`:
+            `<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" onerror="this.style.display='none'" alt="${p.title}"/>`:
             `${p.type==='plot'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span>':p.type==='house'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>':p.type==='land'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>'}`}
         </div>
         <div class="my-listing-info">
@@ -2922,7 +2954,7 @@ async function loadAdminTab(tab){
         <div class="adm-top">
           <div class="adm-thumb" style="background:${TB[p.type]||'#FFF0E6'};overflow:hidden">
             ${(p.coverPhoto||(p.photos&&p.photos[0]))?
-              `<img src="${p.coverPhoto||p.photos[0]}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`
+              `<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`
               :`<span style="font-size:22px">${p.type==='plot'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span>':p.type==='house'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>':p.type==='land'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>'}</span>`
             }
           </div>

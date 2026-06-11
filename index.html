@@ -41,7 +41,9 @@
    Black · White · Orange — Clean, Bold, Professional
 ═══════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;width:100%}
+body{position:relative;width:100%;max-width:100%}
+img,video,svg,iframe{max-width:100%}
 
 /* ── TOKENS ─────────────────────────────────────── */
 :root{
@@ -1608,6 +1610,11 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
       <span class="modal-title">My Chats</span>
       <button class="modal-close" onclick="document.getElementById('chatsModal').classList.remove('open')">x</button>
     </div>
+    <div id="notifBanner" style="display:none;margin:10px 14px 0;background:#FFF4EC;border:1px solid #FFD9BD;border-radius:12px;padding:10px 12px;align-items:center;gap:10px">
+      <span style="font-size:18px">🔔</span>
+      <span style="flex:1;font-size:12px;color:#1A1A1A;line-height:1.4">Get notified when buyers or sellers message you — even when the app is closed</span>
+      <button onclick="window.enableNotifs()" style="background:#FF6A00;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Enable</button>
+    </div>
     <div class="modal-body" id="chatsListBody" style="padding:6px 14px 14px">
       <div class="chat-empty">Loading…</div>
     </div>
@@ -1660,8 +1667,9 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,deleteDoc,doc,serverTimestamp,onSnapshot,increment}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import{getFirestore,collection,query,where,orderBy,limit,getDocs,addDoc,setDoc,getDoc,updateDoc,deleteDoc,doc,serverTimestamp,onSnapshot,increment,arrayUnion}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import{getStorage,ref,uploadBytes,getDownloadURL,deleteObject,listAll}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
+import{getMessaging,getToken,onMessage}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js";
 
 /* ══ FIREBASE CONFIG ══════════════════════════════════════════════════ */
 const firebaseConfig={
@@ -3184,7 +3192,7 @@ function renderInbox(){
 
 window.openChats=function(){
   if(!currentUser){showToast('Sign in to use chat','error');window.doSignIn();return;}
-  renderInbox();
+  renderInbox();updateNotifBanner();
   document.getElementById('chatsModal').classList.add('open');
 };
 
@@ -3259,6 +3267,7 @@ window.sendChatMsg=async function(){
       {senderId:currentUser.uid,text,createdAt:serverTimestamp()});
     await updateDoc(doc(db,'chats',activeChat.id),
       {lastMessage:text.slice(0,80),lastMessageAt:serverTimestamp(),['unread.'+otherUid]:increment(1)});
+    pushNotify(activeChat.id,text);
   }catch(e){console.error(e);showToast('Message not sent — try again','error');inp.value=text;}
   btn.disabled=false;inp.focus();
 };
@@ -3434,6 +3443,50 @@ window.rejectSub=async function(uid){
   catch(e){showToast('Failed','error');}
 };
 /* ════════ END PREMIUM ════════ */
+
+/* ════════ PUSH NOTIFICATIONS (FCM) ════════ */
+const FCM_VAPID='PASTE_VAPID_KEY_HERE'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
+let fcmMessaging=null;
+try{fcmMessaging=getMessaging(app);}catch(e){console.log('FCM unsupported:',e.message);}
+
+function notifReady(){return 'Notification' in window && fcmMessaging && !FCM_VAPID.startsWith('PASTE');}
+function updateNotifBanner(){
+  const b=document.getElementById('notifBanner');if(!b)return;
+  b.style.display=(notifReady()&&currentUser&&Notification.permission==='default')?'flex':'none';
+}
+
+window.enableNotifs=async function(){
+  if(!currentUser){window.doSignIn();return;}
+  if(!notifReady()){showToast('Notifications not available on this device','error');return;}
+  try{
+    const perm=await Notification.requestPermission();
+    if(perm!=='granted'){showToast('Notifications blocked in browser settings','error');updateNotifBanner();return;}
+    const reg=await navigator.serviceWorker.ready;
+    const tok=await getToken(fcmMessaging,{vapidKey:FCM_VAPID,serviceWorkerRegistration:reg});
+    if(!tok){showToast('Could not get notification token','error');return;}
+    await setDoc(doc(db,'users',currentUser.uid),{fcmTokens:arrayUnion(tok)},{merge:true});
+    updateNotifBanner();
+    showToast('Notifications enabled ✓','success');
+  }catch(e){console.error('FCM:',e);showToast('Could not enable notifications','error');}
+};
+
+// Foreground messages → toast (chat view updates live via onSnapshot anyway)
+if(fcmMessaging){try{onMessage(fcmMessaging,p=>{
+  const d=p.data||{};
+  if(document.getElementById('convModal')?.classList.contains('open'))return;
+  showToast((d.title?d.title+': ':'')+(d.body||'New message'),'success');
+});}catch(e){}}
+
+// Fire-and-forget push trigger after sending a chat message
+async function pushNotify(chatId,text){
+  try{
+    const t=await currentUser.getIdToken();
+    fetch('/api/notify',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},
+      body:JSON.stringify({chatId,text})}).catch(()=>{});
+  }catch(e){}
+}
+/* ════════ END PUSH ════════ */
 loadProps();
 </script>
 

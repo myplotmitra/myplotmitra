@@ -1212,6 +1212,32 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .sub-no{flex:1;background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:9px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
 .prem-badge{display:inline-block;background:linear-gradient(90deg,#FF6A00,#FFB300);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:8px}
 </style>
+
+<style>
+/* ── Mobile header declutter + Profile sheet ── */
+@media(max-width:640px){
+  #authBtns{display:none!important}
+  .btn-admin span.adm-label{display:none}
+  .btn-admin{padding:0 11px}
+  .btn-post{padding:0 13px}
+  .header-inner{gap:8px}
+}
+.prof-sheet{max-width:420px}
+.prof-head{display:flex;align-items:center;gap:14px;padding:6px 2px 16px}
+.prof-av{width:58px;height:58px;border-radius:50%;border:2.5px solid #FF6A00;object-fit:cover;background:#FFF0E6}
+.prof-av-fb{width:58px;height:58px;border-radius:50%;background:#FF6A00;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
+.prof-name{font-size:16px;font-weight:800;color:#1A1A1A}
+.prof-email{font-size:12px;color:#777;margin-top:2px;word-break:break-all}
+.prof-row{display:flex;align-items:center;gap:12px;padding:13px 6px;border-top:1px solid var(--g150,#EFEFEF);cursor:pointer;font-size:13.5px;font-weight:600;color:#1A1A1A}
+.prof-row:hover{background:#FAFAFA}
+.prof-row .pr-ico{width:34px;height:34px;border-radius:9px;background:#FFF4EC;color:#D95A00;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prof-row.danger{color:#DC2626}
+.prof-row.danger .pr-ico{background:#FEF2F2;color:#DC2626}
+.prof-prem{display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(100deg,#0A0A0A,#2A1500);border-radius:12px;padding:13px 14px;margin-bottom:6px}
+.prof-prem-t{color:#fff;font-size:13px;font-weight:700}
+.prof-prem-s{color:#FFB36B;font-size:11px;margin-top:2px}
+.prof-prem-btn{background:#FF6A00;color:#fff;border:none;border-radius:9px;padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1244,7 +1270,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
     <div class="logo-tagline">Trusted Property Partner</div>
   </div>
 </div>
-<div class="search-wrap"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> Admin</button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><button class="btn-chats" id="chatsBtn" title="My chats" onclick="window.openChats()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span><span id="chatBadge"></span></button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
+<div class="search-wrap"><span class="sicon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span><input type="search" placeholder="Search city, area, location..." oninput="window.debounceSearch(this.value)" autocomplete="off"/></div><div class="hdr-right"><button class="btn-admin" id="adminBtn" onclick="window.openAdmin()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1.1 1.1M14.8 14.8l1.1 1.1M4.1 15.9l1.1-1.1M14.8 5.2l1.1-1.1"/></svg></span> <span class="adm-label">Admin</span></button><button class="btn-post" id="postBtn" onclick="window.openPost()">+ Post</button><button class="btn-chats" id="chatsBtn" title="My chats" onclick="window.openChats()"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span><span id="chatBadge"></span></button><div id="authBtns"><button class="btn-signin" onclick="window.doSignIn()">Sign in</button></div></div></div></header>
 
 <!-- ── HERO SECTION ─────────────────────────────── -->
 <section class="hero" id="heroSection">
@@ -1375,7 +1401,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   <button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span>Search</button>
   <button class="nav-post" onclick="window.openPost()" aria-label="Post property"><span class="icon icon-lg" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10 4v12M4 10h12"/></svg></span></button>
   <button class="nav-item" id="navMyListings" onclick="window.openMyListings()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7z"/><polyline points="12,2 12,8 18,8"/><line x1="8" y1="11" x2="12" y2="11"/><line x1="8" y1="14" x2="14" y2="14"/></svg></span></span>My Posts</button>
-  <button class="nav-item" onclick="window.doSignIn()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span></span>Profile</button>
+  <button class="nav-item" onclick="window.openProfile()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span></span>Profile</button>
 </nav>
 <!-- My Listings Modal -->
 <div class="modal-overlay" id="myListingsModal">
@@ -1639,6 +1665,15 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   </div>
 </div>
 <!-- Premium subscribe -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal prof-sheet">
+    <div class="modal-header">
+      <span class="modal-title">Profile</span>
+      <button class="modal-close" onclick="document.getElementById('profileModal').classList.remove('open')">x</button>
+    </div>
+    <div class="modal-body" id="profileBody"></div>
+  </div>
+</div>
 <div class="modal-overlay" id="subModal">
   <div class="modal" style="max-width:400px">
     <div class="modal-header">
@@ -3488,6 +3523,52 @@ async function pushNotify(chatId,text){
   }catch(e){}
 }
 /* ════════ END PUSH ════════ */
+
+/* ════════ PROFILE SHEET ════════ */
+window.openProfile=function(){
+  const body=document.getElementById('profileBody');
+  const u=currentUser;
+  if(!u){
+    body.innerHTML=`<div style="text-align:center;padding:18px 6px 10px">
+      <div class="prof-av-fb" style="margin:0 auto 14px">👤</div>
+      <p style="font-size:13.5px;color:#666;margin-bottom:18px">Sign in to post properties, chat with sellers and manage your account.</p>
+      <button class="btn-post" style="width:100%;justify-content:center" onclick="document.getElementById('profileModal').classList.remove('open');window.doSignIn()">Sign in with Google</button>
+    </div>`;
+  }else{
+    const prem=window.__isPremium();
+    let premLine='';
+    if(prem){
+      const t=myProfile.premiumUntil;const d=t.toDate?t.toDate():new Date(t.seconds*1000);
+      premLine=`<div class="prof-prem"><div><div class="prof-prem-t">⭐ Premium active</div>
+        <div class="prof-prem-s">Valid till ${d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div></div></div>`;
+    }else if(appSettings.premiumLock){
+      premLine=`<div class="prof-prem"><div><div class="prof-prem-t">Unlock contacts &amp; chat</div>
+        <div class="prof-prem-s">₹25/month · seller numbers + in-app chat</div></div>
+        <button class="prof-prem-btn" onclick="document.getElementById('profileModal').classList.remove('open');window.openSubscribe()">Upgrade</button></div>`;
+    }
+    const isAdm=u.email===ADMIN_EMAIL||(myProfile&&(myProfile.role==='admin'||myProfile.role==='superadmin'));
+    body.innerHTML=`
+      <div class="prof-head">
+        ${u.photoURL?`<img class="prof-av" src="${u.photoURL}" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=\\'prof-av-fb\\'>${(u.displayName||'U')[0].toUpperCase()}</div>'"/>`
+          :`<div class="prof-av-fb">${(u.displayName||'U')[0].toUpperCase()}</div>`}
+        <div><div class="prof-name">${u.displayName||'User'}</div>
+        <div class="prof-email">${u.email||''}</div></div>
+      </div>
+      ${premLine}
+      <div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openChats()">
+        <span class="pr-ico">💬</span> My Chats</div>
+      <div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openMyListings()">
+        <span class="pr-ico">📄</span> My Posts</div>
+      <div class="prof-row" onclick="window.enableNotifs()">
+        <span class="pr-ico">🔔</span> ${('Notification' in window&&Notification.permission==='granted')?'Notifications enabled ✓':'Enable notifications'}</div>
+      ${isAdm?`<div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openAdmin()">
+        <span class="pr-ico">⚙️</span> Admin panel</div>`:''}
+      <div class="prof-row danger" onclick="window.doSignOut()">
+        <span class="pr-ico">⎋</span> Sign out</div>`;
+  }
+  document.getElementById('profileModal').classList.add('open');
+};
+/* ════════ END PROFILE ════════ */
 loadProps();
 </script>
 

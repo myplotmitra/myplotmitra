@@ -2005,7 +2005,7 @@ function renderGrid(data){
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time" style="display:flex;align-items:center;gap:3px"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
-        ${p.sellerPhone?`<div style="font-size:10px;color:var(--g400);margin-top:4px;display:flex;align-items:center;gap:3px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> <span>${p.sellerPhone}</span></div>`:''}
+        ${p.sellerPhone?`<div style="font-size:10px;color:var(--g400);margin-top:4px;display:flex;align-items:center;gap:3px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> <span onclick="${window.__canContact(p)?'':"event.stopPropagation();window.openSubscribe()"}" style="${window.__canContact(p)?'':'cursor:pointer;text-decoration:underline dotted'}">${window.__canContact(p)?p.sellerPhone:String(p.sellerPhone).slice(0,4)+'XXXXXX 🔒'}</span></div>`:''}
       </div>
       ${p.sellerPhone?`<div class="card-seller-row">
         <div class="card-seller-avatar">${(p.ownerName||'O')[0].toUpperCase()}</div>
@@ -3277,10 +3277,11 @@ onAuthStateChanged(auth,()=>{setTimeout(startInboxListener,400);});
 
 /* ════════ PREMIUM LOCK (₹25/month) ════════ */
 let appSettings={premiumLock:false},myProfile=null;
-try{onSnapshot(doc(db,'settings','app'),sn=>{appSettings=sn.exists()?sn.data():{premiumLock:false};},()=>{});}catch(e){}
+try{onSnapshot(doc(db,'settings','app'),sn=>{appSettings=sn.exists()?sn.data():{premiumLock:false};try{render();}catch(_){}},()=>{});}catch(e){}
 onAuthStateChanged(auth,async u=>{
   if(!u){myProfile=null;return;}
   try{const d=await getDoc(doc(db,'users',u.uid));myProfile=d.exists()?d.data():null;}catch(e){myProfile=null;}
+  try{render();}catch(_){}
 });
 window.__isPremium=()=>{const t=myProfile&&myProfile.premiumUntil;if(!t)return false;
   const ms=t.toMillis?t.toMillis():new Date(t.seconds?t.seconds*1000:t).getTime();return ms>Date.now();};

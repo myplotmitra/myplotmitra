@@ -1247,6 +1247,8 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 @media(max-width:640px){
   #sectionPostLink{display:none!important}
   .vtog{display:none!important}
+  .card-title,.card-foot,.card-seller-row{display:none!important}
+  .card-more{display:flex!important}
   .bk-btn .bk-label{display:none}
   .bk-btn{width:38px;height:38px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;border-radius:50%!important;flex-shrink:0}
   .filter-row2{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
@@ -1256,6 +1258,16 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   .sec-view-toggle:active{transform:scale(.97)}
   .sec-view-toggle.map-on{background:#FF6A00;border-color:#FF6A00;color:#fff;box-shadow:0 4px 14px rgba(255,106,0,.35)}
 }
+</style>
+
+<style>
+/* ── Minimal mobile cards + contact requests ── */
+.card-more{display:none;width:100%;margin:8px 0 2px;padding:9px 8px;border:1.5px solid var(--g200,#E8E8E8);background:#fff;border-radius:10px;font-size:11.5px;font-weight:800;color:#D95A00;justify-content:center;align-items:center;gap:4px;font-family:inherit;cursor:pointer}
+.card-more:active{background:#FFF4EC;border-color:#FF6A00}
+.btn-req{grid-column:1/-1;background:#0A0A0A;color:#fff;border:none;border-radius:var(--r-md,10px);padding:14px 10px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-req:hover{background:#FF6A00}
+.btn-req.pending{background:#F5F5F5;color:#777;pointer-events:none}
+.req-sec-title{font-size:11px;font-weight:800;letter-spacing:.6px;color:#D95A00;margin:4px 0 8px}
 </style>
 </head>
 <body>
@@ -2065,7 +2077,8 @@ function renderGrid(data){
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time" style="display:flex;align-items:center;gap:3px"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
-        ${p.sellerPhone?`<div style="font-size:10px;color:var(--g400);margin-top:4px;display:flex;align-items:center;gap:3px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> <span onclick="${window.__canContact(p)?'':"event.stopPropagation();window.openSubscribe()"}" style="${window.__canContact(p)?'':'cursor:pointer;text-decoration:underline dotted'}">${window.__canContact(p)?p.sellerPhone:String(p.sellerPhone).slice(0,4)+'XXXXXX 🔒'}</span></div>`:''}
+        <button class="card-more" onclick="event.stopPropagation();window.openDetail('${p.id}')">More details &rsaquo;</button>
+        
       </div>
       ${p.sellerPhone?`<div class="card-seller-row">
         <div class="card-seller-avatar">${(p.ownerName||'O')[0].toUpperCase()}</div>
@@ -2242,8 +2255,11 @@ window.openDetail=function(id){
   const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6',isSaved=bookmarks.has(p.id);
   const sellerPhone=p.sellerPhone||p.ownerPhone||'9989083321';
   const sellerName=p.ownerName||p.sellerName||'Owner';
+  window.__openPid=p.id;
   const canContact=window.__canContact(p);
-  const shownPhone=canContact?sellerPhone:String(sellerPhone).slice(0,4)+'XXXXXX';
+  const phoneOK=window.__phoneVisible(p);
+  const reqSt=(window.__myReqs&&window.__myReqs[p.id])||'';
+  const shownPhone=phoneOK?sellerPhone:String(sellerPhone).slice(0,4)+'XXXXXX';
   document.getElementById('detailBody').innerHTML=`
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
@@ -2264,7 +2280,7 @@ window.openDetail=function(id){
     <div class="detail-content">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
         <div class="detail-price">${fp(p.price)}</div>
-        <span style="font-size:22px;cursor:pointer;color:${isSaved?'#E85D04':'#ccc'}" onclick="window.toggleBk('${p.id}',event);this.textContent=bookmarks.has('${p.id}')?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>';this.style.color=bookmarks.has('${p.id}')?'#E85D04':'#ccc'">${isSaved?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>'}</span>
+        <span style="cursor:pointer;padding:4px;line-height:1" onclick="window.detToggleBk('${p.id}',this,event)">${isSaved?detHeartOn:detHeartOff}</span>
       </div>
       <div class="detail-title">${p.title}</div>
       <div class="detail-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.address?p.address+', ':''} ${p.city}</div>
@@ -2288,8 +2304,8 @@ window.openDetail=function(id){
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
       </div>`:''}
       ${canContact?`<div class="contact-btns">
-        <button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
-        <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>
+        ${phoneOK?`<button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
+        <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>`:`<button class="btn-req${reqSt==='pending'?' pending':''}" onclick="window.requestPhone('${p.id}')">${reqSt==='pending'?'⏳ Request sent — waiting for seller approval':reqSt==='denied'?'Seller declined — request again or chat below':'🔓 Request Phone Number from Seller'}</button>`}
         <button class="btn-chat-app" onclick="window.startChat('${p.id}')"><span class="ico" style="display:inline-flex;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/><circle cx="7" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="9.5" r=".8" fill="currentColor"/><circle cx="13" cy="9.5" r=".8" fill="currentColor"/></svg></span> Chat</button>
       </div>`:`<div class="lock-cta" onclick="window.openSubscribe()">
         <div class="lock-cta-ico">🔒</div>
@@ -3230,8 +3246,8 @@ function startInboxListener(){
   inboxUnsub=onSnapshot(qy,snap=>{
     inboxCache=snap.docs.map(d=>({id:d.id,...d.data()}))
       .sort((a,b)=>(b.lastMessageAt?.toMillis?.()||0)-(a.lastMessageAt?.toMillis?.()||0));
-    let un=0;inboxCache.forEach(c=>{un+=(c.unread&&c.unread[currentUser.uid])||0;});
-    if(badge){badge.textContent=un>99?'99+':un;badge.style.display=un>0?'block':'none';}
+    chatUnread=0;inboxCache.forEach(c=>{chatUnread+=(c.unread&&c.unread[currentUser.uid])||0;});
+    updateChatBadge();
     if(document.getElementById('chatsModal').classList.contains('open'))renderInbox();
   },e=>console.log('chat inbox:',e));
 }
@@ -3239,8 +3255,17 @@ function startInboxListener(){
 function renderInbox(){
   const el=document.getElementById('chatsListBody');
   if(!currentUser){el.innerHTML='<div class="chat-empty">Sign in to see your chats.</div>';return;}
-  if(!inboxCache.length){el.innerHTML='<div class="chat-empty">No chats yet.<br>Open any property and tap <b>Chat</b> to message the seller.</div>';return;}
-  el.innerHTML=inboxCache.map(c=>{
+  const reqHtml=sellerReqs.length?'<div class="req-sec-title">📲 CONTACT REQUESTS — buyers want your number</div>'+sellerReqs.map(r=>`
+    <div class="sub-req">
+      <div class="sub-req-h"><div><div class="sub-req-n">${escH(r.buyerName||'Buyer')}</div>
+      <div class="sub-req-e">for: ${escH(r.propertyTitle||'your listing')}</div></div></div>
+      <div class="sub-req-btns" style="margin-top:8px">
+        <button class="sub-ok" onclick="window.decideReq('${r.id}',true)">Share my number</button>
+        <button class="sub-no" onclick="window.decideReq('${r.id}',false)">Decline</button>
+      </div>
+    </div>`).join(''):'';
+  if(!inboxCache.length&&!sellerReqs.length){el.innerHTML='<div class="chat-empty">No chats yet.<br>Open any property and tap <b>Chat</b> to message the seller.</div>';return;}
+  el.innerHTML=reqHtml+inboxCache.map(c=>{
     const other=currentUser.uid===c.buyerId?(c.sellerName||'Seller'):(c.buyerName||'Buyer');
     const un=(c.unread&&c.unread[currentUser.uid])||0;
     return `<div class="chat-list-item" onclick="window.openConversation('${c.id}')">
@@ -3601,6 +3626,72 @@ window.openProfile=function(){
   document.getElementById('profileModal').classList.add('open');
 };
 /* ════════ END PROFILE ════════ */
+
+/* Detail-sheet bookmark heart (clean handler — no HTML inside attributes) */
+const detHeartOn='<svg width="22" height="22" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg>';
+const detHeartOff='<svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#bbb" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg>';
+window.detToggleBk=function(id,el,ev){
+  try{window.toggleBk(id,ev||{stopPropagation:()=>{}});}catch(e){}
+  el.innerHTML=bookmarks.has(id)?detHeartOn:detHeartOff;
+};
+
+/* ════════ CONTACT REQUESTS (seller-approved phone visibility) ════════ */
+window.__myReqs={};let sellerReqs=[],reqUnsubB=null,reqUnsubS=null,chatUnread=0;
+function updateChatBadge(){
+  const badge=document.getElementById('chatBadge');if(!badge)return;
+  const t=chatUnread+sellerReqs.length;
+  badge.textContent=t>99?'99+':t;badge.style.display=t>0?'block':'none';
+}
+function refreshOpenDetail(){
+  try{
+    if(window.__openPid&&document.getElementById('detailSheet').classList.contains('open'))
+      window.openDetail(window.__openPid);
+  }catch(_){}
+}
+function startReqListeners(){
+  if(reqUnsubB){reqUnsubB();reqUnsubB=null;}
+  if(reqUnsubS){reqUnsubS();reqUnsubS=null;}
+  window.__myReqs={};sellerReqs=[];updateChatBadge();
+  if(!currentUser)return;
+  reqUnsubB=onSnapshot(query(collection(db,'contactRequests'),where('buyerId','==',currentUser.uid)),sn=>{
+    window.__myReqs={};
+    sn.docs.forEach(d=>{const r=d.data();window.__myReqs[r.propertyId]=r.status;});
+    refreshOpenDetail();
+  },e=>console.log('req buyer:',e.code||e));
+  reqUnsubS=onSnapshot(query(collection(db,'contactRequests'),where('sellerId','==',currentUser.uid)),sn=>{
+    sellerReqs=sn.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.status==='pending')
+      .sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
+    updateChatBadge();
+    if(document.getElementById('chatsModal').classList.contains('open'))renderInbox();
+  },e=>console.log('req seller:',e.code||e));
+}
+window.__phoneVisible=(p)=>{
+  if(!p||!p.sellerPhone)return false;
+  if(currentUser&&(currentUser.email===ADMIN_EMAIL||(p.ownerId&&p.ownerId===currentUser.uid)))return true;
+  return window.__myReqs[p.id]==='approved';
+};
+window.requestPhone=async function(propId){
+  if(!currentUser){showToast('Sign in to request the number','error');window.doSignIn();return;}
+  const p=allProps.find(x=>x.id===propId);if(!p)return;
+  if(!window.__canContact(p)){window.openSubscribe();return;}
+  if(!p.ownerId){showToast('Request unavailable — use Chat instead','error');return;}
+  try{
+    await setDoc(doc(db,'contactRequests',propId+'_'+currentUser.uid),{
+      propertyId:propId,propertyTitle:p.title||'',
+      buyerId:currentUser.uid,buyerName:currentUser.displayName||'Buyer',
+      sellerId:p.ownerId,status:'pending',createdAt:serverTimestamp()});
+    showToast('Request sent! You will see the number once the seller approves.','success');
+  }catch(e){console.error(e);showToast('Could not send request','error');}
+};
+window.decideReq=async function(id,approve){
+  try{
+    await updateDoc(doc(db,'contactRequests',id),
+      {status:approve?'approved':'denied',decidedAt:serverTimestamp()});
+    showToast(approve?'Your number is now visible to this buyer':'Request declined','success');
+  }catch(e){console.error(e);showToast('Failed — try again','error');}
+};
+onAuthStateChanged(auth,()=>{setTimeout(startReqListeners,500);});
+/* ════════ END CONTACT REQUESTS ════════ */
 loadProps();
 </script>
 

@@ -147,7 +147,7 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
 
 /* ── SORT / COUNT ────────────────────────────────── */
 .pcnt{font-size:12px;color:var(--g400);white-space:nowrap;flex-shrink:0;font-weight:400}
-.sort-sel{-webkit-appearance:none;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;border:1.5px solid var(--g200);border-radius:100px;padding:8px 32px 8px 14px;font-size:12.5px;font-weight:600;color:var(--ink);outline:none;cursor:pointer;font-family:var(--font);flex-shrink:1;min-width:0;max-width:46vw;overflow:hidden;text-overflow:ellipsis;transition:border-color .2s}
+.sort-sel{-webkit-appearance:none;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;border:1.5px solid var(--g200);border-radius:100px;padding:0 34px 0 16px;height:38px;font-size:13px;font-weight:700;box-shadow:0 1px 5px rgba(0,0,0,.04);color:var(--ink);outline:none;cursor:pointer;font-family:var(--font);flex-shrink:0;width:auto;transition:border-color .2s}
 .sort-sel:focus{border-color:var(--or)}
 .bk-btn{background:none;border:1.5px solid var(--g200);border-radius:var(--r-md);padding:5px 11px;font-size:11px;cursor:pointer;color:var(--g500);transition:all .2s;white-space:nowrap;font-family:var(--font);font-weight:500}
 .bk-btn:hover{border-color:var(--black);color:var(--ink)}
@@ -230,12 +230,14 @@ body{font-family:var(--font);background:var(--white);color:var(--ink);min-height
 
 /* ── DETAIL SHEET ────────────────────────────────── */
 .sheet-overlay{position:fixed;inset:0;background:rgba(10,10,10,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}.sheet-overlay.open{opacity:1;pointer-events:all}
-.bottom-sheet{position:fixed;bottom:0;left:0;right:0;z-index:201;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid var(--g150);max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);box-shadow:0 -8px 40px rgba(0,0,0,.12)}.bottom-sheet.open{transform:translateY(0)}
+.bottom-sheet{position:fixed;bottom:0;left:0;right:0;z-index:201;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid var(--g150);max-height:92vh;width:100%;max-width:100vw;overflow-y:auto;overflow-x:hidden;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);box-shadow:0 -8px 40px rgba(0,0,0,.12)}.bottom-sheet.open{transform:translateY(0)}
 .sheet-handle{width:40px;height:4px;background:var(--g200);border-radius:4px;margin:14px auto}
-.sheet-close{position:absolute;top:16px;right:16px;background:var(--g100);border:1px solid var(--g150);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--g500);transition:all .2s}
-.sheet-close:hover{background:var(--g200);color:var(--ink)}
+.sheet-close{position:sticky;top:12px;float:right;margin:-32px 14px 0 auto;z-index:60;background:rgba(10,10,10,.75);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.35);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:700;color:#fff;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.sheet-close:hover{background:#FF6A00;border-color:#FF6A00}
 .detail-img{height:270px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--g100);position:relative}.detail-img img{width:100%;height:100%;object-fit:cover;object-position:center}
-.detail-content{padding:22px 18px 44px}
+.detail-content{padding:22px 18px 44px;max-width:100%;overflow-x:hidden}
+.detail-content *{min-width:0}
+.detail-content img{max-width:100%}
 .detail-price{font-size:30px;font-weight:800;color:var(--or);margin-bottom:6px;letter-spacing:-.5px}
 .detail-title{font-size:19px;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.3}
 .detail-loc{font-size:13px;color:var(--g400);margin-bottom:20px;display:flex;align-items:center;gap:4px}
@@ -1076,11 +1078,11 @@ body{background:#F7F7F7;color:#0A0A0A}
 }
 @media(max-width:480px){
   .property-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
-  .card-img{height:140px!important}
-  .card-body{padding:10px 12px 0!important}
+  .card-img{height:116px!important}
+  .card-body{padding:9px 11px 0!important}
   .card-price{font-size:17px!important;letter-spacing:-.5px!important}
-  .card-title{font-size:11px!important;-webkit-line-clamp:2!important}
-  .card-seller-row{padding:8px 12px!important}
+  .card-title{font-size:11px!important;-webkit-line-clamp:1!important;margin-bottom:3px!important}
+  .card-seller-row{padding:6px 11px 8px!important}
   .card-wa-btn{padding:4px 8px!important;font-size:10px!important}
   .dim-pill{font-size:9px!important;padding:2px 7px!important}
   .section-title{font-size:20px!important}
@@ -1148,7 +1150,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .btn-chats{position:relative;background:var(--g100,#F5F5F5);border:1px solid var(--g200,#E8E8E8);border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1A1A1A;flex-shrink:0}
 .btn-chats:hover{background:#FFF4EC;border-color:#FF6A00}
 #chatBadge{display:none;position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;line-height:17px;text-align:center}
-.btn-chat-app{flex:1;background:#0A0A0A;color:#fff;border:none;border-radius:var(--r-md,10px);padding:13px 10px;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
+.btn-chat-app{grid-column:1/-1;background:#0A0A0A;color:#fff;border:none;border-radius:var(--r-md,10px);padding:13px 10px;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
 .btn-chat-app:hover{background:#FF6A00}
 .chat-list-item{display:flex;gap:12px;padding:13px 6px;border-bottom:1px solid var(--g150,#EFEFEF);cursor:pointer;align-items:center}
 .chat-list-item:hover{background:#FAFAFA}
@@ -1249,7 +1251,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   .bk-btn{width:38px;height:38px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;border-radius:50%!important;flex-shrink:0}
   .filter-row2{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
   .filter-row2::-webkit-scrollbar{display:none}
-  .sec-view-toggle{display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--g200,#E8E8E8);border-radius:100px;padding:13px 22px;font-size:15px;font-weight:800;color:#1A1A1A;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+  .sec-view-toggle{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:-16px;background:#fff;border:2px solid var(--g200,#E8E8E8);border-radius:100px;padding:13px 22px;font-size:15px;font-weight:800;color:#1A1A1A;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(0,0,0,.07)}
   .sec-view-toggle svg{width:18px;height:18px}
   .sec-view-toggle:active{transform:scale(.97)}
   .sec-view-toggle.map-on{background:#FF6A00;border-color:#FF6A00;color:#fff;box-shadow:0 4px 14px rgba(255,106,0,.35)}
@@ -1397,10 +1399,10 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   </div>
   <div class="filter-row2">
     <select class="sort-sel" id="sortSel" onchange="window.setSort(this.value)">
-      <option value="newest">🕐 Newest first</option>
-      <option value="price-asc">₹ Low → High</option>
-      <option value="price-desc">₹ High → Low</option>
-      <option value="featured">⭐ Featured first</option>
+      <option value="newest">Newest</option>
+      <option value="price-asc">₹ Low to High</option>
+      <option value="price-desc">₹ High to Low</option>
+      <option value="featured">Featured</option>
     </select>
     <div class="price-chips">
       <span class="pchip on" data-p="" onclick="window.setPrice(this)">Any price</span>
@@ -1855,17 +1857,21 @@ async function loadProps(){
   showSkeleton();
   try{
     // Get approved + sold properties
+    // Each query is independent: if rules deny one (e.g. 'sold' before the
+    // rules update is published), the other still renders.
     const [approvedSnap, soldSnap] = await Promise.all([
-      getDocs(query(collection(db,'properties'),where('status','==','approved'),limit(60))),
+      getDocs(query(collection(db,'properties'),where('status','==','approved'),limit(60)))
+        .catch(e=>{console.warn('approved query:',e.code||e);return null;}),
       getDocs(query(collection(db,'properties'),where('status','==','sold'),limit(20)))
+        .catch(e=>{console.warn('sold query:',e.code||e);return null;})
     ]);
 
-    const approved = approvedSnap.docs.map(d=>({id:d.id,...d.data()}));
+    const approved = approvedSnap ? approvedSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
 
     // Handle sold properties — auto-delete after 24 hours
     const now = Date.now();
     const soldActive = [];
-    for(const d of soldSnap.docs){
+    for(const d of (soldSnap?soldSnap.docs:[])){
       const p = {id:d.id,...d.data()};
       const soldTime = p.soldAt?.toDate ? p.soldAt.toDate().getTime() : 0;
       const hoursElapsed = (now - soldTime) / 3600000;

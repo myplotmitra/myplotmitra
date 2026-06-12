@@ -1269,6 +1269,14 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .btn-req.pending{background:#F5F5F5;color:#777;pointer-events:none}
 .req-sec-title{font-size:11px;font-weight:800;letter-spacing:.6px;color:#D95A00;margin:4px 0 8px}
 </style>
+
+<style>
+.wa-verify-btn{background:#25D366;color:#fff;border:none;border-radius:10px;padding:0 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.wa-verify-btn:disabled{background:#E8E8E8;color:#999;cursor:default}
+.wa-ok{color:#059669!important;font-weight:700}
+.wa-bad{color:#DC2626!important;font-weight:600}
+#waCodeRow{display:flex}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1524,7 +1532,17 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
           <input type="hidden" id="pickedLat" name="lat"/>
           <input type="hidden" id="pickedLng" name="lng"/>
         </div>
-        <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your Phone number *</label><input name="sellerPhone" class="finp" type="tel" placeholder="e.g. 9989083321" required/></div>
+        <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your WhatsApp number *</label>
+  <div style="display:flex;gap:8px">
+    <input name="sellerPhone" id="waPhoneInp" class="finp" type="tel" placeholder="10-digit WhatsApp number" required maxlength="10" inputmode="numeric" oninput="window.waPhoneChanged()" style="flex:1"/>
+    <button type="button" class="wa-verify-btn" id="waVerifyBtn" onclick="window.waSendCode()" disabled>Verify</button>
+  </div>
+  <div id="waCodeRow" style="display:none;gap:8px;margin-top:8px">
+    <input id="waCodeInp" class="finp" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit code from WhatsApp" style="flex:1"/>
+    <button type="button" class="wa-verify-btn" onclick="window.waCheckCode()">Confirm</button>
+  </div>
+  <div id="waVerifyMsg" style="font-size:11.5px;margin-top:6px;color:#777">We send a one-time code to this number on WhatsApp. Listings need a working WhatsApp number.</div>
+</div>
         <div class="fg">
           <label class="flbl">Price *</label>
           <div class="price-input-wrap">
@@ -1649,7 +1667,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
         </div>
 
         <div class="notice">Your listing will be reviewed by admin before going live. Usually within 24 hours.</div>
-        <button type="submit" class="submit-btn" id="submitBtn">Submit for Approval</button>
+        <button type="submit" class="submit-btn" id="submitBtn" disabled style="opacity:.55">Verify your WhatsApp number to submit</button>
       </form>
 
       <!-- Success screen shown after submit -->
@@ -1730,6 +1748,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 <button class="modal-close" onclick="window.closeAdmin()">x</button>
 </div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -2256,10 +2275,17 @@ window.openDetail=function(id){
   const sellerPhone=p.sellerPhone||p.ownerPhone||'9989083321';
   const sellerName=p.ownerName||p.sellerName||'Owner';
   window.__openPid=p.id;
-  const canContact=window.__canContact(p);
-  const phoneOK=window.__phoneVisible(p);
+  const privileged=currentUser&&(currentUser.email===ADMIN_EMAIL||(p.ownerId&&p.ownerId===currentUser.uid)||window.__isPremium());
+  const ppc=!!appSettings.payPerContact&&!privileged;       // pay-per-contact mode applies
+  const unlocked=window.__unlocks&&window.__unlocks.has(p.id);
+  let canContact=window.__canContact(p);
+  let phoneOK=window.__phoneVisible(p);
+  if(ppc&&unlocked){canContact=true;phoneOK=true;}
+  if(ppc&&!unlocked){canContact=false;phoneOK=false;}
   const reqSt=(window.__myReqs&&window.__myReqs[p.id])||'';
-  const shownPhone=phoneOK?sellerPhone:String(sellerPhone).slice(0,4)+'XXXXXX';
+  const revealName=!ppc||unlocked;
+  const shownName=revealName?(p.ownerName||p.sellerName||'Owner'):'Property Seller';
+  const shownPhone=phoneOK?sellerPhone:(ppc?'Hidden until unlocked':String(sellerPhone).slice(0,4)+'XXXXXX');
   document.getElementById('detailBody').innerHTML=`
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
@@ -2294,7 +2320,7 @@ window.openDetail=function(id){
       ${p.description?`<div class="detail-desc">${p.description}</div>`:''}
       <div class="seller-info">
         <div>
-          <div class="seller-name"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span> ${sellerName}</div>
+          <div class="seller-name"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-3.31 3.13-6 7-6s7 2.69 7 6"/></svg></span> ${shownName}</div>
           <div class="seller-phone"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> ${shownPhone}</div>
         </div>
         <span style="font-size:11px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:10px;font-weight:500">Direct Owner</span>
@@ -2303,7 +2329,7 @@ window.openDetail=function(id){
         <div style="font-size:16px;font-weight:700;color:#DC2626"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
       </div>`:''}
-      ${canContact?`<div class="contact-btns">
+      ${ppc&&!unlocked?`<div class="lock-cta" onclick="window.startPay('${p.id}')"><div class="lock-cta-ico">🔐</div><div class="lock-cta-t"><div class="lock-cta-h">Contact details are locked</div><div class="lock-cta-s">Pay once to see the seller's name, phone &amp; WhatsApp, and chat for this property</div></div><button class="lock-cta-btn">Pay ₹10 · UPI / Card</button></div>`:(canContact?`<div class="contact-btns">
         ${phoneOK?`<button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>`:`<button class="btn-req${reqSt==='pending'?' pending':''}" onclick="window.requestPhone('${p.id}')">${reqSt==='pending'?'⏳ Request sent — waiting for seller approval':reqSt==='denied'?'Seller declined — request again or chat below':'🔓 Request Phone Number from Seller'}</button>`}
         <button class="btn-chat-app" onclick="window.startChat('${p.id}')"><span class="ico" style="display:inline-flex;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/><circle cx="7" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="9.5" r=".8" fill="currentColor"/><circle cx="13" cy="9.5" r=".8" fill="currentColor"/></svg></span> Chat</button>
@@ -2314,7 +2340,7 @@ window.openDetail=function(id){
           <div class="lock-cta-s">Subscribe for ₹25/month to view seller numbers, call, WhatsApp and chat in app</div>
         </div>
         <button class="lock-cta-btn">Unlock ₹25/mo</button>
-      </div>`}
+      </div>`)}
       ${currentUser&&(currentUser.email===ADMIN_EMAIL||currentUser.uid===p.ownerId)?`
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--g200)">
         <div style="font-size:11px;color:var(--g400);margin-bottom:8px;font-weight:500">${currentUser.email===ADMIN_EMAIL?'ADMIN ACTIONS':'OWNER ACTIONS'}</div>
@@ -2404,6 +2430,7 @@ window.toggleHideSold=()=>{
 };
 window.toggleBk=(id,e)=>{if(e)e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();};
 window.openPost=()=>{
+  setTimeout(()=>{try{window.applyWaMode();}catch(_){}} ,50);
   if(!currentUser){window.doSignIn();return;}
   document.getElementById('postModal').classList.add('open');
   // Init map picker after modal opens
@@ -2938,6 +2965,7 @@ window.submitProperty=async e=>{
     const recalc=document.getElementById('priceHidden')?.value;
     if(!recalc||Number(recalc)<=0){showToast('Please enter a valid price','error');return;}
   }
+  if(appSettings.waVerify&&(!window.__waVerified||window.__waVerified!==(e.target.sellerPhone.value||'').replace(/\D/g,''))){showToast('Please verify your WhatsApp number first','error');return;}
   const form=e.target,btn=form.querySelector('.submit-btn');
   btn.textContent='Submitting...';btn.disabled=true;
   try{
@@ -2946,6 +2974,7 @@ window.submitProperty=async e=>{
       ownerEmail:currentUser.email,
       ownerName:currentUser.displayName||'User',
       sellerPhone:form.sellerPhone.value.trim(),
+      waVerified:!!appSettings.waVerify,
       title:form.title_.value.trim(),
       description:form.description.value.trim(),
       type:form.type_.value,
@@ -3293,7 +3322,7 @@ window.startChat=async function(propId){
   const p=allProps.find(x=>x.id===propId);if(!p)return;
   if(!p.ownerId){showToast('Chat unavailable — contact via Call or WhatsApp','error');return;}
   if(currentUser.uid===p.ownerId){window.closeDetail();window.openChats();return;}
-  if(!window.__canContact(p)){window.openSubscribe();return;}
+  if(!window.__canContact(p)){if(appSettings.payPerContact){showToast('Unlock this property (₹10) to chat with the seller','error');}else{window.openSubscribe();}return;}
   const cid=propId+'_'+currentUser.uid;
   try{
     const cref=doc(db,'chats',cid);
@@ -3378,16 +3407,18 @@ onAuthStateChanged(auth,async u=>{
 window.__isPremium=()=>{const t=myProfile&&myProfile.premiumUntil;if(!t)return false;
   const ms=t.toMillis?t.toMillis():new Date(t.seconds?t.seconds*1000:t).getTime();return ms>Date.now();};
 window.__canContact=(p)=>{
+  const priv=currentUser&&(currentUser.email===ADMIN_EMAIL||(p&&p.ownerId&&p.ownerId===currentUser.uid)||window.__isPremium());
+  if(appSettings.payPerContact&&!priv){
+    return !!(p&&window.__unlocks&&window.__unlocks.has(p.id));
+  }
   if(!appSettings.premiumLock)return true;
   if(!currentUser)return false;
-  if(currentUser.email===ADMIN_EMAIL)return true;
-  if(p&&p.ownerId&&p.ownerId===currentUser.uid)return true;
-  return window.__isPremium();
+  return !!priv;
 };
 window.cardContact=function(id,ev){
   ev&&ev.stopPropagation();
   const p=allProps.find(x=>x.id===id);if(!p)return;
-  if(!window.__canContact(p)){window.openSubscribe();return;}
+  if(!window.__canContact(p)){if(appSettings.payPerContact){window.openDetail(id);}else{window.openSubscribe();}return;}
   const ph=(p.sellerPhone||'9989083321').replace(/\D/g,'');
   window.open('https://wa.me/91'+ph+'?text=Hi, I saw your listing *'+encodeURIComponent(p.title||'')+'* on MyPlotMitra. Is it available?');
 };
@@ -3492,9 +3523,19 @@ window.renderPremiumAdmin=async function(list){
       </div>`;}).join('')}`:'';
   list.innerHTML=`
     <div class="prem-toggle">
-      <div><div class="prem-toggle-t">Premium Lock</div>
-      <div class="prem-toggle-s">When ON, only ₹25/month subscribers can view contacts &amp; chat</div></div>
+      <div><div class="prem-toggle-t">Prime Subscription (₹25/month)</div>
+      <div class="prem-toggle-s">When ON, only Prime subscribers can view contacts &amp; chat</div></div>
       <label class="tgl"><input type="checkbox" id="premLockTgl" ${appSettings.premiumLock?'checked':''} onchange="window.togglePremLock(this.checked)"/><span class="sl"></span></label>
+    </div>
+    <div class="prem-toggle">
+      <div><div class="prem-toggle-t">Pay-per-contact · ₹10 (Razorpay)</div>
+      <div class="prem-toggle-s">When ON, non-Prime users see no seller name/number until they pay ₹10 per property</div></div>
+      <label class="tgl"><input type="checkbox" ${appSettings.payPerContact?'checked':''} onchange="window.toggleSetting('payPerContact',this.checked)"/><span class="sl"></span></label>
+    </div>
+    <div class="prem-toggle">
+      <div><div class="prem-toggle-t">WhatsApp verification for posts</div>
+      <div class="prem-toggle-s">Requires WhatsApp Cloud API setup. OFF = sellers post with plain phone entry</div></div>
+      <label class="tgl"><input type="checkbox" ${appSettings.waVerify?'checked':''} onchange="window.toggleSetting('waVerify',this.checked)"/><span class="sl"></span></label>
     </div>
     <div style="font-size:12px;color:#777;margin-bottom:10px">Pending requests: <b>${pending.length}</b> · Activated: <b>${approved}</b></div>
     ${pending.length?pending.map(r=>`
@@ -3507,6 +3548,11 @@ window.renderPremiumAdmin=async function(list){
         </div>
       </div>`).join(''):'<div style="text-align:center;color:#AAA;padding:24px;font-size:13px">No pending subscription requests</div>'}
     ${membersHtml}`;
+};
+window.toggleSetting=async function(key,on){
+  try{await setDoc(doc(db,'settings','app'),{[key]:on},{merge:true});
+    showToast(key+' '+(on?'ENABLED':'disabled'),'success');}
+  catch(e){console.error(e);showToast('Could not update setting','error');}
 };
 window.togglePremLock=async function(on){
   try{await setDoc(doc(db,'settings','app'),{premiumLock:on},{merge:true});
@@ -3692,6 +3738,164 @@ window.decideReq=async function(id,approve){
 };
 onAuthStateChanged(auth,()=>{setTimeout(startReqListeners,500);});
 /* ════════ END CONTACT REQUESTS ════════ */
+
+/* ════════ WHATSAPP NUMBER VERIFICATION (post form) ════════ */
+window.__waVerified='';let waCooldown=0;
+window.applyWaMode=function(){
+  const need=!!appSettings.waVerify;
+  const vb=document.getElementById('waVerifyBtn'),msg=document.getElementById('waVerifyMsg'),
+        sb=document.getElementById('submitBtn'),row=document.getElementById('waCodeRow');
+  if(!vb||!sb)return;
+  if(!need){
+    vb.style.display='none';if(row)row.style.display='none';
+    if(msg){msg.textContent='Enter your WhatsApp number — buyers will contact you on it.';msg.className='';}
+    sb.disabled=false;sb.style.opacity=1;sb.textContent='Submit for Approval';
+  }else{
+    vb.style.display='';
+    if(!window.__waVerified){sb.disabled=true;sb.style.opacity=.55;sb.textContent='Verify your WhatsApp number to submit';}
+  }
+};
+const waMsg=t=>{const m=document.getElementById('waVerifyMsg');if(m){m.className='';m.textContent=t;}};
+window.waPhoneChanged=function(){
+  const v=(document.getElementById('waPhoneInp').value||'').replace(/\D/g,'');
+  const ok=/^[6-9]\d{9}$/.test(v);
+  document.getElementById('waVerifyBtn').disabled=!ok||Date.now()<waCooldown;
+  document.getElementById('waCodeRow').style.display='none';
+  if(window.__waVerified&&window.__waVerified!==v){
+    window.__waVerified='';
+    const sb=document.getElementById('submitBtn');
+    sb.disabled=true;sb.style.opacity=.55;sb.textContent='Verify your WhatsApp number to submit';
+    waMsg('Number changed — please verify again.');
+  }
+};
+window.waSendCode=async function(){
+  const v=(document.getElementById('waPhoneInp').value||'').replace(/\D/g,'');
+  if(!/^[6-9]\d{9}$/.test(v)){waMsg('Enter a valid 10-digit Indian mobile number.');return;}
+  const btn=document.getElementById('waVerifyBtn');btn.disabled=true;btn.textContent='Sending…';
+  try{
+    const r=await fetch('/api/wa-verify',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'send',phone:v})});
+    const d=await r.json();
+    if(d.whatsapp===false){
+      waMsg('❌ This number is not on WhatsApp. Enter a number with an active WhatsApp account.');
+      document.getElementById('waVerifyMsg').className='wa-bad';
+    }else if(d.sent){
+      document.getElementById('waCodeRow').style.display='flex';
+      waMsg('Code sent on WhatsApp to '+v+'. Enter it above.');
+      waCooldown=Date.now()+45000;
+      setTimeout(()=>{btn.textContent='Resend';window.waPhoneChanged();},45000);
+    }else{
+      waMsg(d.error||'Could not send the code. Try again in a minute.');
+      document.getElementById('waVerifyMsg').className='wa-bad';
+    }
+  }catch(e){waMsg('Network error — try again.');}
+  btn.textContent='Verify';if(Date.now()>=waCooldown)btn.disabled=false;
+};
+window.waCheckCode=async function(){
+  const v=(document.getElementById('waPhoneInp').value||'').replace(/\D/g,'');
+  const code=(document.getElementById('waCodeInp').value||'').trim();
+  if(code.length!==6){waMsg('Enter the 6-digit code.');return;}
+  try{
+    const r=await fetch('/api/wa-verify',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'check',phone:v,code})});
+    const d=await r.json();
+    if(d.verified){
+      window.__waVerified=v;
+      document.getElementById('waCodeRow').style.display='none';
+      waMsg('✅ WhatsApp number verified');
+      document.getElementById('waVerifyMsg').className='wa-ok';
+      const sb=document.getElementById('submitBtn');
+      sb.disabled=false;sb.style.opacity=1;sb.textContent='Submit for Approval';
+    }else{
+      waMsg(d.error||'Wrong code — check WhatsApp and try again.');
+      document.getElementById('waVerifyMsg').className='wa-bad';
+    }
+  }catch(e){waMsg('Network error — try again.');}
+};
+/* ════════ END WA VERIFICATION ════════ */
+
+/* ════════ PHONEPE PAY-PER-CONTACT (₹10) ════════ */
+window.__unlocks=new Set();let unlkUnsub=null;
+function startUnlockListener(){
+  if(unlkUnsub){unlkUnsub();unlkUnsub=null;}
+  window.__unlocks=new Set();
+  if(!currentUser)return;
+  unlkUnsub=onSnapshot(query(collection(db,'unlocks'),where('buyerId','==',currentUser.uid)),sn=>{
+    window.__unlocks=new Set(sn.docs.map(d=>(d.data().propertyId)));
+    refreshOpenDetail();
+  },e=>console.log('unlocks:',e.code||e));
+}
+onAuthStateChanged(auth,()=>{setTimeout(startUnlockListener,600);});
+
+window.startPay=async function(propId){
+  if(!currentUser){showToast('Sign in to unlock contact details','error');window.doSignIn();return;}
+  if(typeof Razorpay==='undefined'){showToast('Payment library failed to load — refresh and try again','error');return;}
+  try{
+    const token=await currentUser.getIdToken();
+    const r=await fetch('/api/rzp-create-order',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({propId})});
+    const d=await r.json();
+    if(!d.orderId){showToast(d.error||'Could not start payment','error');return;}
+    const rzp=new Razorpay({
+      key:d.keyId,
+      order_id:d.orderId,
+      amount:d.amount,
+      currency:d.currency||'INR',
+      name:'MyPlotMitra',
+      description:'Unlock contact — '+(d.title||'property'),
+      image:'https://www.myplotmitra.com/icons/icon-192.png',
+      prefill:{name:currentUser.displayName||'',email:currentUser.email||''},
+      theme:{color:'#FF6A00'},
+      modal:{ondismiss:()=>showToast('Payment cancelled','error')},
+      handler:async(resp)=>{
+        try{
+          const t2=await currentUser.getIdToken();
+          const v=await fetch('/api/rzp-verify',{method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':'Bearer '+t2},
+            body:JSON.stringify(resp)});
+          const out=await v.json();
+          if(out.success){
+            showToast('✅ Payment successful! Contact details unlocked.','success');
+            // unlock listener refreshes the open sheet automatically; nudge anyway:
+            setTimeout(()=>{try{window.openDetail(out.propId||propId);}catch(_){}} ,800);
+          }else{
+            showToast(out.error||'Verification failed — contact support, do not pay again','error');
+          }
+        }catch(e){console.error(e);showToast('Could not verify payment — contact support','error');}
+      }
+    });
+    rzp.on('payment.failed',(resp)=>{
+      console.warn('payment.failed',resp.error);
+      showToast('Payment failed: '+(resp.error?.description||'try another method'),'error');
+    });
+    rzp.open();
+  }catch(e){console.error(e);showToast('Payment could not start — try again','error');}
+};
+
+// Handle return from PhonePe: ?payreturn=<txnId>
+(async function(){
+  const m=new URLSearchParams(location.search).get('payreturn');
+  if(!m)return;
+  history.replaceState({},'',location.pathname);
+  const check=async()=>{
+    try{
+      const r=await fetch('/api/pay-status?txn='+encodeURIComponent(m));
+      const d=await r.json();
+      if(d.state==='success'){
+        showToast('✅ Payment successful! Contact details unlocked.','success');
+        if(d.propId){setTimeout(()=>{try{window.openDetail(d.propId);}catch(_){ }},900);}
+        return true;
+      }
+      if(d.state==='pending')return false;
+      showToast(d.state==='failed'?'Payment failed or cancelled.':'Could not confirm payment yet.','error');
+      return true;
+    }catch(e){return false;}
+  };
+  if(await check())return;
+  let n=0;const iv=setInterval(async()=>{if(await check()||++n>5)clearInterval(iv);},2500);
+})();
+/* ════════ END PHONEPE ════════ */
 loadProps();
 </script>
 

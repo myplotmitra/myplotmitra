@@ -12,8 +12,8 @@
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <title>MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad &amp; Anantapur</title>
 <meta name="keywords" content="plots in Hyderabad, plots in Anantapur, houses for sale Hyderabad, houses for sale Anantapur, flats Hyderabad, agricultural land Anantapur, HMDA plots, DTCP plots, open plots Shadnagar, property for sale Hyderabad, real estate Anantapur"/>
-<meta property="og:title" content="MyPlotMitra — Buy &amp; Sell Properties in Anantapur"/>
-<meta property="og:description" content="Find verified plots, houses, flats and land in Anantapur. Direct from owners. Zero brokerage. Call 9989083321"/>
+<meta property="og:title" content="MyPlotMitra — Buy &amp; Sell Properties in Hyderabad &amp; Anantapur"/>
+<meta property="og:description" content="Find verified plots, houses, flats and land in Hyderabad &amp; Anantapur. Direct from owners. Zero brokerage. Call 9989083321"/>
 <meta property="og:url" content="https://www.myplotmitra.com"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://www.myplotmitra.com/og-banner.png"/>
@@ -3622,7 +3622,7 @@ window.rejectSub=async function(uid){
 /* ════════ END PREMIUM ════════ */
 
 /* ════════ PUSH NOTIFICATIONS (FCM) ════════ */
-const FCM_VAPID='BG-6CQaDf1UzgNMsQ4-TB_g8bqRjJJCG7aRuuBG5MkYcSFUv4nWp72RAzF6tnTdzpVjRMAH0BECJkEkyqSQEMlI'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
+const FCM_VAPID='PASTE_VAPID_KEY_HERE'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
 let fcmMessaging=null;
 try{fcmMessaging=getMessaging(app);}catch(e){console.log('FCM unsupported:',e.message);}
 
@@ -3994,6 +3994,7 @@ loadProps();
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 

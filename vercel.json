@@ -52,6 +52,10 @@
     {
       "src": "og-banner.png",
       "use": "@vercel/static"
+    },
+    {
+      "src": "google93b50763b89aed8a.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -93,6 +97,10 @@
     {
       "src": "/api/notify",
       "dest": "/api/notify.js"
+    },
+    {
+      "src": "/_vercel/insights/(.*)",
+      "dest": "/_vercel/insights/$1"
     },
     {
       "src": "/(.*)",

@@ -12,6 +12,10 @@
     {
       "src": "api/rzp-verify.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/use-credit.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -37,6 +41,10 @@
     {
       "src": "/api/rzp-create-order",
       "dest": "/api/rzp-create-order.js"
+    },
+    {
+      "src": "/api/use-credit",
+      "dest": "/api/use-credit.js"
     },
     {
       "src": "/(.*)",

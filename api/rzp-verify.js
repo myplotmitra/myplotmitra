@@ -49,19 +49,45 @@ module.exports = async (req, res) => {
     const pay = snap.data();
     if (pay.uid !== user.uid) return res.status(403).json({ error: 'Order belongs to another user' });
 
+    if (pay.status === 'success') {
+      // idempotent: already processed (double-click / retry)
+      return res.status(200).json({ success: true, prime: pay.kind === 'prime', propId: pay.propId || null });
+    }
+
     await payRef.set({
       status: 'success',
       paymentId: razorpay_payment_id,
       paidAt: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
 
-    await db.collection('unlocks').doc(`${pay.propId}_${pay.uid}`).set({
-      propertyId: pay.propId, buyerId: pay.uid,
-      orderId: razorpay_order_id, paymentId: razorpay_payment_id,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    const userRef = db.collection('users').doc(pay.uid);
+
+    if (pay.kind === 'prime') {
+      // extend from current expiry if still active
+      const uSnap = await userRef.get();
+      const cur = uSnap.exists && uSnap.data().premiumUntil;
+      const curMs = cur && cur.toMillis ? cur.toMillis() : 0;
+      const base = Math.max(Date.now(), curMs);
+      await userRef.set({ premiumUntil: new Date(base + 30 * 86400000) }, { merge: true });
+      return res.status(200).json({ success: true, prime: true });
+    }
+
+    // flexy: grant the bundle, then consume 1 credit for this property
+    const credits = Number(pay.credits) || 1;
+    let creditsLeft = 0;
+    await db.runTransaction(async (t) => {
+      const u = await t.get(userRef);
+      const cur = Number(u.exists && u.data().contactCredits) || 0;
+      creditsLeft = cur + credits - 1; // bundle minus this unlock
+      t.set(userRef, { contactCredits: creditsLeft }, { merge: true });
+      t.set(db.collection('unlocks').doc(`${pay.propId}_${pay.uid}`), {
+        propertyId: pay.propId, buyerId: pay.uid,
+        orderId: razorpay_order_id, paymentId: razorpay_payment_id,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
     });
 
-    return res.status(200).json({ success: true, propId: pay.propId });
+    return res.status(200).json({ success: true, propId: pay.propId, creditsLeft });
   } catch (e) {
     console.error('rzp-verify:', e);
     return res.status(500).json({ error: 'Server error' });

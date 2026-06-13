@@ -1277,6 +1277,14 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .wa-bad{color:#DC2626!important;font-weight:600}
 #waCodeRow{display:flex}
 </style>
+
+<style>
+.chooser-opt{display:flex;align-items:center;gap:13px;border:1.8px solid var(--g200,#E8E8E8);border-radius:14px;padding:15px 14px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.chooser-opt:hover,.chooser-opt:active{border-color:#FF6A00;background:#FFF8F3}
+.co-h{font-size:14px;font-weight:800;color:#1A1A1A}
+.co-s{font-size:11.5px;color:#777;margin-top:2px;line-height:1.4}
+.co-go{font-size:22px;color:#FF6A00;font-weight:800}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1721,6 +1729,15 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
       <button class="modal-close" onclick="document.getElementById('profileModal').classList.remove('open')">x</button>
     </div>
     <div class="modal-body" id="profileBody"></div>
+  </div>
+</div>
+<div class="modal-overlay" id="chooserModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title">Contact Seller</span>
+      <button class="modal-close" onclick="document.getElementById('chooserModal').classList.remove('open')">x</button>
+    </div>
+    <div class="modal-body" id="chooserBody"></div>
   </div>
 </div>
 <div class="modal-overlay" id="subModal">
@@ -2276,16 +2293,14 @@ window.openDetail=function(id){
   const sellerName=p.ownerName||p.sellerName||'Owner';
   window.__openPid=p.id;
   const privileged=currentUser&&(currentUser.email===ADMIN_EMAIL||(p.ownerId&&p.ownerId===currentUser.uid)||window.__isPremium());
-  const ppc=!!appSettings.payPerContact&&!privileged;       // pay-per-contact mode applies
+  const primeOn=!!appSettings.prime;
   const unlocked=window.__unlocks&&window.__unlocks.has(p.id);
-  let canContact=window.__canContact(p);
-  let phoneOK=window.__phoneVisible(p);
-  if(ppc&&unlocked){canContact=true;phoneOK=true;}
-  if(ppc&&!unlocked){canContact=false;phoneOK=false;}
+  const lockedPrime=primeOn&&!privileged&&!unlocked;        // marked area → Contact Seller
+  let canContact=lockedPrime?false:(primeOn?true:window.__canContact(p));
+  let phoneOK=lockedPrime?false:(primeOn?true:window.__phoneVisible(p));
   const reqSt=(window.__myReqs&&window.__myReqs[p.id])||'';
-  const revealName=!ppc||unlocked;
-  const shownName=revealName?(p.ownerName||p.sellerName||'Owner'):'Property Seller';
-  const shownPhone=phoneOK?sellerPhone:(ppc?'Hidden until unlocked':String(sellerPhone).slice(0,4)+'XXXXXX');
+  const shownName=lockedPrime?'Property Seller':(p.ownerName||p.sellerName||'Owner');
+  const shownPhone=phoneOK?sellerPhone:(lockedPrime?'Hidden — tap Contact Seller':String(sellerPhone).slice(0,4)+'XXXXXX');
   document.getElementById('detailBody').innerHTML=`
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
@@ -2329,7 +2344,7 @@ window.openDetail=function(id){
         <div style="font-size:16px;font-weight:700;color:#DC2626"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
       </div>`:''}
-      ${ppc&&!unlocked?`<div class="lock-cta" onclick="window.startPay('${p.id}')"><div class="lock-cta-ico">🔐</div><div class="lock-cta-t"><div class="lock-cta-h">Contact details are locked</div><div class="lock-cta-s">Pay once to see the seller's name, phone &amp; WhatsApp, and chat for this property</div></div><button class="lock-cta-btn">Pay ₹10 · UPI / Card</button></div>`:(canContact?`<div class="contact-btns">
+      ${lockedPrime?`<div class="lock-cta" onclick="window.openContactChooser('${p.id}')"><div class="lock-cta-ico">🔐</div><div class="lock-cta-t"><div class="lock-cta-h">Contact Seller</div><div class="lock-cta-s">See the seller's name, phone &amp; WhatsApp, and chat — go Prime or unlock just this seller</div></div><button class="lock-cta-btn">Contact Seller</button></div>`:(canContact?`<div class="contact-btns">
         ${phoneOK?`<button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
         <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>`:`<button class="btn-req${reqSt==='pending'?' pending':''}" onclick="window.requestPhone('${p.id}')">${reqSt==='pending'?'⏳ Request sent — waiting for seller approval':reqSt==='denied'?'Seller declined — request again or chat below':'🔓 Request Phone Number from Seller'}</button>`}
         <button class="btn-chat-app" onclick="window.startChat('${p.id}')"><span class="ico" style="display:inline-flex;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/><circle cx="7" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="9.5" r=".8" fill="currentColor"/><circle cx="13" cy="9.5" r=".8" fill="currentColor"/></svg></span> Chat</button>
@@ -3322,7 +3337,7 @@ window.startChat=async function(propId){
   const p=allProps.find(x=>x.id===propId);if(!p)return;
   if(!p.ownerId){showToast('Chat unavailable — contact via Call or WhatsApp','error');return;}
   if(currentUser.uid===p.ownerId){window.closeDetail();window.openChats();return;}
-  if(!window.__canContact(p)){if(appSettings.payPerContact){showToast('Unlock this property (₹10) to chat with the seller','error');}else{window.openSubscribe();}return;}
+  if(!window.__canContact(p)){window.openContactChooser(propId);return;}
   const cid=propId+'_'+currentUser.uid;
   try{
     const cref=doc(db,'chats',cid);
@@ -3399,31 +3414,35 @@ onAuthStateChanged(auth,()=>{setTimeout(startInboxListener,400);});
 /* ════════ PREMIUM LOCK (₹25/month) ════════ */
 let appSettings={premiumLock:false},myProfile=null;
 try{onSnapshot(doc(db,'settings','app'),sn=>{appSettings=sn.exists()?sn.data():{premiumLock:false};try{render();}catch(_){}},()=>{});}catch(e){}
-onAuthStateChanged(auth,async u=>{
-  if(!u){myProfile=null;return;}
-  try{const d=await getDoc(doc(db,'users',u.uid));myProfile=d.exists()?d.data():null;}catch(e){myProfile=null;}
-  try{render();}catch(_){}
+let profUnsub=null;
+onAuthStateChanged(auth,u=>{
+  if(profUnsub){profUnsub();profUnsub=null;}
+  if(!u){myProfile=null;try{render();}catch(_){}return;}
+  profUnsub=onSnapshot(doc(db,'users',u.uid),d=>{
+    myProfile=d.exists()?d.data():null;
+    try{render();}catch(_){}
+    refreshOpenDetail();
+  },()=>{myProfile=null;});
 });
 window.__isPremium=()=>{const t=myProfile&&myProfile.premiumUntil;if(!t)return false;
   const ms=t.toMillis?t.toMillis():new Date(t.seconds?t.seconds*1000:t).getTime();return ms>Date.now();};
 window.__canContact=(p)=>{
   const priv=currentUser&&(currentUser.email===ADMIN_EMAIL||(p&&p.ownerId&&p.ownerId===currentUser.uid)||window.__isPremium());
-  if(appSettings.payPerContact&&!priv){
+  if(appSettings.prime&&!priv){
     return !!(p&&window.__unlocks&&window.__unlocks.has(p.id));
   }
-  if(!appSettings.premiumLock)return true;
-  if(!currentUser)return false;
-  return !!priv;
+  return true; // Prime OFF → site behaves as before (free contact/chat)
 };
 window.cardContact=function(id,ev){
   ev&&ev.stopPropagation();
   const p=allProps.find(x=>x.id===id);if(!p)return;
-  if(!window.__canContact(p)){if(appSettings.payPerContact){window.openDetail(id);}else{window.openSubscribe();}return;}
+  if(!window.__canContact(p)){window.openDetail(id);return;}
   const ph=(p.sellerPhone||'9989083321').replace(/\D/g,'');
   window.open('https://wa.me/91'+ph+'?text=Hi, I saw your listing *'+encodeURIComponent(p.title||'')+'* on MyPlotMitra. Is it available?');
 };
 
 window.openSubscribe=async function(){
+  if(appSettings.prime){window.openContactChooser(window.__openPid||'');return;}
   const body=document.getElementById('subModalBody');
   document.getElementById('subModal').classList.add('open');
   if(!currentUser){
@@ -3523,14 +3542,22 @@ window.renderPremiumAdmin=async function(list){
       </div>`;}).join('')}`:'';
   list.innerHTML=`
     <div class="prem-toggle">
-      <div><div class="prem-toggle-t">Prime Subscription (₹25/month)</div>
-      <div class="prem-toggle-s">When ON, only Prime subscribers can view contacts &amp; chat</div></div>
-      <label class="tgl"><input type="checkbox" id="premLockTgl" ${appSettings.premiumLock?'checked':''} onchange="window.togglePremLock(this.checked)"/><span class="sl"></span></label>
+      <div><div class="prem-toggle-t">PRIME</div>
+      <div class="prem-toggle-s">ON: contacts &amp; chat are locked — users go Prime or pay per contact. OFF: site works fully free as before</div></div>
+      <label class="tgl"><input type="checkbox" ${appSettings.prime?'checked':''} onchange="window.toggleSetting('prime',this.checked)"/><span class="sl"></span></label>
     </div>
-    <div class="prem-toggle">
-      <div><div class="prem-toggle-t">Pay-per-contact · ₹10 (Razorpay)</div>
-      <div class="prem-toggle-s">When ON, non-Prime users see no seller name/number until they pay ₹10 per property</div></div>
-      <label class="tgl"><input type="checkbox" ${appSettings.payPerContact?'checked':''} onchange="window.toggleSetting('payPerContact',this.checked)"/><span class="sl"></span></label>
+    <div class="prem-toggle" style="display:block">
+      <div class="prem-toggle-t" style="margin-bottom:10px">Pricing</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <label style="font-size:11px;color:#777;display:block">Prime ₹/month
+          <input id="cfgPrimeP" type="number" min="1" value="${Number(appSettings.primePrice)||25}" style="display:block;width:90px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <label style="font-size:11px;color:#777;display:block">Flexy: contacts
+          <input id="cfgFxN" type="number" min="1" value="${Number(appSettings.flexyCount)||3}" style="display:block;width:80px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <label style="font-size:11px;color:#777;display:block">Flexy: price ₹
+          <input id="cfgFxP" type="number" min="1" value="${Number(appSettings.flexyPrice)||10}" style="display:block;width:80px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <button class="sub-ok" style="flex:0 0 auto;padding:10px 16px" onclick="window.savePrimeCfg()">Save prices</button>
+      </div>
+      <div class="prem-toggle-s" style="margin-top:8px">Example: contacts 3 + price ₹10 → user pays ₹10 once and can unlock 3 different sellers</div>
     </div>
     <div class="prem-toggle">
       <div><div class="prem-toggle-t">WhatsApp verification for posts</div>
@@ -3548,6 +3575,15 @@ window.renderPremiumAdmin=async function(list){
         </div>
       </div>`).join(''):'<div style="text-align:center;color:#AAA;padding:24px;font-size:13px">No pending subscription requests</div>'}
     ${membersHtml}`;
+};
+window.savePrimeCfg=async function(){
+  const pp=Number(document.getElementById('cfgPrimeP').value),
+        fn=Number(document.getElementById('cfgFxN').value),
+        fp=Number(document.getElementById('cfgFxP').value);
+  if(!(pp>0&&fn>0&&fp>0)){showToast('Enter valid positive numbers','error');return;}
+  try{await setDoc(doc(db,'settings','app'),{primePrice:pp,flexyCount:fn,flexyPrice:fp},{merge:true});
+    showToast(`Saved: Prime ₹${pp}/mo · ${fn} contacts for ₹${fp}`,'success');}
+  catch(e){console.error(e);showToast('Could not save prices','error');}
 };
 window.toggleSetting=async function(key,on){
   try{await setDoc(doc(db,'settings','app'),{[key]:on},{merge:true});
@@ -3827,14 +3863,53 @@ function startUnlockListener(){
 }
 onAuthStateChanged(auth,()=>{setTimeout(startUnlockListener,600);});
 
-window.startPay=async function(propId){
-  if(!currentUser){showToast('Sign in to unlock contact details','error');window.doSignIn();return;}
+window.openContactChooser=function(propId){
+  if(!currentUser){showToast('Sign in to contact sellers','error');window.doSignIn();return;}
+  const cfg=appSettings;
+  const primeP=Number(cfg.primePrice)||25, fxN=Number(cfg.flexyCount)||3, fxP=Number(cfg.flexyPrice)||10;
+  const credits=Number(myProfile&&myProfile.contactCredits)||0;
+  document.getElementById('chooserBody').innerHTML=`
+    <div class="chooser-opt" onclick="window.rzpPay('prime')">
+      <div style="font-size:22px">⭐</div>
+      <div style="flex:1"><div class="co-h">Prime — ₹${primeP}/month</div>
+      <div class="co-s">Unlimited seller contacts + chat on every property for 30 days</div></div>
+      <div class="co-go">›</div>
+    </div>
+    <div class="chooser-opt" onclick="window.chooseFlexy('${propId}')">
+      <div style="font-size:22px">🔓</div>
+      <div style="flex:1"><div class="co-h">${credits>0?`Use 1 contact credit (${credits} left)`:`Contact this seller — ₹${fxP}`}</div>
+      <div class="co-s">${credits>0?'Unlock this seller using your balance':`Pay ₹${fxP} once, get ${fxN} seller contacts to use anytime`}</div></div>
+      <div class="co-go">›</div>
+    </div>
+    <p style="font-size:11px;color:#999;text-align:center;margin-top:10px">Secure payment via Razorpay · UPI, cards, netbanking</p>`;
+  document.getElementById('chooserModal').classList.add('open');
+};
+window.chooseFlexy=async function(propId){
+  const credits=Number(myProfile&&myProfile.contactCredits)||0;
+  if(credits>0){
+    try{
+      const token=await currentUser.getIdToken();
+      const r=await fetch('/api/use-credit',{method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify({propId})});
+      const d=await r.json();
+      if(d.success){
+        document.getElementById('chooserModal').classList.remove('open');
+        showToast('Unlocked! '+(d.creditsLeft||0)+' contact credit(s) left.','success');
+      }else showToast(d.error||'Could not use credit','error');
+    }catch(e){showToast('Network error — try again','error');}
+  }else{
+    window.rzpPay('flexy',propId);
+  }
+};
+window.rzpPay=async function(kind,propId){
+  if(!currentUser){showToast('Sign in first','error');window.doSignIn();return;}
   if(typeof Razorpay==='undefined'){showToast('Payment library failed to load — refresh and try again','error');return;}
   try{
     const token=await currentUser.getIdToken();
     const r=await fetch('/api/rzp-create-order',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-      body:JSON.stringify({propId})});
+      body:JSON.stringify({kind:kind||'flexy',propId:propId||null})});
     const d=await r.json();
     if(!d.orderId){showToast(d.error||'Could not start payment','error');return;}
     const rzp=new Razorpay({
@@ -3843,7 +3918,7 @@ window.startPay=async function(propId){
       amount:d.amount,
       currency:d.currency||'INR',
       name:'MyPlotMitra',
-      description:'Unlock contact — '+(d.title||'property'),
+      description:d.label||'MyPlotMitra payment',
       image:'https://www.myplotmitra.com/icons/icon-192.png',
       prefill:{name:currentUser.displayName||'',email:currentUser.email||''},
       theme:{color:'#FF6A00'},
@@ -3856,9 +3931,10 @@ window.startPay=async function(propId){
             body:JSON.stringify(resp)});
           const out=await v.json();
           if(out.success){
-            showToast('✅ Payment successful! Contact details unlocked.','success');
-            // unlock listener refreshes the open sheet automatically; nudge anyway:
-            setTimeout(()=>{try{window.openDetail(out.propId||propId);}catch(_){}} ,800);
+            document.getElementById('chooserModal').classList.remove('open');
+            showToast(out.prime?'⭐ You are now Prime! Unlimited contacts for 30 days.'
+              :'✅ Payment successful! Seller unlocked'+(out.creditsLeft?` — ${out.creditsLeft} credit(s) left for other sellers.`:'.'),'success');
+            if(out.propId||propId){setTimeout(()=>{try{window.openDetail(out.propId||propId);}catch(_){}} ,800);}
           }else{
             showToast(out.error||'Verification failed — contact support, do not pay again','error');
           }
@@ -3872,6 +3948,7 @@ window.startPay=async function(propId){
     rzp.open();
   }catch(e){console.error(e);showToast('Payment could not start — try again','error');}
 };
+window.startPay=(propId)=>window.rzpPay('flexy',propId);
 
 // Handle return from PhonePe: ?payreturn=<txnId>
 (async function(){

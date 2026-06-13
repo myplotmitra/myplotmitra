@@ -12,7 +12,7 @@ if (!admin.apps.length) {
   });
 }
 
-const AMOUNT_PAISE = 1000; // ₹10 (minimum allowed is 100)
+
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
@@ -27,19 +27,35 @@ module.exports = async (req, res) => {
     try { user = await admin.auth().verifyIdToken(idToken); }
     catch { return res.status(401).json({ error: 'Invalid session — sign in again' }); }
 
-    const { propId } = req.body || {};
-    if (!propId) return res.status(400).json({ error: 'propId required' });
-    if (AMOUNT_PAISE < 100) return res.status(400).json({ error: 'Amount below minimum' });
+    const { kind = 'flexy', propId = null } = req.body || {};
+    if (!['prime', 'flexy'].includes(kind))
+      return res.status(400).json({ error: 'Invalid kind' });
 
     const db = admin.firestore();
 
-    // Already unlocked → don't charge twice
-    const unlock = await db.collection('unlocks').doc(`${propId}_${user.uid}`).get();
-    if (unlock.exists) return res.status(200).json({ error: 'Already unlocked — refresh the page.' });
+    // Prices come from admin settings — never from the client
+    const cfgSnap = await db.collection('settings').doc('app').get();
+    const cfg = cfgSnap.exists ? cfgSnap.data() : {};
+    const primePrice = Number(cfg.primePrice) || 25;
+    const flexyCount = Number(cfg.flexyCount) || 3;
+    const flexyPrice = Number(cfg.flexyPrice) || 10;
 
-    const prop = await db.collection('properties').doc(String(propId)).get();
-    if (!prop.exists) return res.status(404).json({ error: 'Property not found' });
-    const title = (prop.data().title || 'Property').slice(0, 60);
+    let AMOUNT_PAISE, label, credits = 0;
+    if (kind === 'prime') {
+      AMOUNT_PAISE = Math.round(primePrice * 100);
+      label = `Prime subscription — 30 days (₹${primePrice})`;
+    } else {
+      if (!propId) return res.status(400).json({ error: 'propId required' });
+      const unlock = await db.collection('unlocks').doc(`${propId}_${user.uid}`).get();
+      if (unlock.exists) return res.status(200).json({ error: 'Already unlocked — refresh the page.' });
+      const prop = await db.collection('properties').doc(String(propId)).get();
+      if (!prop.exists) return res.status(404).json({ error: 'Property not found' });
+      AMOUNT_PAISE = Math.round(flexyPrice * 100);
+      credits = flexyCount;
+      label = `${flexyCount} seller contact${flexyCount > 1 ? 's' : ''} (₹${flexyPrice})`;
+    }
+    if (AMOUNT_PAISE < 100) return res.status(400).json({ error: 'Amount below minimum (₹1)' });
+    const title = label;
 
     // ── Create order ──
     const receipt = 'MPM' + Date.now() + Math.random().toString(36).slice(2, 6).toUpperCase();
@@ -54,7 +70,7 @@ module.exports = async (req, res) => {
         amount: AMOUNT_PAISE,
         currency: 'INR',
         receipt,
-        notes: { propId: String(propId), uid: user.uid },
+        notes: { kind, propId: propId ? String(propId) : '', uid: user.uid },
       }),
     });
     const order = await r.json();
@@ -64,9 +80,10 @@ module.exports = async (req, res) => {
     }
 
     await db.collection('payments').doc(order.id).set({
-      gateway: 'razorpay',
+      gateway: 'razorpay', kind,
       orderId: order.id, receipt,
-      uid: user.uid, propId: String(propId),
+      uid: user.uid, propId: propId ? String(propId) : null,
+      credits,
       amount: AMOUNT_PAISE, status: 'created',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
@@ -77,6 +94,7 @@ module.exports = async (req, res) => {
       amount: AMOUNT_PAISE,
       currency: 'INR',
       title,
+      label,
     });
   } catch (e) {
     console.error('rzp-create-order:', e);

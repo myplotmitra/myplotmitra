@@ -1287,6 +1287,21 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .co-s{font-size:11.5px;color:#777;margin-top:2px;line-height:1.4}
 .co-go{font-size:22px;color:#FF6A00;font-weight:800}
 </style>
+
+<style>
+/* ── Plot site-plan builder ── */
+.plbl{display:block;font-size:11px;font-weight:700;color:#888;letter-spacing:.6px;text-transform:uppercase;margin-bottom:6px}
+.plot-area-out{background:#FFF9F5;border:1px solid rgba(255,106,0,.18);border-radius:12px;padding:11px 14px;font-size:13px;color:#555;margin:14px 0 12px;font-weight:500}
+.plot-viz-card{border:1px solid var(--g200,#E8E8E8);border-radius:16px;overflow:hidden;background:#fff}
+.plot-viz-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--g150,#EFEFEF);background:#FAFAFA;font-size:12.5px;font-weight:800;color:#1A1A1A;letter-spacing:.2px}
+.plot-viz-head .ico{display:inline-flex;vertical-align:-2px;margin-right:4px}
+.plot-viz-btns{display:flex;gap:6px}
+.plot-mini-btn{background:#0A0A0A;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px}
+.plot-mini-btn:hover{background:#FF6A00}
+.plot-svg-wrap{padding:12px;min-height:120px}
+.plot-empty{text-align:center;color:#9A9A9A;font-size:12.5px;padding:34px 10px;font-weight:500}
+@media print{.plot-viz-btns{display:none}}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1542,7 +1557,61 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
           <input type="hidden" id="pickedLat" name="lat"/>
           <input type="hidden" id="pickedLng" name="lng"/>
         </div>
-        <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg"><label class="flbl">Dimensions</label><div class="frow"><input id="fLft" name="lengthFt" class="finp" type="number" placeholder="Length ft" oninput="window.updDims()"/><input id="fWft" name="widthFt" class="finp" type="number" placeholder="Width ft" oninput="window.updDims()"/><input name="areaSqft" class="finp" type="number" placeholder="Area sqft"/></div><div class="dims-preview" id="dimsPreview"></div></div><div class="fg"><label class="flbl">Your WhatsApp number *</label>
+        <div class="fg"><label class="flbl">Property type *</label><select name="type_" class="fsel" required><option value="plot">Plot</option><option value="house">House</option><option value="land">Land</option><option value="flat">Flat</option></select></div><div class="fg"><label class="flbl">Title *</label><input name="title_" class="finp" placeholder="e.g. Corner plot near ORR, Kondapur" required/></div><div class="frow2"><div class="fg"><label class="flbl">Address *</label><input name="address" class="finp" placeholder="Street / locality" required/></div><div class="fg"><label class="flbl">City</label><input name="city" class="finp" placeholder="Hyderabad"/></div></div><div class="fg">
+          <label class="flbl">Property / Plot Details</label>
+          <div class="frow2">
+            <div>
+              <label class="plbl">Plot Facing</label>
+              <select id="plotFacing" class="fsel" onchange="window.updPlot()">
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+              </select>
+            </div>
+            <div>
+              <label class="plbl">Corner Plot</label>
+              <div class="ftog" style="padding:9px 12px">
+                <span class="ftog-lbl" style="font-size:12.5px">Corner plot?</span>
+                <label class="tog"><input type="checkbox" id="plotCorner" onchange="window.updPlot()"/><span class="tog-track"></span></label>
+              </div>
+            </div>
+          </div>
+          <div class="frow2">
+            <div><label class="plbl">Front Length (ft)</label><input id="fFront" class="finp" type="number" inputmode="decimal" placeholder="e.g. 40" oninput="window.updPlot()"/></div>
+            <div><label class="plbl">Back Length (ft)</label><input id="fBack" class="finp" type="number" inputmode="decimal" placeholder="e.g. 40" oninput="window.updPlot()"/></div>
+          </div>
+          <div class="frow2">
+            <div><label class="plbl">Left Side (ft)</label><input id="fLeft" class="finp" type="number" inputmode="decimal" placeholder="e.g. 60" oninput="window.updPlot()"/></div>
+            <div><label class="plbl">Right Side (ft)</label><input id="fRight" class="finp" type="number" inputmode="decimal" placeholder="e.g. 60" oninput="window.updPlot()"/></div>
+          </div>
+          <div class="frow2">
+            <div><label class="plbl">Front Road Width (ft)</label><input id="fFrontRoad" class="finp" type="number" inputmode="decimal" placeholder="e.g. 30" oninput="window.updPlot()"/></div>
+            <div id="sideRoadWrap" style="display:none"><label class="plbl">Side Road Width (ft)</label><input id="fSideRoad" class="finp" type="number" inputmode="decimal" placeholder="e.g. 30" oninput="window.updPlot()"/></div>
+          </div>
+          <div class="fg" style="margin-bottom:0">
+            <label class="plbl">Plot Number <span style="color:var(--g400);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input id="fPlotNo" class="finp" type="text" placeholder="e.g. Plot No. 42" oninput="window.updPlot()"/>
+          </div>
+          <div class="plot-area-out" id="plotAreaOut">Enter dimensions to calculate area</div>
+
+          <!-- hidden, back-compat fields read by submitProperty -->
+          <input type="hidden" id="fArea"  name="areaSqft"/>
+          <input type="hidden" id="fLenCompat" name="lengthFt"/>
+          <input type="hidden" id="fWidCompat" name="widthFt"/>
+
+          <!-- live site-plan visualization -->
+          <div class="plot-viz-card">
+            <div class="plot-viz-head">
+              <span><span class="ico" style="color:var(--or)"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/></svg></span> Site Plan Preview</span>
+              <div class="plot-viz-btns">
+                <button type="button" class="plot-mini-btn" onclick="window.downloadPlotPNG()">PNG</button>
+                <button type="button" class="plot-mini-btn" onclick="window.printPlot()">Print</button>
+              </div>
+            </div>
+            <div id="plotSvgWrap" class="plot-svg-wrap"></div>
+          </div>
+        </div><div class="fg"><label class="flbl">Your WhatsApp number *</label>
   <div style="display:flex;gap:8px">
     <input name="sellerPhone" id="waPhoneInp" class="finp" type="tel" placeholder="10-digit WhatsApp number" required maxlength="10" inputmode="numeric" oninput="window.waPhoneChanged()" style="flex:1"/>
     <button type="button" class="wa-verify-btn" id="waVerifyBtn" onclick="window.waSendCode()" disabled>Verify</button>
@@ -2931,7 +3000,7 @@ window.closePost=()=>{
   for(let i=0; i<6; i++) selectedPhotos[i]=null;
   renderPhotoGrid();
   window.clearMapPin();
-  const dp=document.getElementById('dimsPreview');if(dp)dp.textContent='';
+  try{window.updPlot&&window.updPlot();}catch(_){}
   const pp=document.getElementById('pricePreview');if(pp)pp.textContent='= ₹45,00,000';
   const ph=document.getElementById('priceHidden');if(ph)ph.value='';
   const cl=document.getElementById('photoCountLabel');if(cl)cl.textContent='';
@@ -2947,11 +3016,137 @@ window.closePost=()=>{
   if(proofData)proofData.value='';
   if(proofStatus)proofStatus.style.display='none';
 };
-window.updDims=()=>{
-  const l=Number(document.getElementById('fLft')?.value)||0;
-  const w2=Number(document.getElementById('fWft')?.value)||0;
-  const pr=document.getElementById('dimsPreview');
-  if(pr)pr.textContent=l&&w2?`${l} ft × ${w2} ft = ${(l*w2).toLocaleString('en-IN')} sqft`:'';
+/* ════════ PLOT SITE-PLAN VISUALIZER ════════ */
+const PLOT_C={plot:'#FF6A00',plotFill:'rgba(255,106,0,.16)',road:'#9A9A9A',roadDark:'#7A7A7A',border:'#2A2A2A',text:'#0A0A0A',facing:'#059669',corner:'#185FA5'};
+
+function buildPlotSVG(o){
+  const {front,back,left,right,facing,corner,frontRoad,sideRoad,plotNo,area}=o;
+  // exact trapezoid solver (world y-up, front edge at y=0)
+  const a=(front-back)/2; let s,H;
+  if(Math.abs(a)<1e-6){ s=0; H=((left+right)/2)||front; }
+  else { s=(left*left-right*right)/(4*a); const hsq=left*left-(a+s)*(a+s); H=hsq>1e-6?Math.sqrt(hsq):((left+right)/2); }
+  if(!(H>0)) H=((left+right)/2)||front;
+  const maxW=Math.max(front,back);
+  let P={ BL:{x:(maxW-front)/2,y:0}, BR:{x:(maxW+front)/2,y:0},
+          TR:{x:(maxW+back)/2+s,y:H}, TL:{x:(maxW-back)/2+s,y:H} };
+  const cx=(P.BL.x+P.BR.x+P.TR.x+P.TL.x)/4, cy=(P.BL.y+P.BR.y+P.TR.y+P.TL.y)/4;
+  const ang=({South:0,East:90,North:180,West:270})[facing]; const A=(ang===undefined?90:ang)*Math.PI/180;
+  const ca=Math.cos(A), sa=Math.sin(A);
+  const rot=p=>{const dx=p.x-cx,dy=p.y-cy;return {x:cx+dx*ca-dy*sa,y:cy+dx*sa+dy*ca};};
+  const R={BL:rot(P.BL),BR:rot(P.BR),TR:rot(P.TR),TL:rot(P.TL)}, C={x:cx,y:cy};
+  const span=Math.max(front,back,left,right);
+  function road(e1,e2,wft){
+    const ex=e2.x-e1.x,ey=e2.y-e1.y,len=Math.hypot(ex,ey)||1; let nx=-ey/len,ny=ex/len;
+    const mx=(e1.x+e2.x)/2,my=(e1.y+e2.y)/2;
+    if((mx+nx-C.x)**2+(my+ny-C.y)**2<(mx-C.x)**2+(my-C.y)**2){nx=-nx;ny=-ny;}
+    const w=Math.max(wft||0, span*0.16);
+    return {o1:{x:e1.x+nx*w,y:e1.y+ny*w},o2:{x:e2.x+nx*w,y:e2.y+ny*w},nx,ny,w,wft};
+  }
+  const fRd=road(R.BL,R.BR,frontRoad);
+  const sRd=corner?road(R.BR,R.TR,sideRoad):null;
+  let pp=[R.BL,R.BR,R.TR,R.TL,fRd.o1,fRd.o2]; if(sRd) pp.push(sRd.o1,sRd.o2);
+  const minX=Math.min(...pp.map(p=>p.x)),maxX=Math.max(...pp.map(p=>p.x));
+  const minY=Math.min(...pp.map(p=>p.y)),maxY=Math.max(...pp.map(p=>p.y));
+  const wW=(maxX-minX)||1,wH=(maxY-minY)||1, CW=400,CH=400,pad=58;
+  const scale=Math.min((CW-2*pad)/wW,(CH-2*pad)/wH);
+  const offX=(CW-wW*scale)/2,offY=(CH-wH*scale)/2;
+  const M=p=>({x:offX+(p.x-minX)*scale, y:CH-(offY+(p.y-minY)*scale)});
+  const BL=M(R.BL),BR=M(R.BR),TR=M(R.TR),TL=M(R.TL),Cm=M(C);
+  const mid=(p,q)=>({x:(p.x+q.x)/2,y:(p.y+q.y)/2});
+  const outNorm=(p1,p2)=>{const ex=p2.x-p1.x,ey=p2.y-p1.y,l=Math.hypot(ex,ey)||1;let nx=ey/l,ny=-ex/l;const m=mid(p1,p2);if((m.x+nx-Cm.x)**2+(m.y+ny-Cm.y)**2<(m.x-Cm.x)**2+(m.y-Cm.y)**2){nx=-nx;ny=-ny;}return {nx,ny};};
+  const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+  let svg='';
+  // roads (behind)
+  const roadPoly=(rd)=>{const a1=M(rd.o1),a2=M(rd.o2);const e1=(rd===fRd)?BL:BR,e2=(rd===fRd)?BR:TR;
+    return `<polygon points="${e1.x},${e1.y} ${e2.x},${e2.y} ${a2.x},${a2.y} ${a1.x},${a1.y}" fill="${PLOT_C.road}" stroke="${PLOT_C.roadDark}" stroke-width="1"/>`;};
+  svg+=roadPoly(fRd); if(sRd) svg+=roadPoly(sRd);
+  // road labels
+  const roadLabel=(rd,e1,e2)=>{const a1=M(rd.o1),a2=M(rd.o2);const ctr={x:(e1.x+e2.x+a1.x+a2.x)/4,y:(e1.y+e2.y+a1.y+a2.y)/4};
+    const txt=(rd.wft>0?rd.wft+' ft':'')+' Road'; const ang2=Math.atan2(e2.y-e1.y,e2.x-e1.x)*180/Math.PI; const aa=(ang2>90||ang2<-90)?ang2+180:ang2;
+    return `<text x="${ctr.x}" y="${ctr.y}" transform="rotate(${aa.toFixed(1)} ${ctr.x} ${ctr.y})" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" fill="#fff" font-family="Inter,sans-serif">${txt}</text>`;};
+  svg+=roadLabel(fRd,BL,BR); if(sRd) svg+=roadLabel(sRd,BR,TR);
+  // plot polygon
+  const cls=corner?'plot-poly corner':'plot-poly';
+  svg+=`<polygon points="${BL.x},${BL.y} ${BR.x},${BR.y} ${TR.x},${TR.y} ${TL.x},${TL.y}" fill="${PLOT_C.plotFill}" stroke="${PLOT_C.plot}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  // house on facing side (front edge = BL->BR), pushed inward
+  const fm=mid(BL,BR); const toC={x:Cm.x-fm.x,y:Cm.y-fm.y}; const dl=Math.hypot(toC.x,toC.y)||1;
+  const hx=fm.x+toC.x/dl*30, hy=fm.y+toC.y/dl*30, hs=15;
+  svg+=`<g transform="translate(${hx} ${hy})">
+    <polygon points="${-hs},0 0,${-hs} ${hs},0" fill="${PLOT_C.border}"/>
+    <rect x="${-hs*0.7}" y="0" width="${hs*1.4}" height="${hs*0.95}" fill="#fff" stroke="${PLOT_C.border}" stroke-width="1.5"/>
+    <rect x="${-hs*0.22}" y="${hs*0.3}" width="${hs*0.44}" height="${hs*0.65}" fill="${PLOT_C.plot}"/>
+  </g>`;
+  svg+=`<text x="${fm.x+toC.x/dl*52}" y="${fm.y+toC.y/dl*52}" text-anchor="middle" dominant-baseline="central" font-size="11.5" font-weight="800" fill="${PLOT_C.facing}" font-family="Inter,sans-serif" style="paint-order:stroke" stroke="#fff" stroke-width="3">${facing.toUpperCase()} FACING</text>`;
+  // edge length labels
+  const edgeLabel=(p1,p2,val)=>{ if(!val) return ''; const m=mid(p1,p2),{nx,ny}=outNorm(p1,p2);
+    return `<text x="${m.x+nx*17}" y="${m.y+ny*17}" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="${PLOT_C.text}" font-family="Inter,sans-serif" style="paint-order:stroke" stroke="#fff" stroke-width="3.2">${val} ft</text>`;};
+  svg+=edgeLabel(BL,BR,front); svg+=edgeLabel(TL,TR,back); svg+=edgeLabel(BL,TL,left); svg+=edgeLabel(BR,TR,right);
+  // corner badge
+  if(corner) svg+=`<g transform="translate(14 16)"><rect x="0" y="0" rx="9" width="92" height="20" fill="${PLOT_C.corner}"/><text x="46" y="11" text-anchor="middle" dominant-baseline="central" font-size="10.5" font-weight="800" fill="#fff" font-family="Inter,sans-serif">CORNER PLOT</text></g>`;
+  // compass fixed top-right
+  const ccx=CW-34,ccy=36,cr=20;
+  svg+=`<g><circle cx="${ccx}" cy="${ccy}" r="${cr}" fill="#fff" stroke="${PLOT_C.border}" stroke-width="1.2"/>
+    <polygon points="${ccx},${ccy-cr+3} ${ccx-4},${ccy} ${ccx+4},${ccy}" fill="${PLOT_C.plot}"/>
+    <polygon points="${ccx},${ccy+cr-3} ${ccx-4},${ccy} ${ccx+4},${ccy}" fill="${PLOT_C.border}"/>
+    <text x="${ccx}" y="${ccy-cr-5}" text-anchor="middle" font-size="9" font-weight="800" fill="${PLOT_C.plot}" font-family="Inter,sans-serif">N</text>
+    <text x="${ccx}" y="${ccy+cr+9}" text-anchor="middle" font-size="9" font-weight="700" fill="${PLOT_C.text}" font-family="Inter,sans-serif">S</text>
+    <text x="${ccx+cr+7}" y="${ccy}" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="700" fill="${PLOT_C.text}" font-family="Inter,sans-serif">E</text>
+    <text x="${ccx-cr-7}" y="${ccy}" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="700" fill="${PLOT_C.text}" font-family="Inter,sans-serif">W</text></g>`;
+  // plot number + area footer
+  if(plotNo) svg+=`<text x="${Cm.x}" y="${Cm.y-6}" text-anchor="middle" dominant-baseline="central" font-size="11.5" font-weight="800" fill="${PLOT_C.text}" font-family="Inter,sans-serif" style="paint-order:stroke" stroke="#fff" stroke-width="3">${esc(plotNo)}</text>`;
+  if(area) svg+=`<text x="${Cm.x}" y="${Cm.y+(plotNo?12:0)}" text-anchor="middle" dominant-baseline="central" font-size="12.5" font-weight="800" fill="${PLOT_C.plot}" font-family="Poppins,Inter,sans-serif" style="paint-order:stroke" stroke="#fff" stroke-width="3">${area.toLocaleString('en-IN')} sqft</text>`;
+
+  return `<svg id="plotSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CW} ${CH}" width="100%" style="display:block;max-width:420px;margin:0 auto;background:#fff;border-radius:14px">${svg}</svg>`;
+}
+
+window.updPlot=function(){
+  const num=id=>{const e=document.getElementById(id);const v=e?parseFloat(e.value):0;return isFinite(v)&&v>0?v:0;};
+  const facing=(document.getElementById('plotFacing')?.value)||'East';
+  const corner=!!(document.getElementById('plotCorner')?.checked);
+  let front=num('fFront'),back=num('fBack'),left=num('fLeft'),right=num('fRight');
+  const frontRoad=num('fFrontRoad'),sideRoad=num('fSideRoad');
+  const plotNo=(document.getElementById('fPlotNo')?.value||'').trim();
+  const srw=document.getElementById('sideRoadWrap'); if(srw) srw.style.display=corner?'block':'none';
+  if(!back&&front)back=front; if(!front&&back)front=back;
+  if(!right&&left)right=left; if(!left&&right)left=right;
+  const area=(front&&back&&left&&right)?Math.round(((front+back)/2)*((left+right)/2)):0;
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v;};
+  set('fArea',area||''); set('fLenCompat',area?Math.round((left+right)/2):''); set('fWidCompat',area?Math.round((front+back)/2):'');
+  const out=document.getElementById('plotAreaOut');
+  if(out) out.innerHTML = area? `<span class="ico" style="color:var(--or);vertical-align:-2px"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,10 8,14 16,6"/></svg></span> Plot Area: <b style="color:var(--ord)">${area.toLocaleString('en-IN')} sqft</b> &nbsp;·&nbsp; <b>${Math.round(area/9).toLocaleString('en-IN')} sq.yd</b>` : 'Enter dimensions to calculate area';
+  const wrap=document.getElementById('plotSvgWrap'); if(!wrap)return;
+  if(!(front&&left)){ wrap.innerHTML='<div class="plot-empty">Enter Front &amp; Side lengths to generate your site plan</div>'; return; }
+  wrap.innerHTML=buildPlotSVG({front,back,left,right,facing,corner,frontRoad,sideRoad,plotNo,area});
+};
+window.updDims=window.updPlot; // back-compat alias
+
+window.downloadPlotPNG=function(){
+  const svg=document.getElementById('plotSvg');
+  if(!svg){showToast('Enter dimensions first','error');return;}
+  const xml=new XMLSerializer().serializeToString(svg);
+  const svg64='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
+  const img=new Image(); const SC=2;
+  img.onload=()=>{
+    const cv=document.createElement('canvas'); cv.width=400*SC; cv.height=400*SC;
+    const ctx=cv.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.drawImage(img,0,0,cv.width,cv.height);
+    cv.toBlob(b=>{ if(!b){showToast('Could not export','error');return;}
+      const a=document.createElement('a'); a.href=URL.createObjectURL(b);
+      a.download='myplotmitra-site-plan.png'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000); showToast('Site plan downloaded','success');
+    },'image/png');
+  };
+  img.onerror=()=>showToast('Could not export image','error');
+  img.src=svg64;
+};
+window.printPlot=function(){
+  const svg=document.getElementById('plotSvg');
+  if(!svg){showToast('Enter dimensions first','error');return;}
+  const w=window.open('','_blank','width=600,height=700');
+  if(!w){showToast('Allow pop-ups to print','error');return;}
+  w.document.write('<html><head><title>MyPlotMitra — Site Plan</title><style>body{margin:0;display:flex;flex-direction:column;align-items:center;font-family:Inter,Arial,sans-serif;padding:24px}h2{color:#FF6A00;margin:0 0 14px}svg{max-width:520px;width:100%}</style></head><body><h2>MyPlotMitra — Site Plan</h2>'+new XMLSerializer().serializeToString(svg)+'<script>window.onload=function(){window.print();}<\/script></body></html>');
+  w.document.close();
 };
 
 window.updPrice=()=>{
@@ -3000,6 +3195,15 @@ window.submitProperty=async e=>{
       lengthFt:Number(form.lengthFt.value)||0,
       widthFt:Number(form.widthFt.value)||0,
       areaSqft:Number(form.areaSqft.value)||0,
+      facing:document.getElementById('plotFacing')?.value||'',
+      isCorner:!!(document.getElementById('plotCorner')?.checked),
+      frontLen:Number(document.getElementById('fFront')?.value)||0,
+      backLen:Number(document.getElementById('fBack')?.value)||0,
+      leftLen:Number(document.getElementById('fLeft')?.value)||0,
+      rightLen:Number(document.getElementById('fRight')?.value)||0,
+      frontRoad:Number(document.getElementById('fFrontRoad')?.value)||0,
+      sideRoad:Number(document.getElementById('fSideRoad')?.value)||0,
+      plotNumber:(document.getElementById('fPlotNo')?.value||'').trim(),
       price:Number(document.getElementById('priceHidden')?.value||form.priceVal?.value||0),
       isNegotiable:form.negotiable.checked,
       isFeatured:false,
@@ -3620,7 +3824,7 @@ window.rejectSub=async function(uid){
 /* ════════ END PREMIUM ════════ */
 
 /* ════════ PUSH NOTIFICATIONS (FCM) ════════ */
-const FCM_VAPID='BG-6CQaDf1UzgNMsQ4-TB_g8bqRjJJCG7aRuuBG5MkYcSFUv4nWp72RAzF6tnTdzpVjRMAH0BECJkEkyqSQEMlI'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
+const FCM_VAPID='PASTE_VAPID_KEY_HERE'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
 let fcmMessaging=null;
 try{fcmMessaging=getMessaging(app);}catch(e){console.log('FCM unsupported:',e.message);}
 

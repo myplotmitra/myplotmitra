@@ -2395,6 +2395,14 @@ window.openDetail=function(id){
       <div class="detail-title">${p.title}</div>
       <div class="detail-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.address?p.address+', ':''} ${p.city}</div>
       ${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}
+      ${(p.frontLen>0&&p.leftLen>0)?`<div class="plot-viz-card" style="margin-bottom:18px">
+        <div class="plot-viz-head"><span><span class="ico" style="color:var(--or)"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/></svg></span> Site Plan</span>
+          <div class="plot-viz-btns">
+            <button type="button" class="plot-mini-btn" onclick="window.downloadPlotPNG('plotSvgDetail')">PNG</button>
+            <button type="button" class="plot-mini-btn" onclick="window.printPlot('plotSvgDetail')">Print</button>
+          </div></div>
+        <div class="plot-svg-wrap">${buildPlotSVG({front:Number(p.frontLen)||0,back:Number(p.backLen)||Number(p.frontLen)||0,left:Number(p.leftLen)||0,right:Number(p.rightLen)||Number(p.leftLen)||0,facing:p.facing||'East',corner:!!p.isCorner,frontRoad:Number(p.frontRoad)||0,sideRoad:Number(p.sideRoad)||0,plotNo:p.plotNumber||'',area:Number(p.areaSqft)||0},'plotSvgDetail')}</div>
+      </div>`:''}
       <div class="detail-meta">
         <div class="meta-item"><span class="meta-lbl">Type</span><span class="meta-val">${p.type}</span></div>
         <div class="meta-item"><span class="meta-lbl">Area</span><span class="meta-val">${p.areaSqft?Number(p.areaSqft).toLocaleString()+' sqft':'—'}</span></div>
@@ -3019,7 +3027,8 @@ window.closePost=()=>{
 /* ════════ PLOT SITE-PLAN VISUALIZER ════════ */
 const PLOT_C={plot:'#FF6A00',plotFill:'rgba(255,106,0,.16)',road:'#9A9A9A',roadDark:'#7A7A7A',border:'#2A2A2A',text:'#0A0A0A',facing:'#059669',corner:'#185FA5'};
 
-function buildPlotSVG(o){
+function buildPlotSVG(o,svgId){
+  svgId=svgId||'plotSvg';
   const {front,back,left,right,facing,corner,frontRoad,sideRoad,plotNo,area}=o;
   // exact trapezoid solver (world y-up, front edge at y=0)
   const a=(front-back)/2; let s,H;
@@ -3097,7 +3106,7 @@ function buildPlotSVG(o){
   if(plotNo) svg+=`<text x="${Cm.x}" y="${Cm.y-6}" text-anchor="middle" dominant-baseline="central" font-size="11.5" font-weight="800" fill="${PLOT_C.text}" font-family="Inter,sans-serif" style="paint-order:stroke" stroke="#fff" stroke-width="3">${esc(plotNo)}</text>`;
   if(area) svg+=`<text x="${Cm.x}" y="${Cm.y+(plotNo?12:0)}" text-anchor="middle" dominant-baseline="central" font-size="12.5" font-weight="800" fill="${PLOT_C.plot}" font-family="Poppins,Inter,sans-serif" style="paint-order:stroke" stroke="#fff" stroke-width="3">${area.toLocaleString('en-IN')} sqft</text>`;
 
-  return `<svg id="plotSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CW} ${CH}" width="100%" style="display:block;max-width:420px;margin:0 auto;background:#fff;border-radius:14px">${svg}</svg>`;
+  return `<svg id="${svgId}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CW} ${CH}" width="100%" style="display:block;max-width:420px;margin:0 auto;background:#fff;border-radius:14px">${svg}</svg>`;
 }
 
 window.updPlot=function(){
@@ -3121,8 +3130,8 @@ window.updPlot=function(){
 };
 window.updDims=window.updPlot; // back-compat alias
 
-window.downloadPlotPNG=function(){
-  const svg=document.getElementById('plotSvg');
+window.downloadPlotPNG=function(svgId){
+  const svg=document.getElementById(svgId||'plotSvg');
   if(!svg){showToast('Enter dimensions first','error');return;}
   const xml=new XMLSerializer().serializeToString(svg);
   const svg64='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
@@ -3140,8 +3149,8 @@ window.downloadPlotPNG=function(){
   img.onerror=()=>showToast('Could not export image','error');
   img.src=svg64;
 };
-window.printPlot=function(){
-  const svg=document.getElementById('plotSvg');
+window.printPlot=function(svgId){
+  const svg=document.getElementById(svgId||'plotSvg');
   if(!svg){showToast('Enter dimensions first','error');return;}
   const w=window.open('','_blank','width=600,height=700');
   if(!w){showToast('Allow pop-ups to print','error');return;}

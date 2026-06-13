@@ -3156,7 +3156,7 @@ async function loadAdminTab(tab){
       <button class="adm-tab${tab==='approved'?' on':''}" data-tab="approved" onclick="window.switchAdminTab('approved')">Approved</button>
       <button class="adm-tab${tab==='sold'?' on':''}" data-tab="sold" onclick="window.switchAdminTab('sold')">Sold Out</button>
       <button class="adm-tab${tab==='premium'?' on':''}" data-tab="premium" onclick="window.switchAdminTab('premium')">Premium</button>`;
-    body.insertBefore(tabBar,body.firstChild);
+    body.parentNode.insertBefore(tabBar,body);
   } else if(modal){
     modal.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
   }

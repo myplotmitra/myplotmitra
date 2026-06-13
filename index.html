@@ -3696,6 +3696,8 @@ window.openProfile=function(){
         <div class="prof-email">${u.email||''}</div></div>
       </div>
       ${premLine}
+      ${(Number(myProfile&&myProfile.contactCredits)||0)>0?`<div class="prof-row" style="cursor:default">
+        <span class="pr-ico">🎟️</span> ${myProfile.contactCredits} contact credit(s) available</div>`:''}
       <div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openChats()">
         <span class="pr-ico">💬</span> My Chats</div>
       <div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openMyListings()">
@@ -3865,11 +3867,12 @@ function startUnlockListener(){
 }
 onAuthStateChanged(auth,()=>{setTimeout(startUnlockListener,600);});
 
-window.openContactChooser=function(propId){
+window.openContactChooser=async function(propId){
   if(!currentUser){showToast('Sign in to contact sellers','error');window.doSignIn();return;}
   const cfg=appSettings;
   const primeP=Number(cfg.primePrice)||25, fxN=Number(cfg.flexyCount)||3, fxP=Number(cfg.flexyPrice)||10;
-  const credits=Number(myProfile&&myProfile.contactCredits)||0;
+  let credits=Number(myProfile&&myProfile.contactCredits)||0;
+  try{const u=await getDoc(doc(db,'users',currentUser.uid));if(u.exists()){myProfile=u.data();credits=Number(myProfile.contactCredits)||0;}}catch(_){}
   document.getElementById('chooserBody').innerHTML=`
     <div class="chooser-opt" onclick="window.rzpPay('prime')">
       <div style="font-size:22px">⭐</div>
@@ -3897,6 +3900,7 @@ window.chooseFlexy=async function(propId){
       const d=await r.json();
       if(d.success){
         document.getElementById('chooserModal').classList.remove('open');
+        if(myProfile)myProfile.contactCredits=d.creditsLeft;
         showToast('Unlocked! '+(d.creditsLeft||0)+' contact credit(s) left.','success');
       }else showToast(d.error||'Could not use credit','error');
     }catch(e){showToast('Network error — try again','error');}
@@ -3936,6 +3940,7 @@ window.rzpPay=async function(kind,propId){
             document.getElementById('chooserModal').classList.remove('open');
             showToast(out.prime?'⭐ You are now Prime! Unlimited contacts for 30 days.'
               :'✅ Payment successful! Seller unlocked'+(out.creditsLeft?` — ${out.creditsLeft} credit(s) left for other sellers.`:'.'),'success');
+            if(typeof out.creditsLeft==='number'&&myProfile)myProfile.contactCredits=out.creditsLeft;
             if(out.propId||propId){setTimeout(()=>{try{window.openDetail(out.propId||propId);}catch(_){}} ,800);}
           }else{
             showToast(out.error||'Verification failed — contact support, do not pay again','error');

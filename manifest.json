@@ -1,68 +1,47 @@
 {
-  "name": "OnePercent Real Estate",
-  "short_name": "1% Real Estate",
-  "description": "Buy, sell & discover properties in Hyderabad",
+  "name": "MyPlotMitra — Plots, Houses, Flats & Land",
+  "short_name": "MyPlotMitra",
+  "description": "Buy, sell and discover verified plots, houses, flats and land in Hyderabad and Anantapur. Zero brokerage, direct from owners.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#111111",
-  "theme_color": "#E85D04",
+  "background_color": "#0A0A0A",
+  "theme_color": "#FF6A00",
   "orientation": "portrait-primary",
-  "categories": ["business", "lifestyle"],
+  "categories": ["business", "lifestyle", "shopping"],
   "lang": "en-IN",
   "icons": [
-    {
-      "src": "/icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
     {
-      "name": "Post Property",
+      "name": "Post a Property",
       "short_name": "Post",
-      "description": "Post a new property listing",
-      "url": "/?action=post",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+      "description": "List your plot, house or flat",
+      "url": "/?action=post"
     },
     {
       "name": "Browse Listings",
       "short_name": "Browse",
-      "description": "Browse all property listings",
-      "url": "/",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "description": "See all verified properties",
+      "url": "/"
     }
   ]
 }

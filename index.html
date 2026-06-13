@@ -2057,17 +2057,15 @@ function getFiltered(){
     const ms2=!hideSold||(p.status!=='sold');
     return mt&&ms&&mp&&mb&&ms2;
   });
-  // Sort
+  // Sort — featured listings ALWAYS pinned to the top, then the chosen sort applies within each tier
   data.sort((a,b)=>{
+    const fd=(b.isFeatured?1:0)-(a.isFeatured?1:0);
+    if(fd!==0)return fd;                       // featured first, always
     if(sortF==='price-asc') return (a.price||0)-(b.price||0);
     if(sortF==='price-desc') return (b.price||0)-(a.price||0);
-    if(sortF==='featured'){
-      const fd=(b.isFeatured?1:0)-(a.isFeatured?1:0);
-      if(fd!==0)return fd;
-    }
     const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(0);
     const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(0);
-    return db2-da;
+    return db2-da;                             // newest within each tier
   });
   return data;
 }
@@ -3622,7 +3620,7 @@ window.rejectSub=async function(uid){
 /* ════════ END PREMIUM ════════ */
 
 /* ════════ PUSH NOTIFICATIONS (FCM) ════════ */
-const FCM_VAPID='PASTE_VAPID_KEY_HERE'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
+const FCM_VAPID='BG-6CQaDf1UzgNMsQ4-TB_g8bqRjJJCG7aRuuBG5MkYcSFUv4nWp72RAzF6tnTdzpVjRMAH0BECJkEkyqSQEMlI'; // Firebase Console → Project Settings → Cloud Messaging → Web Push certificates
 let fcmMessaging=null;
 try{fcmMessaging=getMessaging(app);}catch(e){console.log('FCM unsupported:',e.message);}
 

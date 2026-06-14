@@ -1302,6 +1302,53 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .plot-empty{text-align:center;color:#9A9A9A;font-size:12.5px;padding:34px 10px;font-weight:500}
 @media print{.plot-viz-btns{display:none}}
 </style>
+
+<style>
+/* ── Trust badges & seller profile ── */
+.trust-badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.tbadge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--bc,#555);background:#fff;border:1.5px solid var(--bc,#ccc);padding:3px 9px;border-radius:100px;letter-spacing:.2px;line-height:1.4}
+.tbadge.urgent{--bc:#DC2626;background:#FEF2F2}
+.tbadge.premium{--bc:#FF6A00;background:#FFF4EC}
+.card .trust-badges{margin:0 0 8px}
+.card .tbadge{font-size:9px;padding:2px 7px}
+@media(max-width:640px){.card .trust-badges{display:none}}
+.seller-prof-link{font-size:12.5px;font-weight:700;color:#185FA5;cursor:pointer;margin:-2px 0 14px}
+.seller-prof-link:active{opacity:.6}
+.badge-pick{display:flex;align-items:center;gap:11px;border:1.5px solid var(--g200,#E8E8E8);border-radius:12px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+.badge-pick input{width:18px;height:18px;accent-color:#FF6A00;flex-shrink:0}
+.badge-pick-t{flex:1;display:flex;flex-direction:column;gap:1px}
+.badge-pick-t b{font-size:13px;color:#1A1A1A;font-weight:700}
+.badge-pick-t span{font-size:11px;color:#888}
+.badge-pick-p{font-size:13px;font-weight:800;color:#FF6A00;white-space:nowrap}
+.badge-total{font-size:12.5px;color:#555;margin-top:8px;font-weight:600}
+.badge-total b{color:#D95A00;font-size:15px}
+.adm-verify{margin-top:8px;padding-top:8px;border-top:1px dashed var(--g200,#E8E8E8)}
+.adm-verify-grid{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11px;color:#666;margin-bottom:6px}
+.adm-verify-grid b{color:#1A1A1A}
+.adm-verify-req{font-size:11px;color:#D95A00;font-weight:700;background:#FFF4EC;border-radius:6px;padding:5px 8px;margin-bottom:6px}
+.adm-verify-t{font-size:10px;font-weight:800;letter-spacing:.5px;color:#999;text-transform:uppercase;margin:6px 0 5px}
+.adm-badge-btns{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}
+.abadge{font-size:10.5px;font-weight:700;border:1.5px solid var(--g200,#E8E8E8);background:#fff;color:#555;border-radius:100px;padding:5px 11px;cursor:pointer;font-family:inherit}
+.abadge.on{background:#059669;border-color:#059669;color:#fff}
+.abadge.promo.on{background:#FF6A00;border-color:#FF6A00}
+.sp-head{display:flex;align-items:center;gap:13px;padding:2px 2px 16px}
+.sp-av{width:54px;height:54px;border-radius:50%;background:#FF6A00;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0}
+.sp-name{font-size:16px;font-weight:800;color:#1A1A1A}
+.sp-level{font-size:12px;font-weight:700;margin-top:2px}
+.sp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.sp-stat{background:#FAFAFA;border:1px solid var(--g150,#EFEFEF);border-radius:12px;padding:11px 6px;text-align:center}
+.sp-stat b{display:block;font-size:15px;font-weight:800;color:#1A1A1A;font-family:'Poppins',sans-serif}
+.sp-stat span{font-size:10px;color:#999;font-weight:600}
+.sp-sec{font-size:11px;font-weight:800;letter-spacing:.5px;color:#999;text-transform:uppercase;margin-bottom:10px}
+.sp-listing{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--g150,#EFEFEF);cursor:pointer}
+.sp-listing:hover{background:#FAFAFA}
+.sp-listing-img{width:54px;height:46px;border-radius:9px;overflow:hidden;background:#FFF0E6;flex-shrink:0}
+.sp-listing-img img{width:100%;height:100%;object-fit:cover}
+.sp-listing-mid{flex:1;min-width:0}
+.sp-listing-t{font-size:12.5px;font-weight:700;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-listing-c{font-size:11px;color:#999}
+.sp-listing-p{font-size:14px;font-weight:800;color:#FF6A00;white-space:nowrap}
+</style>
 </head>
 <body>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
@@ -1745,6 +1792,16 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
           </div>
         </div>
 
+        <div class="fg" id="badgeSection">
+          <label class="flbl">Trust Badges <span style="color:var(--g400);font-weight:400;text-transform:none;letter-spacing:0">(optional &middot; admin-verified)</span></label>
+          <label class="badge-pick"><input type="checkbox" id="bgOwner" onchange="window.updBadgeTotal()"/><span class="badge-pick-t"><b>Verified Owner</b><span>Identity &amp; ownership checked</span></span><span class="badge-pick-p" id="bgOwnerP">&#8377;&mdash;</span></label>
+          <label class="badge-pick"><input type="checkbox" id="bgPhone" onchange="window.updBadgeTotal()"/><span class="badge-pick-t"><b>Verified Phone</b><span>OTP-confirmed number</span></span><span class="badge-pick-p" id="bgPhoneP">&#8377;&mdash;</span></label>
+          <label class="badge-pick"><input type="checkbox" id="bgProperty" onchange="window.updBadgeTotal()"/><span class="badge-pick-t"><b>Verified Property</b><span>Documents verified</span></span><span class="badge-pick-p" id="bgPropertyP">&#8377;&mdash;</span></label>
+          <label class="badge-pick"><input type="checkbox" id="bgVisit" onchange="window.updBadgeTotal()"/><span class="badge-pick-t"><b>Property Visit Photos</b><span>On-site photos by our team</span></span><span class="badge-pick-p" id="bgVisitP">&#8377;&mdash;</span></label>
+          <label class="badge-pick"><input type="checkbox" id="bgLocation" onchange="window.updBadgeTotal()"/><span class="badge-pick-t"><b>Location Verified</b><span>GPS location confirmed</span></span><span class="badge-pick-p" id="bgLocationP">&#8377;&mdash;</span></label>
+          <div class="badge-total" id="badgeTotal"></div>
+          <div style="font-size:11px;color:#777;margin-top:8px;line-height:1.55">Pick the badges you want. After posting, pay the total via UPI <b>9989083321@upi</b> and send the screenshot on WhatsApp &mdash; we verify your documents and activate the badges within 24h.</div>
+        </div>
         <div class="notice">Your listing will be reviewed by admin before going live. Usually within 24 hours.</div>
         <button type="submit" class="submit-btn" id="submitBtn" disabled style="opacity:.55">Verify your WhatsApp number to submit</button>
       </form>
@@ -1809,6 +1866,13 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
       <button class="modal-close" onclick="document.getElementById('chooserModal').classList.remove('open')">x</button>
     </div>
     <div class="modal-body" id="chooserBody"></div>
+  </div>
+</div>
+<div class="modal-overlay" id="sellerModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header"><span class="modal-title">Seller Profile</span>
+      <button class="modal-close" onclick="document.getElementById('sellerModal').classList.remove('open')">x</button></div>
+    <div class="modal-body" id="sellerBody"></div>
   </div>
 </div>
 <div class="modal-overlay" id="subModal">
@@ -1900,6 +1964,9 @@ const ICONS = {
   'clock': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>`,
   'logout': `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v10a2 2 0 002 2h3M13 7l4 3-4 3M7 10h10"/></svg>`,
 };
+function badgeLabel(k){return ({verifiedOwner:'Verified Owner',verifiedPhone:'Verified Phone',verifiedProperty:'Verified Property',visitPhotos:'Visit Photos',location:'Location Verified'})[k]||k;}
+function badgePills(b){if(!b)return'';const order=['verifiedOwner','verifiedPhone','verifiedProperty','visitPhotos','location'];const col={verifiedOwner:'#059669',verifiedPhone:'#185FA5',verifiedProperty:'#FF6A00',visitPhotos:'#7C3AED',location:'#0A0A0A'};return order.filter(k=>b[k]).map(k=>`<span class="tbadge" style="--bc:${col[k]}">\u2713 ${badgeLabel(k)}</span>`).join('');}
+function promoPills(p){let o='';if(p&&p.premiumListing)o+='<span class="tbadge premium">\u2605 Premium</span>';if(p&&p.urgent)o+='<span class="tbadge urgent">\u25cf Urgent Sale</span>';return o;}
 function icon(name, cls=""){return `<span class="icon ${cls}" aria-hidden="true">${ICONS[name]||""}</span>`;}
 
 /* ══ ADMIN EMAIL — always gets admin panel ══ */
@@ -2180,6 +2247,7 @@ function renderGrid(data){
         ${isSold?'<div style="font-size:11px;font-weight:600;color:#DC2626;margin-bottom:4px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>':''}
         <div class="card-title">${p.title}</div>
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
+        ${(()=>{const tb=promoPills(p)+badgePills(p.badges);return tb?`<div class="trust-badges">${tb}</div>`:'';})()}
         <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time" style="display:flex;align-items:center;gap:3px"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
         <button class="card-more" onclick="event.stopPropagation();window.openDetail('${p.id}')">More details &rsaquo;</button>
@@ -2417,6 +2485,8 @@ window.openDetail=function(id){
         </div>
         <span style="font-size:11px;background:#EAF3DE;color:#3B6D11;padding:3px 8px;border-radius:10px;font-weight:500">Direct Owner</span>
       </div>
+      ${(()=>{const tb=promoPills(p)+badgePills(p.badges);return tb?`<div class="trust-badges" style="margin-bottom:10px">${tb}</div>`:'';})()}
+      ${p.ownerId?`<div class="seller-prof-link" onclick="window.openSellerProfile('${p.ownerId}','${(p.ownerName||p.sellerName||'Seller').replace(/'/g,'')}')">View seller profile &rsaquo;</div>`:''}
       ${p.status==='sold'?`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:var(--r-md);padding:12px;text-align:center;margin-bottom:14px">
         <div style="font-size:16px;font-weight:700;color:#DC2626"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
@@ -2522,7 +2592,7 @@ window.toggleHideSold=()=>{
 };
 window.toggleBk=(id,e)=>{if(e)e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();};
 window.openPost=()=>{
-  setTimeout(()=>{try{window.applyWaMode();}catch(_){}} ,50);
+  setTimeout(()=>{try{window.applyWaMode();window.updBadgeTotal();}catch(_){}} ,50);
   if(!currentUser){window.doSignIn();return;}
   document.getElementById('postModal').classList.add('open');
   // Init map picker after modal opens
@@ -3129,6 +3199,13 @@ window.updPlot=function(){
   wrap.innerHTML=buildPlotSVG({front,back,left,right,facing,corner,frontRoad,sideRoad,plotNo,area});
 };
 window.updDims=window.updPlot; // back-compat alias
+window.updBadgeTotal=function(){
+  const P={verifiedOwner:Number(appSettings.badgePOwner)||199,verifiedPhone:Number(appSettings.badgePPhone)||49,verifiedProperty:Number(appSettings.badgePProperty)||299,visitPhotos:Number(appSettings.badgePVisit)||149,location:Number(appSettings.badgePLocation)||99};
+  const rows=[['bgOwner','verifiedOwner'],['bgPhone','verifiedPhone'],['bgProperty','verifiedProperty'],['bgVisit','visitPhotos'],['bgLocation','location']];
+  let total=0;
+  rows.forEach(([id,k])=>{const pe=document.getElementById(id+'P');if(pe)pe.innerHTML='\u20b9'+P[k];const c=document.getElementById(id);if(c&&c.checked)total+=P[k];});
+  const t=document.getElementById('badgeTotal');if(t)t.innerHTML=total>0?`Total to pay after posting: <b>\u20b9${total}</b>`:'';
+};
 
 window.downloadPlotPNG=function(svgId){
   const svg=document.getElementById(svgId||'plotSvg');
@@ -3213,6 +3290,8 @@ window.submitProperty=async e=>{
       frontRoad:Number(document.getElementById('fFrontRoad')?.value)||0,
       sideRoad:Number(document.getElementById('fSideRoad')?.value)||0,
       plotNumber:(document.getElementById('fPlotNo')?.value||'').trim(),
+      badgesRequested:{verifiedOwner:!!document.getElementById('bgOwner')?.checked,verifiedPhone:!!document.getElementById('bgPhone')?.checked,verifiedProperty:!!document.getElementById('bgProperty')?.checked,visitPhotos:!!document.getElementById('bgVisit')?.checked,location:!!document.getElementById('bgLocation')?.checked},
+      badges:{},urgent:false,premiumListing:false,
       price:Number(document.getElementById('priceHidden')?.value||form.priceVal?.value||0),
       isNegotiable:form.negotiable.checked,
       isFeatured:false,
@@ -3418,6 +3497,28 @@ async function loadAdminTab(tab){
               <span class="adm-pill">${fp(p.price)}</span>
               ${p.areaSqft?`<span class="adm-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}
               ${p.lengthFt>0?`<span class="adm-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}
+            </div>
+            <div class="adm-verify">
+              <div class="adm-verify-grid">
+                ${p.facing?`<span>Facing: <b>${p.facing}</b></span>`:''}
+                ${p.isCorner?`<span style="color:#185FA5"><b>Corner</b></span>`:''}
+                ${p.frontLen?`<span>F/B: <b>${p.frontLen}/${p.backLen||p.frontLen}ft</b></span>`:''}
+                ${p.leftLen?`<span>L/R: <b>${p.leftLen}/${p.rightLen||p.leftLen}ft</b></span>`:''}
+                ${p.frontRoad?`<span>Road: <b>${p.frontRoad}ft</b></span>`:''}
+                ${p.plotNumber?`<span>Plot#: <b>${p.plotNumber}</b></span>`:''}
+                <span>Ph: <b>${p.sellerPhone||'\u2014'}</b></span>
+                ${p.waVerified?'<span style="color:#059669"><b>WA \u2713</b></span>':''}
+                ${(p.lat&&p.lng)?`<span><a href="https://maps.google.com/?q=${p.lat},${p.lng}" target="_blank" style="color:#185FA5;text-decoration:underline">\ud83d\udccd Map</a></span>`:''}
+              </div>
+              ${(()=>{const req=p.badgesRequested||{};const r=Object.keys(req).filter(k=>req[k]);return r.length?`<div class="adm-verify-req">Requested: ${r.map(badgeLabel).join(', ')}</div>`:'';})()}
+              <div class="adm-verify-t">Grant trust badges</div>
+              <div class="adm-badge-btns">
+                ${['verifiedOwner','verifiedPhone','verifiedProperty','visitPhotos','location'].map(k=>`<button class="abadge${(p.badges&&p.badges[k])?' on':''}" onclick="window.grantBadge('${p.id}','${k}',${!(p.badges&&p.badges[k])})">${(p.badges&&p.badges[k])?'\u2713 ':''}${badgeLabel(k)}</button>`).join('')}
+              </div>
+              <div class="adm-badge-btns">
+                <button class="abadge promo${p.premiumListing?' on':''}" onclick="window.setPromo('${p.id}','premiumListing',${!p.premiumListing})">${p.premiumListing?'\u2713 ':''}Premium Listing</button>
+                <button class="abadge promo${p.urgent?' on':''}" onclick="window.setPromo('${p.id}','urgent',${!p.urgent})">${p.urgent?'\u2713 ':''}Urgent Sale</button>
+              </div>
             </div>
           </div>
           <div class="adm-acts">
@@ -3772,6 +3873,17 @@ window.renderPremiumAdmin=async function(list){
       </div>
       <div class="prem-toggle-s" style="margin-top:8px">Example: contacts 3 + price ₹10 → user pays ₹10 once and can unlock 3 different sellers</div>
     </div>
+    <div class="prem-toggle" style="display:block">
+      <div class="prem-toggle-t" style="margin-bottom:10px">Badge prices (admin-fixed)</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <label style="font-size:11px;color:#777">Verified Owner ₹<input id="cfgBOwner" type="number" min="0" value="${Number(appSettings.badgePOwner)||199}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <label style="font-size:11px;color:#777">Verified Phone ₹<input id="cfgBPhone" type="number" min="0" value="${Number(appSettings.badgePPhone)||49}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <label style="font-size:11px;color:#777">Verified Property ₹<input id="cfgBProperty" type="number" min="0" value="${Number(appSettings.badgePProperty)||299}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <label style="font-size:11px;color:#777">Visit Photos ₹<input id="cfgBVisit" type="number" min="0" value="${Number(appSettings.badgePVisit)||149}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <label style="font-size:11px;color:#777">Location ₹<input id="cfgBLocation" type="number" min="0" value="${Number(appSettings.badgePLocation)||99}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+        <button class="sub-ok" style="flex:0 0 auto;padding:10px 16px" onclick="window.saveBadgePrices()">Save badge prices</button>
+      </div>
+    </div>
     <div class="prem-toggle">
       <div><div class="prem-toggle-t">WhatsApp verification for posts</div>
       <div class="prem-toggle-s">Requires WhatsApp Cloud API setup. OFF = sellers post with plain phone entry</div></div>
@@ -3802,6 +3914,49 @@ window.toggleSetting=async function(key,on){
   try{await setDoc(doc(db,'settings','app'),{[key]:on},{merge:true});
     showToast(key+' '+(on?'ENABLED':'disabled'),'success');}
   catch(e){console.error(e);showToast('Could not update setting','error');}
+};
+window.grantBadge=async function(id,key,on){
+  try{await updateDoc(doc(db,'properties',id),{['badges.'+key]:on});
+    showToast((on?'Granted ':'Removed ')+badgeLabel(key),'success');
+    await loadProps(); await loadAdminTab(adminTab);
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+window.setPromo=async function(id,key,on){
+  try{await updateDoc(doc(db,'properties',id),{[key]:on});
+    showToast((key==='urgent'?'Urgent Sale ':'Premium Listing ')+(on?'on':'off'),'success');
+    await loadProps(); await loadAdminTab(adminTab);
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+window.saveBadgePrices=async function(){
+  const g=id=>Math.max(0,Number(document.getElementById(id)?.value)||0);
+  try{await setDoc(doc(db,'settings','app'),{badgePOwner:g('cfgBOwner'),badgePPhone:g('cfgBPhone'),badgePProperty:g('cfgBProperty'),badgePVisit:g('cfgBVisit'),badgePLocation:g('cfgBLocation')},{merge:true});
+    showToast('Badge prices saved','success');}
+  catch(e){console.error(e);showToast('Could not save badge prices','error');}
+};
+window.openSellerProfile=function(ownerId,name){
+  if(!ownerId){showToast('Seller info unavailable','error');return;}
+  const mine=allProps.filter(p=>p.ownerId===ownerId);
+  const body=document.getElementById('sellerBody');
+  document.getElementById('sellerModal').classList.add('open');
+  const times=mine.map(p=>p.createdAt?.toDate?p.createdAt.toDate().getTime():0).filter(Boolean);
+  const joined=times.length?new Date(Math.min(...times)):null, last=times.length?new Date(Math.max(...times)):null;
+  const approved=mine.filter(p=>p.status==='approved');
+  let vl=0; mine.forEach(p=>{const b=p.badges||{};const c=['verifiedOwner','verifiedPhone','verifiedProperty','visitPhotos','location'].filter(k=>b[k]).length;if(c>vl)vl=c;});
+  const level=vl>=3?'Highly Verified':vl>=1?'Verified':'Basic', levelCol=vl>=3?'#059669':vl>=1?'#185FA5':'#9A9A9A';
+  body.innerHTML=`
+    <div class="sp-head"><div class="sp-av">${(name||'S')[0].toUpperCase()}</div>
+      <div><div class="sp-name">${name||'Seller'}</div><div class="sp-level" style="color:${levelCol}">\u25cf ${level} seller</div></div></div>
+    <div class="sp-stats">
+      <div class="sp-stat"><b>${mine.length}</b><span>Listings</span></div>
+      <div class="sp-stat"><b>${approved.length}</b><span>Active</span></div>
+      <div class="sp-stat"><b>${joined?joined.toLocaleDateString('en-IN',{month:'short',year:'numeric'}):'\u2014'}</b><span>Joined</span></div>
+      <div class="sp-stat"><b>${last?ago({toDate:()=>last}):'\u2014'}</b><span>Last active</span></div>
+    </div>
+    <div class="sp-sec">Active listings (${approved.length})</div>
+    ${approved.length?approved.map(p=>`<div class="sp-listing" onclick="document.getElementById('sellerModal').classList.remove('open');window.openDetail('${p.id}')">
+      <div class="sp-listing-img">${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" onerror="this.style.display='none'"/>`:''}</div>
+      <div class="sp-listing-mid"><div class="sp-listing-t">${p.title}</div><div class="sp-listing-c">${p.city}</div></div>
+      <div class="sp-listing-p">${fp(p.price)}</div></div>`).join(''):'<div style="color:#9A9A9A;font-size:13px;padding:18px;text-align:center">No active listings right now</div>'}`;
 };
 window.togglePremLock=async function(on){
   try{await setDoc(doc(db,'settings','app'),{premiumLock:on},{merge:true});

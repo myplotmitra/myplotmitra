@@ -6,6 +6,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "pricing.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "refund.html",
       "use": "@vercel/static"
     },

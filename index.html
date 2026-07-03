@@ -8,6 +8,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="MyPlotMitra"/>
+<link rel="preconnect" href="https://firestore.googleapis.com"/>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://identitytoolkit.googleapis.com"/>
+<link rel="dns-prefetch" href="https://firestore.googleapis.com"/>
+<link rel="dns-prefetch" href="https://www.gstatic.com"/>
 <link rel="manifest" href="/manifest.json"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <title>MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad &amp; Anantapur</title>
@@ -1351,6 +1356,16 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 </style>
 </head>
 <body>
+<noscript>
+  <div style="max-width:640px;margin:40px auto;padding:24px;font-family:Arial,sans-serif;line-height:1.7;color:#1a1a1a">
+    <h1 style="color:#FF6A00">MyPlotMitra — Buy &amp; Sell Plots, Houses, Flats in Hyderabad &amp; Anantapur</h1>
+    <p><strong>MyPlotMitra is an online property classifieds and listing platform</strong> connecting property owners directly with buyers in Anantapur, Hyderabad, and surrounding areas — zero brokerage, direct from owners.</p>
+    <p>We are not a real estate broker or transaction platform. We do not buy, sell, or hold any property, and no property sale value passes through our payment account. We charge only small, fixed digital service fees (₹49–₹499) for optional features such as verification badges, featured listing placement, and buyer contact-unlock credits.</p>
+    <p>See our <a href="/pricing.html">Pricing &amp; How We Make Money</a> page, <a href="/terms.html">Terms &amp; Conditions</a>, <a href="/privacy.html">Privacy Policy</a>, and <a href="/refund.html">Refund Policy</a> for full details.</p>
+    <p>Please enable JavaScript to browse live property listings, post a property, or contact sellers.</p>
+    <p>Contact: <a href="mailto:nkhadar@gmail.com">nkhadar@gmail.com</a> &middot; WhatsApp <a href="https://wa.me/919989083321">+91 99890 83321</a></p>
+  </div>
+</noscript>
 <div class="install-bar" id="installBar"><span>Add to home screen for app experience</span><div style="display:flex;gap:8px;align-items:center"><button class="ibtn" id="installBtn">Install</button><button class="iclose" onclick="document.getElementById('installBar').classList.remove('show')">x</button></div></div>
 <header class="header"><div class="header-inner">
 <div class="logo" onclick="window.location.reload()">
@@ -1466,7 +1481,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 <div class="section-head" id="listingsHead">
   <div>
     <div class="section-title">Latest Properties</div>
-    <div class="section-sub" id="sectionSubCount">Loading...</div>
+    <div class="section-sub" id="sectionSubCount">Verified plots, houses, flats &amp; land — updated daily</div>
   </div>
   <button class="sec-view-toggle" id="secViewToggle" onclick="window.toggleSecView()"></button><a class="section-link" id="sectionPostLink" onclick="window.openPost()">+ Post Property <span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span></a>
 </div>
@@ -1487,7 +1502,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
       <button class="vbtn on" id="vbGrid" onclick="window.setView('grid')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span> Grid</button>
       <button class="vbtn" id="vbMap" onclick="window.setView('map')"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span> Map</button>
     </div>
-    <span class="pcnt" id="pcnt">Loading...</span>
+    <span class="pcnt" id="pcnt">Browse listings</span>
   </div>
   <div class="filter-row2">
     <select class="sort-sel" id="sortSel" onchange="window.setSort(this.value)">
@@ -4049,6 +4064,8 @@ window.openProfile=function(){
       <div class="prof-av-fb" style="margin:0 auto 14px">👤</div>
       <p style="font-size:13.5px;color:#666;margin-bottom:18px">Sign in to post properties, chat with sellers and manage your account.</p>
       <button class="btn-post" style="width:100%;justify-content:center" onclick="document.getElementById('profileModal').classList.remove('open');window.doSignIn()">Sign in with Google</button>
+      <div class="prof-row" style="margin-top:14px;text-align:left" onclick="window.open('/pricing.html','_blank')">
+        <span class="pr-ico">💰</span> Pricing &amp; How We Make Money</div>
     </div>`;
   }else{
     const prem=window.__isPremium();
@@ -4079,6 +4096,8 @@ window.openProfile=function(){
         <span class="pr-ico">📄</span> My Posts</div>
       <div class="prof-row" onclick="window.enableNotifs()">
         <span class="pr-ico">🔔</span> ${('Notification' in window&&Notification.permission==='granted')?'Notifications enabled ✓':'Enable notifications'}</div>
+      <div class="prof-row" onclick="window.open('/pricing.html','_blank')">
+        <span class="pr-ico">💰</span> Pricing &amp; How We Make Money</div>
       ${isAdm?`<div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openAdmin()">
         <span class="pr-ico">⚙️</span> Admin panel</div>`:''}
       <div class="prof-row danger" onclick="window.doSignOut()">

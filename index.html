@@ -1354,6 +1354,33 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .sp-listing-c{font-size:11px;color:#999}
 .sp-listing-p{font-size:14px;font-weight:800;color:#FF6A00;white-space:nowrap}
 </style>
+
+<style>
+/* ── Sponsored banners (public strip) ── */
+.sponsor-strip-wrap{max-width:1200px;margin:0 auto;padding:14px 16px 4px}
+.sponsor-strip-lbl{font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#B0B0B0;margin-bottom:8px}
+.sponsor-strip{display:flex;gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+.sponsor-strip::-webkit-scrollbar{display:none}
+.sponsor-card{flex:0 0 auto;width:230px;border:1px solid #EFEFEF;border-radius:14px;overflow:hidden;cursor:pointer;background:#fff;transition:transform .15s}
+.sponsor-card:active{transform:scale(.98)}
+.sponsor-img{width:100%;height:100px;background:#FFF3E9;overflow:hidden}
+.sponsor-img img{width:100%;height:100%;object-fit:cover}
+.sponsor-body{padding:10px 12px}
+.sponsor-name{font-size:13px;font-weight:800;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sponsor-tag{font-size:11px;color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sponsor-cta{font-size:11px;font-weight:700;color:#FF6A00;margin-top:6px}
+/* ── Sponsored banners (admin) ── */
+.banner-adm-row{display:flex;align-items:center;gap:12px;padding:11px;border:1px solid var(--g150,#EFEFEF);border-radius:12px;margin-bottom:8px}
+.banner-adm-thumb{width:64px;height:48px;border-radius:8px;object-fit:cover;background:#FAFAFA;flex-shrink:0}
+.banner-adm-mid{flex:1;min-width:0}
+.banner-adm-name{font-size:13px;font-weight:700;color:#1A1A1A;display:flex;align-items:center;gap:6px}
+.banner-adm-meta{font-size:11px;color:#999;margin-top:2px}
+.banner-adm-btns{display:flex;gap:5px;flex-shrink:0}
+.badge-live{font-size:9px;font-weight:800;background:#059669;color:#fff;padding:2px 7px;border-radius:100px}
+.badge-off{font-size:9px;font-weight:800;background:#999;color:#fff;padding:2px 7px;border-radius:100px}
+.banner-form{border:1.5px solid #FF6A00;border-radius:14px;padding:16px;margin-bottom:16px;background:#FFF9F5}
+.banner-form-t{font-size:14px;font-weight:800;color:#1A1A1A;margin-bottom:12px}
+</style>
 </head>
 <body>
 <noscript>
@@ -1476,6 +1503,12 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
     </div>
   </div>
 </section>
+
+<!-- ── SPONSORED BANNERS STRIP ──────────────────── -->
+<div class="sponsor-strip-wrap" id="sponsorStripWrap" style="display:none">
+  <div class="sponsor-strip-lbl">Sponsored</div>
+  <div class="sponsor-strip" id="sponsorStrip"></div>
+</div>
 
 <!-- ── SECTION HEADING ──────────────────────────── -->
 <div class="section-head" id="listingsHead">
@@ -2053,6 +2086,35 @@ window.doSignIn=async()=>{try{await signInWithPopup(auth,provider);}catch(e){con
 window.doSignOut=async()=>{if(confirm('Sign out?')){await signOut(auth);window.location.reload();}};
 window.toggleProfileMenu=()=>{const m=document.getElementById('profileMenu');if(m)m.style.display=m.style.display==='none'?'block':'none';};
 document.addEventListener('click',e=>{const m=document.getElementById('profileMenu');if(m&&m.style.display==='block'&&!m.parentElement?.contains(e.target))m.style.display='none';});
+
+async function renderSponsorStrip(){
+  const wrap=document.getElementById('sponsorStripWrap'), strip=document.getElementById('sponsorStrip');
+  if(!wrap||!strip)return;
+  try{
+    const snap=await getDocs(query(collection(db,'banners'),where('active','==',true)));
+    const today=new Date().toISOString().slice(0,10);
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(b=>(!b.startDate||b.startDate<=today)&&(!b.endDate||b.endDate>=today));
+    if(!items.length){wrap.style.display='none';return;}
+    // shuffle lightly so all sponsors get fair rotation across visits
+    items.sort(()=>Math.random()-0.5);
+    strip.innerHTML=items.map(b=>`
+      <div class="sponsor-card" onclick="window.__sponsorClick('${b.id}','${(b.linkUrl||'').replace(/'/g,"\\'")}','${(b.phone||'').replace(/'/g,"\\'")}')">
+        ${b.imageData?`<div class="sponsor-img"><img src="${b.imageData}" loading="lazy"/></div>`:''}
+        <div class="sponsor-body">
+          <div class="sponsor-name">${(b.businessName||'').replace(/</g,'&lt;')}</div>
+          ${b.tagline?`<div class="sponsor-tag">${b.tagline.replace(/</g,'&lt;')}</div>`:''}
+          <div class="sponsor-cta">${b.linkUrl?'Visit ›':(b.phone?'Contact ›':'Learn more ›')}</div>
+        </div>
+      </div>`).join('');
+    wrap.style.display='block';
+  }catch(e){console.warn('Sponsor banners:',e.message);wrap.style.display='none';}
+}
+window.__sponsorClick=function(id,linkUrl,phone){
+  try{updateDoc(doc(db,'banners',id),{clicks:increment(1)}).catch(()=>{});}catch(_){}
+  if(linkUrl){window.open(linkUrl.startsWith('http')?linkUrl:'https://'+linkUrl,'_blank');}
+  else if(phone){window.open('https://wa.me/91'+phone.replace(/\D/g,''),'_blank');}
+};
 
 async function loadProps(){
   showSkeleton();
@@ -3460,7 +3522,8 @@ async function loadAdminTab(tab){
       <button class="adm-tab${tab==='pending'?' on':''}" data-tab="pending" onclick="window.switchAdminTab('pending')">Pending</button>
       <button class="adm-tab${tab==='approved'?' on':''}" data-tab="approved" onclick="window.switchAdminTab('approved')">Approved</button>
       <button class="adm-tab${tab==='sold'?' on':''}" data-tab="sold" onclick="window.switchAdminTab('sold')">Sold Out</button>
-      <button class="adm-tab${tab==='premium'?' on':''}" data-tab="premium" onclick="window.switchAdminTab('premium')">Premium</button>`;
+      <button class="adm-tab${tab==='premium'?' on':''}" data-tab="premium" onclick="window.switchAdminTab('premium')">Premium</button>
+      <button class="adm-tab${tab==='banners'?' on':''}" data-tab="banners" onclick="window.switchAdminTab('banners')">Banners</button>`;
     body.parentNode.insertBefore(tabBar,body);
   } else if(modal){
     modal.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
@@ -3468,6 +3531,7 @@ async function loadAdminTab(tab){
 
   list.innerHTML='<div style="text-align:center;padding:30px;color:#AAA">Loading...</div>';
   if(tab==='premium'){return window.renderPremiumAdmin(list);}
+  if(tab==='banners'){return window.renderBannersAdmin(list);}
 
   try{
     const snap=await getDocs(collection(db,'properties'));
@@ -3948,6 +4012,144 @@ window.saveBadgePrices=async function(){
     showToast('Badge prices saved','success');}
   catch(e){console.error(e);showToast('Could not save badge prices','error');}
 };
+
+/* ════════ SPONSORED BANNERS (admin) ════════ */
+let __bannerEditId=null;
+window.renderBannersAdmin=async function(list){
+  list.innerHTML='<div style="text-align:center;padding:30px;color:#AAA">Loading...</div>';
+  try{
+    const snap=await getDocs(collection(db,'banners'));
+    const items=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0));
+    list.innerHTML=`
+      <button class="btn-post" style="margin-bottom:16px" onclick="window.showBannerForm()">+ Add Sponsored Banner</button>
+      <div id="bannerFormWrap"></div>
+      <div id="bannerListWrap">
+        ${items.length?items.map(b=>`
+          <div class="banner-adm-row">
+            ${b.imageData?`<img src="${b.imageData}" class="banner-adm-thumb"/>`:'<div class="banner-adm-thumb" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px">No image</div>'}
+            <div class="banner-adm-mid">
+              <div class="banner-adm-name">${(b.businessName||'Untitled').replace(/</g,'&lt;')} ${b.active?'<span class="badge-live">LIVE</span>':'<span class="badge-off">OFF</span>'}</div>
+              <div class="banner-adm-meta">${b.category||'—'} &middot; ${b.city||'All cities'} &middot; ${b.startDate||'—'} to ${b.endDate||'—'} &middot; ₹${b.pricePaid||0} &middot; ${b.clicks||0} clicks</div>
+            </div>
+            <div class="banner-adm-btns">
+              <button class="abadge" onclick="window.editBanner('${b.id}')">Edit</button>
+              <button class="abadge${b.active?' on':''}" onclick="window.toggleBannerActive('${b.id}',${!b.active})">${b.active?'Turn off':'Turn on'}</button>
+              <button class="abadge" style="color:#DC2626;border-color:#DC2626" onclick="window.deleteBanner('${b.id}')">Delete</button>
+            </div>
+          </div>`).join(''):'<div class="empty-adm">No sponsored banners yet</div>'}
+      </div>`;
+  }catch(e){console.error(e);list.innerHTML='<div class="empty-adm">Could not load banners</div>';}
+};
+
+window.showBannerForm=function(existing){
+  __bannerEditId = existing?existing.id:null;
+  const b = existing||{};
+  const wrap=document.getElementById('bannerFormWrap');
+  if(!wrap)return;
+  wrap.innerHTML=`
+    <div class="banner-form">
+      <div class="banner-form-t">${existing?'Edit Banner':'New Sponsored Banner'}</div>
+      <label class="plbl">Business Name</label>
+      <input id="bfName" class="finp" type="text" value="${(b.businessName||'').replace(/"/g,'&quot;')}" placeholder="e.g. Sri Balaji Cements"/>
+      <label class="plbl" style="margin-top:10px">Category</label>
+      <select id="bfCategory" class="fsel">
+        ${['Construction Materials','Builders & Contractors','Interior & Furnishing','Home Loans & Finance','Legal & Documentation','Packers & Movers','Other'].map(c=>`<option value="${c}" ${b.category===c?'selected':''}>${c}</option>`).join('')}
+      </select>
+      <label class="plbl" style="margin-top:10px">Tagline (optional, short)</label>
+      <input id="bfTagline" class="finp" type="text" value="${(b.tagline||'').replace(/"/g,'&quot;')}" placeholder="e.g. Best rates on TMT bars in Anantapur"/>
+      <div class="frow2" style="margin-top:10px">
+        <div><label class="plbl">City Target</label>
+          <select id="bfCity" class="fsel">
+            <option value="" ${!b.city?'selected':''}>All cities</option>
+            <option value="Anantapur" ${b.city==='Anantapur'?'selected':''}>Anantapur</option>
+            <option value="Hyderabad" ${b.city==='Hyderabad'?'selected':''}>Hyderabad</option>
+          </select>
+        </div>
+        <div><label class="plbl">Price Paid (₹)</label><input id="bfPrice" class="finp" type="number" min="0" value="${b.pricePaid||''}" placeholder="e.g. 999"/></div>
+      </div>
+      <div class="frow2" style="margin-top:10px">
+        <div><label class="plbl">Start Date</label><input id="bfStart" class="finp" type="date" value="${b.startDate||''}"/></div>
+        <div><label class="plbl">End Date</label><input id="bfEnd" class="finp" type="date" value="${b.endDate||''}"/></div>
+      </div>
+      <label class="plbl" style="margin-top:10px">Website URL (optional)</label>
+      <input id="bfLink" class="finp" type="text" value="${(b.linkUrl||'').replace(/"/g,'&quot;')}" placeholder="e.g. www.example.com"/>
+      <label class="plbl" style="margin-top:10px">WhatsApp / Phone (optional)</label>
+      <input id="bfPhone" class="finp" type="text" value="${(b.phone||'').replace(/"/g,'&quot;')}" placeholder="e.g. 9989083321"/>
+      <label class="plbl" style="margin-top:10px">Banner Image</label>
+      <input id="bfImage" type="file" accept="image/*" class="finp" style="padding:8px"/>
+      ${b.imageData?`<img src="${b.imageData}" style="max-width:160px;border-radius:8px;margin-top:8px;display:block"/>`:''}
+      <input type="hidden" id="bfImageData" value="${b.imageData?'keep':''}"/>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn-post" onclick="window.saveBanner()">Save Banner</button>
+        <button class="plot-mini-btn" style="background:#999" onclick="document.getElementById('bannerFormWrap').innerHTML=''">Cancel</button>
+      </div>
+    </div>`;
+  window.__bannerExistingImage = b.imageData||null;
+};
+
+window.editBanner=async function(id){
+  try{
+    const snap=await getDoc(doc(db,'banners',id));
+    if(!snap.exists()){showToast('Banner not found','error');return;}
+    window.showBannerForm({id,...snap.data()});
+    document.getElementById('bannerFormWrap').scrollIntoView({behavior:'smooth'});
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+window.saveBanner=async function(){
+  const name=(document.getElementById('bfName')?.value||'').trim();
+  if(!name){showToast('Business name is required','error');return;}
+  const btn=event?.target; if(btn)btn.textContent='Saving...';
+  try{
+    let imageData=window.__bannerExistingImage||null;
+    const fileInput=document.getElementById('bfImage');
+    if(fileInput&&fileInput.files&&fileInput.files[0]){
+      const compressed=await compressImage(fileInput.files[0],900,0.72);
+      imageData=await new Promise(res=>{const rd=new FileReader();rd.onload=e=>res(e.target.result);rd.readAsDataURL(compressed);});
+    }
+    const data={
+      businessName:name,
+      category:document.getElementById('bfCategory')?.value||'Other',
+      tagline:(document.getElementById('bfTagline')?.value||'').trim(),
+      city:document.getElementById('bfCity')?.value||'',
+      pricePaid:Number(document.getElementById('bfPrice')?.value)||0,
+      startDate:document.getElementById('bfStart')?.value||'',
+      endDate:document.getElementById('bfEnd')?.value||'',
+      linkUrl:(document.getElementById('bfLink')?.value||'').trim(),
+      phone:(document.getElementById('bfPhone')?.value||'').trim(),
+      imageData,
+      active: __bannerEditId?undefined:true,
+      updatedAt:serverTimestamp()
+    };
+    Object.keys(data).forEach(k=>data[k]===undefined&&delete data[k]);
+    if(__bannerEditId){
+      await updateDoc(doc(db,'banners',__bannerEditId),data);
+      showToast('Banner updated','success');
+    }else{
+      data.clicks=0; data.createdAt=serverTimestamp(); data.createdAtMs=Date.now();
+      await addDoc(collection(db,'banners'),data);
+      showToast('Banner created','success');
+    }
+    document.getElementById('bannerFormWrap').innerHTML='';
+    await loadAdminTab('banners');
+    await renderSponsorStrip();
+  }catch(e){console.error(e);showToast('Error: '+e.message,'error');}
+};
+
+window.toggleBannerActive=async function(id,on){
+  try{await updateDoc(doc(db,'banners',id),{active:on});
+    showToast(on?'Banner turned on':'Banner turned off','success');
+    await loadAdminTab('banners'); await renderSponsorStrip();
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+window.deleteBanner=async function(id){
+  if(!confirm('Delete this banner permanently?'))return;
+  try{await deleteDoc(doc(db,'banners',id));
+    showToast('Banner deleted','success');
+    await loadAdminTab('banners'); await renderSponsorStrip();
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
 window.openSellerProfile=function(ownerId,name){
   if(!ownerId){showToast('Seller info unavailable','error');return;}
   const mine=allProps.filter(p=>p.ownerId===ownerId);
@@ -4376,6 +4578,7 @@ window.startPay=(propId)=>window.rzpPay('flexy',propId);
 })();
 /* ════════ END PHONEPE ════════ */
 loadProps();
+renderSponsorStrip();
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

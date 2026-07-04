@@ -1380,6 +1380,9 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .badge-off{font-size:9px;font-weight:800;background:#999;color:#fff;padding:2px 7px;border-radius:100px}
 .banner-form{border:1.5px solid #FF6A00;border-radius:14px;padding:16px;margin-bottom:16px;background:#FFF9F5}
 .banner-form-t{font-size:14px;font-weight:800;color:#1A1A1A;margin-bottom:12px}
+.banner-section-t{font-size:11px;font-weight:800;letter-spacing:.5px;color:#999;text-transform:uppercase;margin:0 0 10px}
+.banner-adm-row.pending{border-color:#FF6A00;background:#FFF9F5}
+.badge-pending{font-size:9px;font-weight:800;background:#FF6A00;color:#fff;padding:2px 7px;border-radius:100px}
 </style>
 </head>
 <body>
@@ -1923,6 +1926,13 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
     <div class="modal-body" id="sellerBody"></div>
   </div>
 </div>
+<div class="modal-overlay" id="adBannerModal">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header"><span class="modal-title">Advertise Your Business</span>
+      <button class="modal-close" onclick="document.getElementById('adBannerModal').classList.remove('open')">x</button></div>
+    <div class="modal-body" id="adBannerBody"></div>
+  </div>
+</div>
 <div class="modal-overlay" id="subModal">
   <div class="modal" style="max-width:400px">
     <div class="modal-header">
@@ -2091,7 +2101,7 @@ async function renderSponsorStrip(){
   const wrap=document.getElementById('sponsorStripWrap'), strip=document.getElementById('sponsorStrip');
   if(!wrap||!strip)return;
   try{
-    const snap=await getDocs(query(collection(db,'banners'),where('active','==',true)));
+    const snap=await getDocs(query(collection(db,'banners'),where('status','==','approved'),where('active','==',true)));
     const today=new Date().toISOString().slice(0,10);
     const items=snap.docs.map(d=>({id:d.id,...d.data()}))
       .filter(b=>(!b.startDate||b.startDate<=today)&&(!b.endDate||b.endDate>=today));
@@ -4020,25 +4030,51 @@ window.renderBannersAdmin=async function(list){
   try{
     const snap=await getDocs(collection(db,'banners'));
     const items=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0));
-    list.innerHTML=`
-      <button class="btn-post" style="margin-bottom:16px" onclick="window.showBannerForm()">+ Add Sponsored Banner</button>
-      <div id="bannerFormWrap"></div>
-      <div id="bannerListWrap">
-        ${items.length?items.map(b=>`
-          <div class="banner-adm-row">
-            ${b.imageData?`<img src="${b.imageData}" class="banner-adm-thumb"/>`:'<div class="banner-adm-thumb" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px">No image</div>'}
-            <div class="banner-adm-mid">
-              <div class="banner-adm-name">${(b.businessName||'Untitled').replace(/</g,'&lt;')} ${b.active?'<span class="badge-live">LIVE</span>':'<span class="badge-off">OFF</span>'}</div>
-              <div class="banner-adm-meta">${b.category||'—'} &middot; ${b.city||'All cities'} &middot; ${b.startDate||'—'} to ${b.endDate||'—'} &middot; ₹${b.pricePaid||0} &middot; ${b.clicks||0} clicks</div>
-            </div>
-            <div class="banner-adm-btns">
-              <button class="abadge" onclick="window.editBanner('${b.id}')">Edit</button>
-              <button class="abadge${b.active?' on':''}" onclick="window.toggleBannerActive('${b.id}',${!b.active})">${b.active?'Turn off':'Turn on'}</button>
-              <button class="abadge" style="color:#DC2626;border-color:#DC2626" onclick="window.deleteBanner('${b.id}')">Delete</button>
-            </div>
-          </div>`).join(''):'<div class="empty-adm">No sponsored banners yet</div>'}
+    const pending=items.filter(b=>b.status==='pending');
+    const others=items.filter(b=>b.status!=='pending');
+    const row=(b,isPending)=>`
+      <div class="banner-adm-row${isPending?' pending':''}">
+        ${b.imageData?`<img src="${b.imageData}" class="banner-adm-thumb"/>`:'<div class="banner-adm-thumb" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px">No image</div>'}
+        <div class="banner-adm-mid">
+          <div class="banner-adm-name">${(b.businessName||'Untitled').replace(/</g,'&lt;')} ${isPending?'<span class="badge-pending">PENDING</span>':(b.status==='rejected'?'<span class="badge-off">REJECTED</span>':(b.active?'<span class="badge-live">LIVE</span>':'<span class="badge-off">OFF</span>'))}</div>
+          <div class="banner-adm-meta">${b.category||'—'} &middot; ${b.city||'All cities'} &middot; ${b.requestedDuration?b.requestedDuration+' days requested':(b.startDate||'—')+' to '+(b.endDate||'—')} &middot; ₹${b.price||b.pricePaid||0} &middot; ${b.clicks||0} clicks</div>
+          ${b.phone?`<div class="banner-adm-meta">Contact: ${b.phone}</div>`:''}
+          ${b.linkUrl?`<div class="banner-adm-meta">Link: ${b.linkUrl}</div>`:''}
+        </div>
+        <div class="banner-adm-btns">
+          ${isPending?`
+            <button class="abadge on" onclick="window.approveBanner('${b.id}')">Approve</button>
+            <button class="abadge" style="color:#DC2626;border-color:#DC2626" onclick="window.rejectBanner('${b.id}')">Reject</button>
+          `:`
+            <button class="abadge" onclick="window.editBanner('${b.id}')">Edit</button>
+            ${b.status!=='rejected'?`<button class="abadge${b.active?' on':''}" onclick="window.toggleBannerActive('${b.id}',${!b.active})">${b.active?'Turn off':'Turn on'}</button>`:''}
+            <button class="abadge" style="color:#DC2626;border-color:#DC2626" onclick="window.deleteBanner('${b.id}')">Delete</button>
+          `}
+        </div>
       </div>`;
+    list.innerHTML=`
+      ${pending.length?`<div class="banner-section-t">Pending Approval (${pending.length})</div>${pending.map(b=>row(b,true)).join('')}`:''}
+      <div class="banner-section-t" style="margin-top:${pending.length?'20px':'0'}">Banner Ad Pricing</div>
+      <div class="prem-toggle" style="display:block;margin-bottom:18px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+          <label style="font-size:11px;color:#777">7 days ₹<input id="cfgBanner7" type="number" min="0" value="${Number(appSettings.bannerPrice7)||499}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+          <label style="font-size:11px;color:#777">15 days ₹<input id="cfgBanner15" type="number" min="0" value="${Number(appSettings.bannerPrice15)||899}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+          <label style="font-size:11px;color:#777">30 days ₹<input id="cfgBanner30" type="number" min="0" value="${Number(appSettings.bannerPrice30)||1499}" style="display:block;width:78px;margin-top:3px;padding:8px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit"/></label>
+          <button class="sub-ok" style="flex:0 0 auto;padding:10px 16px" onclick="window.saveBannerPrices()">Save prices</button>
+        </div>
+      </div>
+      <button class="btn-post" style="margin-bottom:16px" onclick="window.showBannerForm()">+ Add Banner Directly</button>
+      <div id="bannerFormWrap"></div>
+      <div class="banner-section-t">All Banners</div>
+      ${others.length?others.map(b=>row(b,false)).join(''):'<div class="empty-adm">No banners yet</div>'}`;
   }catch(e){console.error(e);list.innerHTML='<div class="empty-adm">Could not load banners</div>';}
+};
+
+window.saveBannerPrices=async function(){
+  const g=id=>Math.max(0,Number(document.getElementById(id)?.value)||0);
+  try{await setDoc(doc(db,'settings','app'),{bannerPrice7:g('cfgBanner7'),bannerPrice15:g('cfgBanner15'),bannerPrice30:g('cfgBanner30')},{merge:true});
+    showToast('Banner prices saved','success');}
+  catch(e){console.error(e);showToast('Could not save banner prices','error');}
 };
 
 window.showBannerForm=function(existing){
@@ -4048,7 +4084,7 @@ window.showBannerForm=function(existing){
   if(!wrap)return;
   wrap.innerHTML=`
     <div class="banner-form">
-      <div class="banner-form-t">${existing?'Edit Banner':'New Sponsored Banner'}</div>
+      <div class="banner-form-t">${existing?'Edit Banner':'New Banner (admin-added, goes live immediately)'}</div>
       <label class="plbl">Business Name</label>
       <input id="bfName" class="finp" type="text" value="${(b.businessName||'').replace(/"/g,'&quot;')}" placeholder="e.g. Sri Balaji Cements"/>
       <label class="plbl" style="margin-top:10px">Category</label>
@@ -4065,7 +4101,7 @@ window.showBannerForm=function(existing){
             <option value="Hyderabad" ${b.city==='Hyderabad'?'selected':''}>Hyderabad</option>
           </select>
         </div>
-        <div><label class="plbl">Price Paid (₹)</label><input id="bfPrice" class="finp" type="number" min="0" value="${b.pricePaid||''}" placeholder="e.g. 999"/></div>
+        <div><label class="plbl">Price Paid (₹)</label><input id="bfPrice" class="finp" type="number" min="0" value="${b.pricePaid||b.price||''}" placeholder="e.g. 999"/></div>
       </div>
       <div class="frow2" style="margin-top:10px">
         <div><label class="plbl">Start Date</label><input id="bfStart" class="finp" type="date" value="${b.startDate||''}"/></div>
@@ -4078,7 +4114,6 @@ window.showBannerForm=function(existing){
       <label class="plbl" style="margin-top:10px">Banner Image</label>
       <input id="bfImage" type="file" accept="image/*" class="finp" style="padding:8px"/>
       ${b.imageData?`<img src="${b.imageData}" style="max-width:160px;border-radius:8px;margin-top:8px;display:block"/>`:''}
-      <input type="hidden" id="bfImageData" value="${b.imageData?'keep':''}"/>
       <div style="display:flex;gap:8px;margin-top:14px">
         <button class="btn-post" onclick="window.saveBanner()">Save Banner</button>
         <button class="plot-mini-btn" style="background:#999" onclick="document.getElementById('bannerFormWrap').innerHTML=''">Cancel</button>
@@ -4118,6 +4153,7 @@ window.saveBanner=async function(){
       linkUrl:(document.getElementById('bfLink')?.value||'').trim(),
       phone:(document.getElementById('bfPhone')?.value||'').trim(),
       imageData,
+      status:'approved',
       active: __bannerEditId?undefined:true,
       updatedAt:serverTimestamp()
     };
@@ -4136,6 +4172,28 @@ window.saveBanner=async function(){
   }catch(e){console.error(e);showToast('Error: '+e.message,'error');}
 };
 
+window.approveBanner=async function(id){
+  try{
+    const snap=await getDoc(doc(db,'banners',id));
+    if(!snap.exists()){showToast('Banner not found','error');return;}
+    const b=snap.data();
+    const days=Number(b.requestedDuration)||7;
+    const start=new Date().toISOString().slice(0,10);
+    const endD=new Date(); endD.setDate(endD.getDate()+days);
+    const end=endD.toISOString().slice(0,10);
+    await updateDoc(doc(db,'banners',id),{status:'approved',active:true,startDate:start,endDate:end});
+    showToast('Banner approved and live','success');
+    await loadAdminTab('banners'); await renderSponsorStrip();
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+window.rejectBanner=async function(id){
+  try{await updateDoc(doc(db,'banners',id),{status:'rejected',active:false});
+    showToast('Banner rejected','success');
+    await loadAdminTab('banners'); await renderSponsorStrip();
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
 window.toggleBannerActive=async function(id,on){
   try{await updateDoc(doc(db,'banners',id),{active:on});
     showToast(on?'Banner turned on':'Banner turned off','success');
@@ -4149,6 +4207,96 @@ window.deleteBanner=async function(id){
     showToast('Banner deleted','success');
     await loadAdminTab('banners'); await renderSponsorStrip();
   }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+/* ════════ SPONSORED BANNERS (public submission) ════════ */
+window.updAdBannerPrice=function(){
+  const P={7:Number(appSettings.bannerPrice7)||499,15:Number(appSettings.bannerPrice15)||899,30:Number(appSettings.bannerPrice30)||1499};
+  const dur=Number(document.getElementById('abDuration')?.value)||7;
+  const el=document.getElementById('abPriceOut');
+  if(el)el.innerHTML=`Price: <b>₹${P[dur]}</b> for ${dur} days`;
+};
+
+window.openAdBannerForm=function(){
+  document.getElementById('profileModal')?.classList.remove('open');
+  const modal=document.getElementById('adBannerModal');
+  const body=document.getElementById('adBannerBody');
+  modal.classList.add('open');
+  body.innerHTML=`
+    <p style="font-size:13px;color:#666;margin:0 0 16px">Reach hundreds of active property buyers &amp; sellers in Anantapur &amp; Hyderabad. Submit your ad below — we'll review and activate it after payment confirmation.</p>
+    <label class="plbl">Business Name</label>
+    <input id="abName" class="finp" type="text" placeholder="e.g. Sri Balaji Cements"/>
+    <label class="plbl" style="margin-top:10px">Category</label>
+    <select id="abCategory" class="fsel">
+      ${['Construction Materials','Builders & Contractors','Interior & Furnishing','Home Loans & Finance','Legal & Documentation','Packers & Movers','Other'].map(c=>`<option value="${c}">${c}</option>`).join('')}
+    </select>
+    <label class="plbl" style="margin-top:10px">Tagline (optional, short)</label>
+    <input id="abTagline" class="finp" type="text" placeholder="e.g. Best rates on TMT bars in Anantapur"/>
+    <div class="frow2" style="margin-top:10px">
+      <div><label class="plbl">City Target</label>
+        <select id="abCity" class="fsel">
+          <option value="">All cities</option>
+          <option value="Anantapur">Anantapur</option>
+          <option value="Hyderabad">Hyderabad</option>
+        </select>
+      </div>
+      <div><label class="plbl">Duration</label>
+        <select id="abDuration" class="fsel" onchange="window.updAdBannerPrice()">
+          <option value="7">7 days</option>
+          <option value="15">15 days</option>
+          <option value="30">30 days</option>
+        </select>
+      </div>
+    </div>
+    <label class="plbl" style="margin-top:10px">Website URL (optional)</label>
+    <input id="abLink" class="finp" type="text" placeholder="e.g. www.example.com"/>
+    <label class="plbl" style="margin-top:10px">Your WhatsApp / Phone</label>
+    <input id="abPhone" class="finp" type="text" placeholder="e.g. 9989083321"/>
+    <label class="plbl" style="margin-top:10px">Banner Image <span style="color:var(--g400);font-weight:400;text-transform:none;letter-spacing:0">(landscape works best)</span></label>
+    <input id="abImage" type="file" accept="image/*" class="finp" style="padding:8px"/>
+    <div class="badge-total" id="abPriceOut" style="margin-top:12px"></div>
+    <div style="font-size:11px;color:#777;margin-top:6px;line-height:1.55">After submitting, pay the amount shown via UPI <b>9989083321@upi</b> and send the screenshot on WhatsApp — we'll verify and activate your banner within 24h.</div>
+    <button class="btn-post" style="width:100%;justify-content:center;margin-top:14px" onclick="window.submitBannerAd()">Submit for Review</button>`;
+  window.updAdBannerPrice();
+};
+
+window.submitBannerAd=async function(){
+  const name=(document.getElementById('abName')?.value||'').trim();
+  const phone=(document.getElementById('abPhone')?.value||'').trim();
+  if(!name){showToast('Business name is required','error');return;}
+  if(!phone){showToast('Phone / WhatsApp number is required','error');return;}
+  const btn=event?.target; if(btn)btn.textContent='Submitting...';
+  try{
+    let imageData=null;
+    const fileInput=document.getElementById('abImage');
+    if(fileInput&&fileInput.files&&fileInput.files[0]){
+      const compressed=await compressImage(fileInput.files[0],900,0.72);
+      imageData=await new Promise(res=>{const rd=new FileReader();rd.onload=e=>res(e.target.result);rd.readAsDataURL(compressed);});
+    }
+    const dur=Number(document.getElementById('abDuration')?.value)||7;
+    const P={7:Number(appSettings.bannerPrice7)||499,15:Number(appSettings.bannerPrice15)||899,30:Number(appSettings.bannerPrice30)||1499};
+    const data={
+      businessName:name,
+      category:document.getElementById('abCategory')?.value||'Other',
+      tagline:(document.getElementById('abTagline')?.value||'').trim(),
+      city:document.getElementById('abCity')?.value||'',
+      linkUrl:(document.getElementById('abLink')?.value||'').trim(),
+      phone,
+      imageData,
+      requestedDuration:dur,
+      price:P[dur],
+      status:'pending',
+      active:false,
+      clicks:0,
+      submittedBy:currentUser?.uid||null,
+      submittedByName:currentUser?.displayName||'',
+      createdAt:serverTimestamp(),
+      createdAtMs:Date.now()
+    };
+    await addDoc(collection(db,'banners'),data);
+    document.getElementById('adBannerModal').classList.remove('open');
+    showToast(`Ad submitted! Pay via UPI and send the screenshot on WhatsApp — we'll review within 24h.`,'success');
+  }catch(e){console.error(e);showToast('Error: '+e.message,'error');}
 };
 window.openSellerProfile=function(ownerId,name){
   if(!ownerId){showToast('Seller info unavailable','error');return;}
@@ -4266,7 +4414,9 @@ window.openProfile=function(){
       <div class="prof-av-fb" style="margin:0 auto 14px">👤</div>
       <p style="font-size:13.5px;color:#666;margin-bottom:18px">Sign in to post properties, chat with sellers and manage your account.</p>
       <button class="btn-post" style="width:100%;justify-content:center" onclick="document.getElementById('profileModal').classList.remove('open');window.doSignIn()">Sign in with Google</button>
-      <div class="prof-row" style="margin-top:14px;text-align:left" onclick="window.open('/pricing.html','_blank')">
+      <div class="prof-row" style="margin-top:14px;text-align:left" onclick="document.getElementById('profileModal').classList.remove('open');window.openAdBannerForm()">
+        <span class="pr-ico">📢</span> Advertise Your Business</div>
+      <div class="prof-row" style="text-align:left" onclick="window.open('/pricing.html','_blank')">
         <span class="pr-ico">💰</span> Pricing &amp; How We Make Money</div>
     </div>`;
   }else{
@@ -4298,6 +4448,8 @@ window.openProfile=function(){
         <span class="pr-ico">📄</span> My Posts</div>
       <div class="prof-row" onclick="window.enableNotifs()">
         <span class="pr-ico">🔔</span> ${('Notification' in window&&Notification.permission==='granted')?'Notifications enabled ✓':'Enable notifications'}</div>
+      <div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openAdBannerForm()">
+        <span class="pr-ico">📢</span> Advertise Your Business</div>
       <div class="prof-row" onclick="window.open('/pricing.html','_blank')">
         <span class="pr-ico">💰</span> Pricing &amp; How We Make Money</div>
       ${isAdm?`<div class="prof-row" onclick="document.getElementById('profileModal').classList.remove('open');window.openAdmin()">

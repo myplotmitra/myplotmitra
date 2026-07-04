@@ -8,6 +8,47 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="MyPlotMitra"/>
+<link rel="canonical" href="https://www.myplotmitra.com/"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "MyPlotMitra",
+  "url": "https://www.myplotmitra.com",
+  "telephone": "+919989083321",
+  "areaServed": [
+    {"@type":"City","name":"Anantapur"},
+    {"@type":"City","name":"Kadiri"},
+    {"@type":"City","name":"Hindupur"},
+    {"@type":"City","name":"Dharmavaram"},
+    {"@type":"City","name":"Guntakal"},
+    {"@type":"City","name":"Tadipatri"},
+    {"@type":"City","name":"Hyderabad"}
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "4-2-238, LB Nagar",
+    "addressLocality": "Anantapur",
+    "addressRegion": "Andhra Pradesh",
+    "postalCode": "515001",
+    "addressCountry": "IN"
+  },
+  "description": "MyPlotMitra is an online property classifieds platform for plots, houses, flats and agricultural land in Anantapur district, Andhra Pradesh — zero brokerage, direct from owners."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "MyPlotMitra",
+  "url": "https://www.myplotmitra.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.myplotmitra.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 <link rel="preconnect" href="https://firestore.googleapis.com"/>
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin/>
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com"/>
@@ -1353,6 +1394,12 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .sp-listing-t{font-size:12.5px;font-weight:700;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sp-listing-c{font-size:11px;color:#999}
 .sp-listing-p{font-size:14px;font-weight:800;color:#FF6A00;white-space:nowrap}
+.locations-strip{max-width:1200px;margin:0 auto;padding:28px 16px 90px}
+.locations-strip h2{font-size:15px;font-weight:800;color:#1A1A1A;margin:0 0 16px}
+.loc-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:18px}
+.loc-cols h3{font-size:12.5px;font-weight:800;color:#FF6A00;margin:0 0 8px}
+.loc-cols a{display:block;font-size:12.5px;color:#666;text-decoration:none;margin-bottom:6px}
+.loc-cols a:hover{color:#FF6A00;text-decoration:underline}
 </style>
 
 <style>
@@ -1433,7 +1480,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   <!-- Background: real estate image from Unsplash (free) -->
   <img class="hero-bg-img" fetchpriority="high" decoding="async"
     src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80&auto=format&fit=crop"
-    alt="Properties in Hyderabad"
+    alt="Residential plots, houses and flats for sale in Anantapur and Hyderabad"
     loading="eager"
     onerror="this.style.display='none'"
   />
@@ -1558,6 +1605,43 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   </div>
 </div></div>
 <main class="main"><div class="property-grid" id="propGrid"></div></main>
+<section class="locations-strip">
+  <h2>Browse by Location — Anantapur District</h2>
+  <div class="loc-cols">
+    <div>
+      <h3>Anantapur</h3>
+      <a href="/plots-for-sale-in-anantapur.html">Plots for Sale</a>
+      <a href="/houses-for-sale-in-anantapur.html">Houses for Sale</a>
+      <a href="/flats-for-sale-in-anantapur.html">Flats &amp; Apartments</a>
+      <a href="/land-for-sale-in-anantapur.html">Agricultural Land</a>
+    </div>
+    <div>
+      <h3>Guntakal</h3>
+      <a href="/plots-for-sale-in-guntakal.html">Plots for Sale</a>
+      <a href="/houses-for-sale-in-guntakal.html">Houses for Sale</a>
+    </div>
+    <div>
+      <h3>Tadipatri</h3>
+      <a href="/plots-for-sale-in-tadipatri.html">Plots for Sale</a>
+      <a href="/houses-for-sale-in-tadipatri.html">Houses for Sale</a>
+    </div>
+    <div>
+      <h3>Rayadurg</h3>
+      <a href="/plots-for-sale-in-rayadurg.html">Plots for Sale</a>
+      <a href="/houses-for-sale-in-rayadurg.html">Houses for Sale</a>
+    </div>
+    <div>
+      <h3>Gooty</h3>
+      <a href="/plots-for-sale-in-gooty.html">Plots for Sale</a>
+      <a href="/houses-for-sale-in-gooty.html">Houses for Sale</a>
+    </div>
+    <div>
+      <h3>Kalyandurg</h3>
+      <a href="/plots-for-sale-in-kalyandurg.html">Plots for Sale</a>
+      <a href="/houses-for-sale-in-kalyandurg.html">Houses for Sale</a>
+    </div>
+  </div>
+</section>
 <nav class="bottom-nav">
   <button class="nav-item on" id="navHome" onclick="window.navHome()"><span class="nav-icon"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8v9h4v-5h2v5h4V8"/></svg></span></span>Home</button>
   <button class="nav-item" onclick="document.querySelector('.search-wrap input').focus()"><span class="nav-icon"><span class="icon icon-sm" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/></svg></span></span>Search</button>
@@ -1887,7 +1971,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   <div class="modal chat-conv-modal">
     <div class="chat-conv-head">
       <button class="modal-close" style="position:static" onclick="window.closeConversation()">&#8249;</button>
-      <img class="cch-img" id="convImg" src="" alt="" onerror="this.style.visibility='hidden'"/>
+      <img class="cch-img" id="convImg" src="" alt="Shared property photo in chat" onerror="this.style.visibility='hidden'"/>
       <div class="cch-t" id="convHeadTap">
         <div class="cch-title" id="convTitle"></div>
         <div class="cch-sub" id="convSub"></div>
@@ -2039,7 +2123,7 @@ onAuthStateChanged(auth,async u=>{
     ab.innerHTML=`
       <div style="position:relative;display:inline-block">
         <div style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--g50);border:1px solid var(--g200);border-radius:20px;padding:3px 10px 3px 3px" onclick="window.toggleProfileMenu()">
-          <img src="${u.photoURL||''}" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--or);object-fit:cover" onerror="this.style.display='none'"/>
+          <img src="${u.photoURL||''}" alt="${u.displayName||'User'} profile photo" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--or);object-fit:cover" onerror="this.style.display='none'"/>
           <span style="font-size:12px;font-weight:500;color:var(--black);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.displayName||u.email?.split('@')[0]||'User'}</span>
           <span style="font-size:10px;color:var(--g400)">&#9660;</span>
         </div>
@@ -2110,7 +2194,7 @@ async function renderSponsorStrip(){
     items.sort(()=>Math.random()-0.5);
     strip.innerHTML=items.map(b=>`
       <div class="sponsor-card" onclick="window.__sponsorClick('${b.id}','${(b.linkUrl||'').replace(/'/g,"\\'")}','${(b.phone||'').replace(/'/g,"\\'")}')">
-        ${b.imageData?`<div class="sponsor-img"><img src="${b.imageData}" loading="lazy"/></div>`:''}
+        ${b.imageData?`<div class="sponsor-img"><img src="${b.imageData}" loading="lazy" alt="${(b.businessName||'Sponsored business')} - ${b.category||'local business'} in ${b.city||'Anantapur & Hyderabad'}"/></div>`:''}
         <div class="sponsor-body">
           <div class="sponsor-name">${(b.businessName||'').replace(/</g,'&lt;')}</div>
           ${b.tagline?`<div class="sponsor-tag">${b.tagline.replace(/</g,'&lt;')}</div>`:''}
@@ -2317,7 +2401,7 @@ function renderGrid(data){
     const soldHrsLeft=isSold&&p.soldAt?Math.max(0,24-((Date.now()-(p.soldAt.toDate?p.soldAt.toDate():new Date(p.soldAt)).getTime())/3600000)).toFixed(1):null;
     return`<div class="${p.isFeatured?'card card-gold-border':'card'}" style="animation-delay:${i*.04}s;${isSold?'opacity:.8':''}" onclick="window.openDetail('${p.id}')">
       <div class="card-img" style="background:${bg};position:relative">
-        ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${p.title}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/>`:
+        ${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${(p.type||'Property')} for sale in ${p.city||'Anantapur & Hyderabad'} - ${p.title}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/>`:
           `<div class="card-img-placeholder" style="background:${bg}40">
              <div class="card-img-placeholder-icon" style="background:${c}20">${icon(p.type==='house'?'home':p.type==='flat'?'grid':'map-pin')}</div>
              <div class="card-img-placeholder-label" style="color:${c};opacity:.7">${(p.type||'PROPERTY').toUpperCase()}</div>
@@ -2529,7 +2613,7 @@ window.openDetail=function(id){
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
         ? `<div id="photoSlider" style="width:100%;height:100%;position:relative;overflow:hidden">
-            <img id="slideImg" src="${p.photos[0]}" loading="lazy" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>
+            <img id="slideImg" src="${p.photos[0]}" loading="lazy" alt="${(p.type||'Property')} for sale in ${p.city||'Anantapur & Hyderabad'} - ${p.title}" style="width:100%;height:100%;object-fit:cover"/>
             <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px">
               ${p.photos.map((_,i)=>`<div class="slide-dot${i===0?' active':''}" onclick="window.goSlide(${i})" style="width:6px;height:6px;border-radius:50%;background:${i===0?'#fff':'rgba(255,255,255,.5)'};cursor:pointer"></div>`).join('')}
             </div>
@@ -2538,7 +2622,7 @@ window.openDetail=function(id){
             <button onclick="window.goSlide(1)"  style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px">&#8250;</button>`:''}
           </div>`
         : p.coverPhoto
-          ? `<img src="${p.coverPhoto}" loading="lazy" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
+          ? `<img src="${p.coverPhoto}" loading="lazy" alt="${(p.type||'Property')} for sale in ${p.city||'Anantapur & Hyderabad'} - ${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
           : `<span style="font-size:64px">${p.type==='plot'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span>':p.type==='house'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>':p.type==='land'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>'}</span>`
       }
     </div>
@@ -2915,7 +2999,7 @@ window.openMyListings=async function(){
       <div class="my-listing-card" id="ml-${p.id}">
         <div class="my-listing-thumb">
           ${(p.coverPhoto||(p.photos&&p.photos[0]))?
-            `<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" onerror="this.style.display='none'" alt="${p.title}"/>`:
+            `<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" onerror="this.style.display='none'" alt="${(p.type||'Property')} for sale in ${p.city||'Anantapur & Hyderabad'} - ${p.title}"/>`:
             `${p.type==='plot'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span>':p.type==='house'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>':p.type==='land'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>'}`}
         </div>
         <div class="my-listing-info">
@@ -3061,6 +3145,13 @@ window.toggleFeatured=async(id,current)=>{
     await loadAdminTab(adminTab);
   }catch(e){showToast('Error: '+e.message,'error');}
 };
+function slugify(text){
+  return String(text||'')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'')
+    .slice(0,60) || 'property';
+}
 function compressImage(file, maxWidth=1200, quality=0.78){
   return new Promise((resolve)=>{
     const img=new Image();
@@ -3403,7 +3494,8 @@ window.submitProperty=async e=>{
           if(USE_STORAGE){
             // Firebase Storage upload (requires billing)
             btn.textContent = `Uploading ${i+1}/${photoFiles.length}...`;
-            const safeName = `properties/${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
+            const slug = slugify(`${data.type||'property'}-${data.city||''}-${data.title||''}`);
+            const safeName = `properties/${slug}-${Date.now()}-${i+1}.jpg`;
             const storRef = ref(storage, safeName);
             const uploadWithTimeout = new Promise(async(resolve,reject)=>{
               const t=setTimeout(()=>reject(new Error('Upload timeout')),30000);
@@ -3568,7 +3660,7 @@ async function loadAdminTab(tab){
         <div class="adm-top">
           <div class="adm-thumb" style="background:${TB[p.type]||'#FFF0E6'};overflow:hidden">
             ${(p.coverPhoto||(p.photos&&p.photos[0]))?
-              `<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`
+              `<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${(p.type||'Property')} in ${p.city||'Anantapur & Hyderabad'} - ${p.title}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`
               :`<span style="font-size:22px">${p.type==='plot'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></span>':p.type==='house'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>':p.type==='land'?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/><line x1="7" y1="3" x2="7" y2="14"/><line x1="13" y1="6" x2="13" y2="17"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L10 3l7 7"/><path d="M5 8.5v8h4v-5h2v5h4v-8"/></svg></span>'}</span>`
             }
           </div>
@@ -3579,7 +3671,7 @@ async function loadAdminTab(tab){
             ${tab==='sold'&&soldHrs?`<div style="font-size:11px;color:#DC2626;font-weight:500"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg></span> Auto-deletes in ${soldHrs}h</div>`:''}
             ${p.paymentProof&&!p.isFeatured?`<div style="background:#fffbeb;border:1.5px solid #FFD700;border-radius:6px;padding:8px;margin-bottom:6px">
               <div style="font-size:10px;font-weight:700;color:#92400E;margin-bottom:4px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#B8860B"><path d="M2 6l4 3 4-6 4 6 4-3-1 8H3L2 6z"/><rect x="3" y="15" width="14" height="2" rx="1"/></svg></span> Gold Badge Payment Proof:</div>
-              <img src="${p.paymentProof}" onclick="window.open('${p.paymentProof}')" style="width:100%;max-height:80px;object-fit:contain;border-radius:4px;cursor:pointer;background:#000" onerror="this.style.display='none'"/>
+              <img src="${p.paymentProof}" alt="Payment proof screenshot" onclick="window.open('${p.paymentProof}')" style="width:100%;max-height:80px;object-fit:contain;border-radius:4px;cursor:pointer;background:#000" onerror="this.style.display='none'"/>
               <div style="font-size:10px;color:#B45309;margin-top:3px">Tap to enlarge · Verify ₹499 payment before activating</div>
             </div>`:''}
             <div class="adm-pills">
@@ -3716,7 +3808,7 @@ function renderInbox(){
     const other=currentUser.uid===c.buyerId?(c.sellerName||'Seller'):(c.buyerName||'Buyer');
     const un=(c.unread&&c.unread[currentUser.uid])||0;
     return `<div class="chat-list-item" onclick="window.openConversation('${c.id}')">
-      ${c.coverPhoto?`<img class="cli-img" src="${c.coverPhoto}" loading="lazy" onerror="this.style.visibility='hidden'"/>`:`<div class="cli-img"></div>`}
+      ${c.coverPhoto?`<img class="cli-img" src="${c.coverPhoto}" loading="lazy" alt="${c.title||'Property'} conversation thumbnail" onerror="this.style.visibility='hidden'"/>`:`<div class="cli-img"></div>`}
       <div class="cli-mid">
         <div class="cli-title">${escH(c.propertyTitle||'Property')}</div>
         <div class="cli-name">${escH(other)}</div>
@@ -3982,7 +4074,7 @@ window.renderPremiumAdmin=async function(list){
     ${pending.length?pending.map(r=>`
       <div class="sub-req">
         <div class="sub-req-h"><div><div class="sub-req-n">${r.name||'User'}</div><div class="sub-req-e">${r.email||r.uid}</div></div></div>
-        ${r.proof?`<img src="${r.proof}" loading="lazy" onclick="window.open('${r.proof}')"/>`:''}
+        ${r.proof?`<img src="${r.proof}" loading="lazy" alt="Payment proof screenshot" onclick="window.open('${r.proof}')"/>`:''}
         <div class="sub-req-btns">
           <button class="sub-ok" onclick="window.approveSub('${r.uid}')">Activate 30 days</button>
           <button class="sub-no" onclick="window.rejectSub('${r.uid}')">Reject</button>
@@ -4034,7 +4126,7 @@ window.renderBannersAdmin=async function(list){
     const others=items.filter(b=>b.status!=='pending');
     const row=(b,isPending)=>`
       <div class="banner-adm-row${isPending?' pending':''}">
-        ${b.imageData?`<img src="${b.imageData}" class="banner-adm-thumb"/>`:'<div class="banner-adm-thumb" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px">No image</div>'}
+        ${b.imageData?`<img src="${b.imageData}" alt="${(b.businessName||'Banner')} ad thumbnail" class="banner-adm-thumb"/>`:'<div class="banner-adm-thumb" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px">No image</div>'}
         <div class="banner-adm-mid">
           <div class="banner-adm-name">${(b.businessName||'Untitled').replace(/</g,'&lt;')} ${isPending?'<span class="badge-pending">PENDING</span>':(b.status==='rejected'?'<span class="badge-off">REJECTED</span>':(b.active?'<span class="badge-live">LIVE</span>':'<span class="badge-off">OFF</span>'))}</div>
           <div class="banner-adm-meta">${b.category||'—'} &middot; ${b.city||'All cities'} &middot; ${b.requestedDuration?b.requestedDuration+' days requested':(b.startDate||'—')+' to '+(b.endDate||'—')} &middot; ₹${b.price||b.pricePaid||0} &middot; ${b.clicks||0} clicks</div>
@@ -4113,7 +4205,7 @@ window.showBannerForm=function(existing){
       <input id="bfPhone" class="finp" type="text" value="${(b.phone||'').replace(/"/g,'&quot;')}" placeholder="e.g. 9989083321"/>
       <label class="plbl" style="margin-top:10px">Banner Image</label>
       <input id="bfImage" type="file" accept="image/*" class="finp" style="padding:8px"/>
-      ${b.imageData?`<img src="${b.imageData}" style="max-width:160px;border-radius:8px;margin-top:8px;display:block"/>`:''}
+      ${b.imageData?`<img src="${b.imageData}" alt="${(b.businessName||'Banner')} ad preview" style="max-width:160px;border-radius:8px;margin-top:8px;display:block"/>`:''}
       <div style="display:flex;gap:8px;margin-top:14px">
         <button class="btn-post" onclick="window.saveBanner()">Save Banner</button>
         <button class="plot-mini-btn" style="background:#999" onclick="document.getElementById('bannerFormWrap').innerHTML=''">Cancel</button>
@@ -4319,7 +4411,7 @@ window.openSellerProfile=function(ownerId,name){
     </div>
     <div class="sp-sec">Active listings (${approved.length})</div>
     ${approved.length?approved.map(p=>`<div class="sp-listing" onclick="document.getElementById('sellerModal').classList.remove('open');window.openDetail('${p.id}')">
-      <div class="sp-listing-img">${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" onerror="this.style.display='none'"/>`:''}</div>
+      <div class="sp-listing-img">${(p.coverPhoto||(p.photos&&p.photos[0]))?`<img src="${p.coverPhoto||p.photos[0]}" loading="lazy" alt="${(p.type||'Property')} for sale in ${p.city||'Anantapur & Hyderabad'} - ${p.title}" onerror="this.style.display='none'"/>`:''}</div>
       <div class="sp-listing-mid"><div class="sp-listing-t">${p.title}</div><div class="sp-listing-c">${p.city}</div></div>
       <div class="sp-listing-p">${fp(p.price)}</div></div>`).join(''):'<div style="color:#9A9A9A;font-size:13px;padding:18px;text-align:center">No active listings right now</div>'}`;
 };
@@ -4434,7 +4526,7 @@ window.openProfile=function(){
     const isAdm=u.email===ADMIN_EMAIL||(myProfile&&(myProfile.role==='admin'||myProfile.role==='superadmin'));
     body.innerHTML=`
       <div class="prof-head">
-        ${u.photoURL?`<img class="prof-av" src="${u.photoURL}" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=\\'prof-av-fb\\'>${(u.displayName||'U')[0].toUpperCase()}</div>'"/>`
+        ${u.photoURL?`<img class="prof-av" src="${u.photoURL}" alt="${u.displayName||'Your'} profile photo" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=\\'prof-av-fb\\'>${(u.displayName||'U')[0].toUpperCase()}</div>'"/>`
           :`<div class="prof-av-fb">${(u.displayName||'U')[0].toUpperCase()}</div>`}
         <div><div class="prof-name">${u.displayName||'User'}</div>
         <div class="prof-email">${u.email||''}</div></div>
@@ -4729,6 +4821,16 @@ window.startPay=(propId)=>window.rzpPay('flexy',propId);
   let n=0;const iv=setInterval(async()=>{if(await check()||++n>5)clearInterval(iv);},2500);
 })();
 /* ════════ END PHONEPE ════════ */
+// Read ?type= and ?q= from the URL so SEO landing pages can deep-link into a pre-filtered view
+(function applyUrlFilters(){
+  try{
+    const params=new URLSearchParams(location.search);
+    const t=params.get('type'), q=params.get('q');
+    if(t){typeF=t;}
+    if(q){searchQ=q; const inp=document.getElementById('heroSearchInput'); if(inp)inp.value=q;}
+    if(t){setTimeout(()=>{document.querySelectorAll('.chip').forEach(c=>{if(c.dataset.t===t)c.classList.add('on');else c.classList.remove('on');});},0);}
+  }catch(e){console.warn('URL filter parse error:',e);}
+})();
 loadProps();
 renderSponsorStrip();
 </script>

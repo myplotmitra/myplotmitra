@@ -6,6 +6,62 @@
       "use": "@vercel/static"
     },
     {
+      "src": "houses-for-sale-in-rayadurg.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "plots-for-sale-in-gooty.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "plots-for-sale-in-kalyandurg.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "plots-for-sale-in-tadipatri.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "flats-for-sale-in-anantapur.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "plots-for-sale-in-anantapur.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "plots-for-sale-in-rayadurg.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "land-for-sale-in-anantapur.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "houses-for-sale-in-tadipatri.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "houses-for-sale-in-kalyandurg.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "houses-for-sale-in-guntakal.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "houses-for-sale-in-gooty.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "plots-for-sale-in-guntakal.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "houses-for-sale-in-anantapur.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "pricing.html",
       "use": "@vercel/static"
     },

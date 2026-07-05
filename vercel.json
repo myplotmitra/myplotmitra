@@ -6,6 +6,26 @@
       "use": "@vercel/static"
     },
     {
+      "src": "stamp-duty-and-registration-charges-andhra-pradesh.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "property-investment-tips-anantapur-district.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "how-to-buy-a-plot-in-andhra-pradesh.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "home-loan-guide-for-property-buyers.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "dtcp-vs-rera-approval-guide.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "houses-for-sale-in-rayadurg.html",
       "use": "@vercel/static"
     },

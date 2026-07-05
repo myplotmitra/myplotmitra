@@ -175,6 +175,9 @@
       "dest": "/_vercel/insights/$1"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

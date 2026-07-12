@@ -1403,6 +1403,15 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .role-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:#fff;border:1.5px solid var(--g200,#E8E8E8);border-radius:10px;padding:10px;font-size:13px;font-weight:700;color:#1A1A1A;cursor:pointer;font-family:inherit}
 .role-btn:active{background:#F5F5F5}
 .role-btn.admin-btn{color:#555}
+.adm-fulldetails-toggle{background:none;border:none;color:#185FA5;font-size:11.5px;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:4px;font-family:inherit}
+.adm-fulldetails{background:#FAFAFA;border:1px solid var(--g150,#EFEFEF);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.adm-fd-row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--g150,#EFEFEF);font-size:12px}
+.adm-fd-row:last-child{border-bottom:none}
+.adm-fd-lbl{color:#999;font-weight:700;flex-shrink:0}
+.adm-fd-val{color:#333;text-align:right}
+.adm-fd-row[style*="column"] .adm-fd-val{text-align:left}
+.adm-fd-photos{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.adm-fd-photos img{width:64px;height:56px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--g200,#E8E8E8)}
 .locations-strip{max-width:1200px;margin:0 auto;padding:28px 16px 90px}
 .locations-strip h2{font-size:15px;font-weight:800;color:#1A1A1A;margin:0 0 16px}
 .loc-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:18px}
@@ -1440,6 +1449,13 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 .banner-adm-row.pending{border-color:#FF6A00;background:#FFF9F5}
 .badge-pending{font-size:9px;font-weight:800;background:#FF6A00;color:#fff;padding:2px 7px;border-radius:100px}
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TZR1DEV8YH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TZR1DEV8YH');
+</script>
 </head>
 <body>
 <noscript>
@@ -3703,7 +3719,22 @@ async function loadAdminTab(tab){
           <div class="adm-info">
             <div class="adm-title">${p.title}${p.isFeatured?'<span class="gold-badge-pill" style="margin-left:6px;font-size:9px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#B8860B"><path d="M2 6l4 3 4-6 4 6 4-3-1 8H3L2 6z"/><rect x="3" y="15" width="14" height="2" rx="1"/></svg></span> GOLD</span>':''}</div>
             <div class="adm-city"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
-            <div style="font-size:11px;color:#888;margin-bottom:4px">by ${p.ownerName||p.ownerEmail||'Unknown'} ${p.sellerPhone?'· '+p.sellerPhone:''}</div>
+            <div style="font-size:11px;color:#888;margin-bottom:4px">by ${p.ownerName||'Unknown'}${p.ownerEmail?' · '+p.ownerEmail:''} ${p.sellerPhone?'· '+p.sellerPhone:''}</div>
+            <button class="adm-fulldetails-toggle" onclick="window.toggleFullDetails('${p.id}')" id="fdt-${p.id}">▾ View Full Details</button>
+            <div class="adm-fulldetails" id="fd-${p.id}" style="display:none">
+              <div class="adm-fd-row"><span class="adm-fd-lbl">Type</span><span class="adm-fd-val">${({plot:'Plot',house:'House',flat:'Flat / Apartment',land:'Agricultural Land'})[p.type]||p.type||'—'}</span></div>
+              <div class="adm-fd-row"><span class="adm-fd-lbl">Posted</span><span class="adm-fd-val">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—'}</span></div>
+              <div class="adm-fd-row"><span class="adm-fd-lbl">Negotiable</span><span class="adm-fd-val">${p.isNegotiable?'Yes':'No'}</span></div>
+              <div class="adm-fd-row"><span class="adm-fd-lbl">Full Address</span><span class="adm-fd-val">${p.address?p.address.replace(/</g,'&lt;'):'Not provided'}</span></div>
+              <div class="adm-fd-row" style="flex-direction:column;align-items:flex-start">
+                <span class="adm-fd-lbl">Description</span>
+                <span class="adm-fd-val" style="margin-top:4px;white-space:pre-wrap;line-height:1.5">${p.description?p.description.replace(/</g,'&lt;'):'No description provided'}</span>
+              </div>
+              ${(p.photos&&p.photos.length)?`<div class="adm-fd-row" style="flex-direction:column;align-items:flex-start">
+                <span class="adm-fd-lbl">All Photos (${p.photos.length})</span>
+                <div class="adm-fd-photos">${p.photos.map((ph,idx)=>`<img src="${ph}" alt="Photo ${idx+1} of ${p.title}" loading="lazy" onclick="window.open('${ph}')" onerror="this.style.display='none'"/>`).join('')}</div>
+              </div>`:''}
+            </div>
             ${tab==='sold'&&soldHrs?`<div style="font-size:11px;color:#DC2626;font-weight:500"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg></span> Auto-deletes in ${soldHrs}h</div>`:''}
             ${p.paymentProof&&!p.isFeatured?`<div style="background:#fffbeb;border:1.5px solid #FFD700;border-radius:6px;padding:8px;margin-bottom:6px">
               <div style="font-size:10px;font-weight:700;color:#92400E;margin-bottom:4px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#B8860B"><path d="M2 6l4 3 4-6 4 6 4-3-1 8H3L2 6z"/><rect x="3" y="15" width="14" height="2" rx="1"/></svg></span> Gold Badge Payment Proof:</div>
@@ -4131,6 +4162,13 @@ window.toggleSetting=async function(key,on){
   try{await setDoc(doc(db,'settings','app'),{[key]:on},{merge:true});
     showToast(key+' '+(on?'ENABLED':'disabled'),'success');}
   catch(e){console.error(e);showToast('Could not update setting','error');}
+};
+window.toggleFullDetails=function(id){
+  const box=document.getElementById('fd-'+id), btn=document.getElementById('fdt-'+id);
+  if(!box||!btn)return;
+  const open=box.style.display!=='none';
+  box.style.display=open?'none':'block';
+  btn.textContent=open?'▾ View Full Details':'▴ Hide Full Details';
 };
 window.grantBadge=async function(id,key,on){
   try{await updateDoc(doc(db,'properties',id),{['badges.'+key]:on});

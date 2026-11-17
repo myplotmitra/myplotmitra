@@ -1,0 +1,184 @@
+name: MyPlotMitra Vercel Preview Build (No Deploy)
+
+on:
+  push:
+    branches:
+      - 'cashfree-sandbox-testing'
+      - 'feature/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mpm-vercel-preview-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview-build:
+    name: Validate and build Vercel Preview output
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate project JSON files
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          for (const file of ['package.json', 'vercel.json', 'firebase.json']) {
+            JSON.parse(fs.readFileSync(file, 'utf8'));
+            console.log(`PASS: ${file}`);
+          }
+          NODE
+
+      - name: Check API JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in api/*.js; do
+            [ -f "$file" ] || continue
+            echo "Checking $file"
+            node --check "$file"
+          done
+          echo "PASS: API JavaScript syntax"
+
+      - name: Check inline JavaScript in index.html
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re
+          import subprocess
+          import tempfile
+          from pathlib import Path
+
+          source = Path("index.html").read_text(encoding="utf-8")
+          blocks = re.findall(
+              r"<script\b([^>]*)>(.*?)</script\s*>",
+              source,
+              re.I | re.S,
+          )
+
+          js_types = {
+              "text/javascript",
+              "application/javascript",
+              "text/ecmascript",
+              "application/ecmascript",
+              "module",
+          }
+          checked = 0
+          skipped = 0
+
+          for number, (attrs, code) in enumerate(blocks, 1):
+              if re.search(r"\bsrc\s*=", attrs, re.I):
+                  skipped += 1
+                  continue
+
+              match = re.search(
+                  r"""\btype\s*=\s*["']?([^"'\s>]+)""",
+                  attrs,
+                  re.I,
+              )
+              script_type = match.group(1).lower() if match else ""
+
+              if script_type and script_type not in js_types:
+                  skipped += 1
+                  continue
+              if not code.strip():
+                  skipped += 1
+                  continue
+
+              suffix = ".mjs" if script_type == "module" else ".js"
+              with tempfile.NamedTemporaryFile(
+                  mode="w", suffix=suffix, encoding="utf-8"
+              ) as temp:
+                  temp.write(code)
+                  temp.flush()
+                  result = subprocess.run(
+                      ["node", "--check", temp.name],
+                      capture_output=True,
+                      text=True,
+                  )
+
+              if result.returncode:
+                  print(f"FAILED: inline JavaScript block {number}")
+                  print(result.stderr)
+                  raise SystemExit(result.returncode)
+
+              print(f"PASS: inline JavaScript block {number}")
+              checked += 1
+
+          if not checked:
+              raise SystemExit("No inline JavaScript blocks were checked.")
+
+          print(
+              f"PASS: {checked} inline JavaScript block(s); "
+              f"{skipped} non-JavaScript/external block(s) skipped."
+          )
+          PY
+
+      - name: Check required Vercel secrets
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$VERCEL_TOKEN" || {
+            echo "Missing GitHub Actions secret: VERCEL_TOKEN"
+            exit 1
+          }
+          test -n "$VERCEL_ORG_ID" || {
+            echo "Missing GitHub Actions secret: VERCEL_ORG_ID"
+            exit 1
+          }
+          test -n "$VERCEL_PROJECT_ID" || {
+            echo "Missing GitHub Actions secret: VERCEL_PROJECT_ID"
+            exit 1
+          }
+          echo "PASS: required Vercel credentials are configured (values not displayed)."
+
+      - name: Install Vercel CLI on Ubuntu runner
+        run: npm install --global vercel@latest
+
+      - name: Pull Preview settings only
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          vercel pull \
+            --yes \
+            --environment=preview \
+            --git-branch="$GITHUB_REF_NAME" \
+            --token="$VERCEL_TOKEN"
+
+      - name: Build Preview output only (no deployment)
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          vercel build --token="$VERCEL_TOKEN"
+          test -s .vercel/output/config.json
+          echo "PASS: Vercel Build Output API manifest exists."
+
+      - name: Upload build artifact for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: myplotmitra-vercel-preview-build-${{ github.run_number }}
+          path: .vercel/output/
+          if-no-files-found: error
+          retention-days: 7

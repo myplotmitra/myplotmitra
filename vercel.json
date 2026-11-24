@@ -148,6 +148,10 @@
     {
       "src": "google93b50763b89aed8a.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/my-properties.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -193,6 +197,10 @@
     {
       "src": "/_vercel/insights/(.*)",
       "dest": "/_vercel/insights/$1"
+    },
+    {
+      "src": "/api/my-properties",
+      "dest": "/api/my-properties.js"
     },
     {
       "handle": "filesystem"

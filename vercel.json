@@ -152,6 +152,10 @@
     {
       "src": "api/my-properties.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/property-update.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -201,6 +205,10 @@
     {
       "src": "/api/my-properties",
       "dest": "/api/my-properties.js"
+    },
+    {
+      "src": "/api/property-update",
+      "dest": "/api/property-update.js"
     },
     {
       "handle": "filesystem"

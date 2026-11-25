@@ -156,6 +156,10 @@
     {
       "src": "api/property-update.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/property-mark-sold.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -209,6 +213,10 @@
     {
       "src": "/api/property-update",
       "dest": "/api/property-update.js"
+    },
+    {
+      "src": "/api/property-mark-sold",
+      "dest": "/api/property-mark-sold.js"
     },
     {
       "handle": "filesystem"

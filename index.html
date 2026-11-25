@@ -2471,7 +2471,7 @@ function renderGrid(data){
         <div class="card-title">${p.title}</div>
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
         ${(()=>{const tb=promoPills(p)+badgePills(p.badges);return tb?`<div class="trust-badges">${tb}</div>`:'';})()}
-        <div class="card-dims">${hasDim?`<span class="dim-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
+        <div class="card-dims">${hasDim?`<span class="dim-pill">W: ${p.widthFt} ft &times; L: ${p.lengthFt} ft</span>`:''}${p.areaSqft?`<span class="dim-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}</div>
         <div class="card-foot"><span class="card-time" style="display:flex;align-items:center;gap:3px"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>${ago(p.createdAt)}</span>${p.isNegotiable&&!isSold?'<span class="neg-tag">Negotiable</span>':''}</div>
         <button class="card-more" onclick="event.stopPropagation();window.openDetail('${p.id}')">More details &rsaquo;</button>
         
@@ -2605,9 +2605,7 @@ function showLeafletPopup(p){
     ${hasDim?`<div class="pp-dims">
       <div class="pp-dims-lbl">DIMENSIONS</div>
       <div class="pp-dims-row">
-        <div class="pp-dim"><span class="pp-dv">${p.lengthFt}ft</span><span class="pp-dl">Length</span></div>
-        <span class="pp-x">&times;</span>
-        <div class="pp-dim"><span class="pp-dv">${p.widthFt}ft</span><span class="pp-dl">Width</span></div>
+        <div class="pp-dim"><span class="pp-dv">${p.widthFt}ft</span><span class="pp-dl">Width</span></div><span class="pp-x">&times;</span><div class="pp-dim"><span class="pp-dv">${p.lengthFt}ft</span><span class="pp-dl">Length</span></div>
         ${p.areaSqft?`<span class="pp-x">=</span>
         <div class="pp-dim"><span class="pp-dv">${Number(p.areaSqft).toLocaleString()}</span><span class="pp-dl">sqft</span></div>`:''}
       </div>
@@ -2622,7 +2620,7 @@ window.pinClick=function(e,id){
   e.stopPropagation();const p=allProps.find(x=>x.id===id);if(!p)return;
   const popup=document.getElementById('mapPopup');if(!popup)return;
   const hasDim=p.lengthFt>0&&p.widthFt>0;
-  popup.innerHTML=`<div class="pp-price">${fp(p.price)}</div><div class="pp-title">${p.title}</div><div class="pp-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>${hasDim?`<div class="pp-dims"><div class="pp-dims-lbl">DIMENSIONS</div><div class="pp-dims-row"><div class="pp-dim"><span class="pp-dv">${p.lengthFt}ft</span><span class="pp-dl">Length</span></div><span class="pp-x">&times;</span><div class="pp-dim"><span class="pp-dv">${p.widthFt}ft</span><span class="pp-dl">Width</span></div>${p.areaSqft?`<span class="pp-x">=</span><div class="pp-dim"><span class="pp-dv">${Number(p.areaSqft).toLocaleString()}</span><span class="pp-dl">sqft</span></div>`:''}</div></div>`:''}<button class="pp-btn" onclick="window.openDetail('${p.id}')">View Details</button>`;
+  popup.innerHTML=`<div class="pp-price">${fp(p.price)}</div><div class="pp-title">${p.title}</div><div class="pp-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>${hasDim?`<div class="pp-dims"><div class="pp-dims-lbl">DIMENSIONS</div><div class="pp-dims-row"><div class="pp-dim"><span class="pp-dv">${p.widthFt}ft</span><span class="pp-dl">Width</span></div><span class="pp-x">&times;</span><div class="pp-dim"><span class="pp-dv">${p.lengthFt}ft</span><span class="pp-dl">Length</span></div>${p.areaSqft?`<span class="pp-x">=</span><div class="pp-dim"><span class="pp-dv">${Number(p.areaSqft).toLocaleString()}</span><span class="pp-dl">sqft</span></div>`:''}</div></div>`:''}<button class="pp-btn" onclick="window.openDetail('${p.id}')">View Details</button>`;
   // Position popup near the click point
   const mapWrap=document.querySelector('.map-wrap');
   if(mapWrap){
@@ -2685,7 +2683,7 @@ window.openDetail=function(id){
       </div>
       <div class="detail-title">${p.title}</div>
       <div class="detail-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.address?p.address+', ':''} ${p.city}</div>
-      ${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}
+      ${hasDim?`<div class="dims-box"><div class="dims-lbl">DIMENSIONS</div><div class="dims-row"><div class="dim-item"><span class="dim-val">${p.widthFt} ft</span><span class="dim-lbl">Width</span></div><span class="dim-x">&times;</span><div class="dim-item"><span class="dim-val">${p.lengthFt} ft</span><span class="dim-lbl">Length</span></div>${p.areaSqft?`<span class="dim-x">=</span><div class="dim-item"><span class="dim-val">${Number(p.areaSqft).toLocaleString()}</span><span class="dim-lbl">sq ft</span></div>`:''}</div></div>`:''}
       ${(p.frontLen>0&&p.leftLen>0)?`<div class="plot-viz-card" style="margin-bottom:18px">
         <div class="plot-viz-head"><span><span class="ico" style="color:var(--or)"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="7,3 1,6 1,17 7,14 13,17 19,14 19,3 13,6"/></svg></span> Site Plan</span>
           <div class="plot-viz-btns">
@@ -3744,7 +3742,7 @@ async function loadAdminTab(tab){
             <div class="adm-pills">
               <span class="adm-pill">${fp(p.price)}</span>
               ${p.areaSqft?`<span class="adm-pill">${Number(p.areaSqft).toLocaleString()} sqft</span>`:''}
-              ${p.lengthFt>0?`<span class="adm-pill">${p.lengthFt}&times;${p.widthFt} ft</span>`:''}
+              ${p.lengthFt>0?`<span class="adm-pill">W: ${p.widthFt} ft &times; L: ${p.lengthFt} ft</span>`:''}
             </div>
             <div class="adm-verify">
               <div class="adm-verify-grid">

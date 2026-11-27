@@ -1456,6 +1456,40 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
   gtag('js', new Date());
   gtag('config', 'G-TZR1DEV8YH');
 </script>
+
+<style id="mpm-social-promotion-styles">
+.social-promo-option{display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid #F1D9CA;border-radius:11px;background:#fff;margin-top:8px;cursor:pointer}
+.social-promo-option input{width:18px;height:18px;accent-color:#FF6A00;flex-shrink:0}
+.social-promo-option .sp-brand{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;color:#fff;font-weight:900;flex-shrink:0}
+.social-promo-option .sp-meta{flex:1;min-width:0}
+.social-promo-option .sp-name{font-size:13px;font-weight:800;color:#202020}
+.social-promo-option .sp-desc{font-size:10.5px;color:#777;margin-top:2px}
+.social-promo-option .sp-price{font-size:13px;font-weight:900;color:#B84A00;white-space:nowrap}
+.social-promo-total{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:12px;background:#FFF1E8;border:1px solid #FFD1B5;border-radius:10px}
+.social-promo-total strong{font-size:16px;color:#A83D00}
+.social-promo-note{font-size:10.5px;line-height:1.5;color:#6E625B;margin-top:8px}
+.card-social-overlay{position:absolute;left:13px;right:13px;bottom:11px;display:flex;align-items:center;gap:8px;z-index:3;pointer-events:none}
+.card-social-price{font-size:24px;line-height:1;font-weight:900;color:#fff;letter-spacing:-.5px;text-shadow:0 2px 7px rgba(0,0,0,.8);margin-right:auto;min-width:0}
+.card-social-links{display:flex;align-items:center;gap:6px;pointer-events:auto;flex-shrink:0}
+.card-social-link{width:29px;height:29px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(0,0,0,.35);transition:transform .15s ease}
+.card-social-link:hover{transform:translateY(-2px) scale(1.05)}
+.card-social-link svg{width:17px;height:17px;display:block}
+.card-social-link.youtube{background:#E62117}
+.card-social-link.facebook{background:#1877F2}
+.card-social-link.instagram{background:linear-gradient(135deg,#6A3BC2,#D62E7B,#F6A13A)}
+.social-admin-card{border:1px solid #E8E8E8;border-radius:13px;padding:13px;margin-bottom:11px;background:#fff}
+.social-admin-head{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.social-admin-thumb{width:70px;height:58px;flex-shrink:0;border-radius:9px;object-fit:cover;background:#F4F4F4}
+.social-admin-title{font-size:13px;font-weight:800;color:#222;line-height:1.35}
+.social-admin-sub{font-size:11px;color:#777;margin-top:3px}
+.social-admin-platform{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid #F0F0F0}
+.social-admin-platform .sp-brand{width:25px;height:25px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0}
+.social-admin-platform input{min-width:0;flex:1;height:36px;border:1px solid #D9D9D9;border-radius:8px;padding:0 9px;font:12px inherit}
+.social-admin-platform button{background:#FF6A00;color:#fff;border:0;border-radius:8px;padding:9px 11px;font-size:11px;font-weight:800;white-space:nowrap}
+.social-admin-wait{font-size:11px;color:#946200;background:#FFF7DF;border-radius:7px;padding:8px 9px;margin-top:7px}
+@media(max-width:380px){.card-social-price{font-size:21px}.card-social-link{width:26px;height:26px}}
+</style>
+
 </head>
 <body>
 <noscript>
@@ -1886,6 +1920,29 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 
         <div class="fg"><div class="ftog"><span class="ftog-lbl">Price negotiable</span><label class="tog"><input type="checkbox" name="negotiable" checked/><span class="tog-track"></span></label></div></div>
 
+        <!-- Paid social-media promotion. The server calculates the final charge. -->
+        <div class="fg" id="socialPromotionSection" style="border:1.5px solid #FFD1B5;border-radius:14px;padding:14px;background:#FFFAF6">
+          <div style="font-size:14px;font-weight:800;color:#29211C">Social Media Promotion <span style="font-size:10px;font-weight:600;color:#8B7568">OPTIONAL</span></div>
+          <div style="font-size:11px;color:#76675E;line-height:1.5;margin-top:4px">Choose where you want MyPlotMitra to create and publish a promotional video for this property. Pay securely through Cashfree after the listing is saved.</div>
+          <label class="social-promo-option">
+            <input type="checkbox" id="socialPromoYoutube" value="youtube" onchange="window.updateSocialPromotionTotal()"/>
+            <span class="sp-brand" style="background:#E62117"><svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg></span>
+            <span class="sp-meta"><span class="sp-name">YouTube</span><span class="sp-desc">Promotional video on YouTube</span></span><span class="sp-price">₹500</span>
+          </label>
+          <label class="social-promo-option">
+            <input type="checkbox" id="socialPromoFacebook" value="facebook" onchange="window.updateSocialPromotionTotal()"/>
+            <span class="sp-brand" style="background:#1877F2;font-family:Arial,sans-serif;font-size:22px">f</span>
+            <span class="sp-meta"><span class="sp-name">Facebook</span><span class="sp-desc">Promotional post/video on Facebook</span></span><span class="sp-price">₹500</span>
+          </label>
+          <label class="social-promo-option">
+            <input type="checkbox" id="socialPromoInstagram" value="instagram" onchange="window.updateSocialPromotionTotal()"/>
+            <span class="sp-brand" style="background:linear-gradient(135deg,#6A3BC2,#D62E7B,#F6A13A)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"/></svg></span>
+            <span class="sp-meta"><span class="sp-name">Instagram</span><span class="sp-desc">Promotional Reel/post on Instagram</span></span><span class="sp-price">₹500</span>
+          </label>
+          <div class="social-promo-total"><span style="font-size:12px;font-weight:800;color:#49362B">Amount payable after saving</span><strong id="socialPromotionTotal">₹0</strong></div>
+          <div class="social-promo-note">₹500 per selected platform. Cashfree confirms the payment on our secured server. The admin then creates/publishes the content and adds the actual link. Logos appear on your property image only after payment and successful publication.</div>
+        </div>
+
         <!-- ⭐ FEATURED LISTING OPTION -->
         <div style="border:2px solid #FFD700;border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px">
           <!-- Toggle header -->
@@ -1983,6 +2040,7 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
         <div class="submit-success-icon"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span></div>
         <div class="submit-success-title">Property Submitted!</div>
         <div class="submit-success-sub">Your listing has been sent for admin review.<br>It will go live within 24 hours.</div>
+        <button id="retrySocialPromotionBtn" onclick="window.retrySocialPromotionPayment()" style="display:none;background:#202020;color:#fff;border:0;border-radius:10px;padding:11px 18px;font-size:13px;font-weight:800;cursor:pointer;margin:0 0 10px">Retry social promotion payment</button>
         <button onclick="window.closePost()" style="background:var(--or);color:#fff;border:none;border-radius:var(--r-md);padding:12px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">Done</button>
       </div>
     </div></div></div>
@@ -2079,7 +2137,8 @@ body{background:#F0EBE3!important;background-image:radial-gradient(ellipse at 15
 <button class="modal-close" onclick="window.closeAdmin()">x</button>
 </div><div class="modal-body" id="pendingList"><div style="text-align:center;padding:40px;color:#AAA">Loading...</div></div></div></div>
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -2088,13 +2147,13 @@ import{getStorage,ref,uploadBytes,getDownloadURL,deleteObject,listAll}from"https
 import{getMessaging,getToken,onMessage}from"https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js";
 
 /* ══ FIREBASE CONFIG ══════════════════════════════════════════════════ */
-const firebaseConfig={
-  apiKey:"AIzaSyCMFjanKid7Bw7-w084beGMRwvjn0WMfT4",
-  authDomain:"myplotmitra-d692c.firebaseapp.com",
-  projectId:"myplotmitra-d692c",
-  storageBucket:"myplotmitra-d692c.firebasestorage.app",
-  messagingSenderId:"686781189764",
-  appId:"1:686781189764:web:c4fc3e669e8fb0b3b6bcd1"
+const firebaseConfig = {
+  "apiKey": "AIzaSyAnmBJavyJBmxTaM9jqNI7gajr1U3BVZ1E",
+  "authDomain": "myplotmitra-preview-d8c47.firebaseapp.com",
+  "projectId": "myplotmitra-preview-d8c47",
+  "storageBucket": "myplotmitra-preview-d8c47.firebasestorage.app",
+  "messagingSenderId": "109977955626",
+  "appId": "1:109977955626:web:b8b7d40414703843434253"
 };
 /* ════════════════════════════════════════════════════════════════════ */
 
@@ -2441,6 +2500,36 @@ function render(){
   if(vMode==='grid')renderGrid(data);else renderMap(data);
 }
 
+function socialPromotionSafeUrl(platform, raw){
+  const hosts={
+    youtube:['youtube.com','www.youtube.com','m.youtube.com','youtu.be'],
+    facebook:['facebook.com','www.facebook.com','m.facebook.com','fb.watch'],
+    instagram:['instagram.com','www.instagram.com','m.instagram.com']
+  };
+  try{
+    const url=new URL(String(raw||''));
+    if(url.protocol!=='https:'||url.username||url.password||!hosts[platform]?.includes(url.hostname.toLowerCase()))return '';
+    return url.href;
+  }catch(_){return '';}
+}
+function socialPromotionIcon(platform){
+  if(platform==='youtube')return '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>';
+  if(platform==='facebook')return '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.8v8h3.4Z"/></svg>';
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="1.2" fill="currentColor"/></svg>';
+}
+function renderPublishedSocialLinks(property){
+  const promotions=property&&property.socialPromotions&&typeof property.socialPromotions==='object'?property.socialPromotions:{};
+  return ['youtube','facebook','instagram'].map(platform=>{
+    const item=promotions[platform]&&typeof promotions[platform]==='object'?promotions[platform]:{};
+    if(item.paymentStatus!=='paid'||item.published!==true||item.status!=='published')return '';
+    const href=socialPromotionSafeUrl(platform,item.url);
+    if(!href)return '';
+    const safeHref=href.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    const label=platform[0].toUpperCase()+platform.slice(1);
+    return `<a class="card-social-link ${platform}" href="${safeHref}" target="_blank" rel="noopener noreferrer" aria-label="Open ${label} promotion" title="View on ${label}" onclick="event.stopPropagation()">${socialPromotionIcon(platform)}</a>`;
+  }).join('');
+}
+
 function renderGrid(data){
   const g=document.getElementById('propGrid');
   if(!data.length){
@@ -2462,11 +2551,12 @@ function renderGrid(data){
         ${p.isFeatured?'<span class="badge-featured"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#B8860B"><path d="M2 6l4 3 4-6 4 6 4-3-1 8H3L2 6z"/><rect x="3" y="15" width="14" height="2" rx="1"/></svg></span> FEATURED</span>':(!isSold&&isNew(p.createdAt)?'<span class="badge-new">NEW</span>':'')}
         <span class="badge-type" style="color:${c};border-color:${c}44;background:${c}18">${(p.type||'plot').toUpperCase()}</span>
         <span class="bk-heart${isSaved?' saved':''}" onclick="window.toggleBk('${p.id}',event)">${isSaved?'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="#FF6A00"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>':'<span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5C3.5 5 5.5 3 8 3c1.4 0 2.6.6 3.5 1.5A5 5 0 0116.5 7.5c0 5-7 10-7 10s-6-5-6-10z"/></svg></span>'}</span>
+        <div class="card-social-overlay">
+          <div class="card-social-price" style="${isSold?'opacity:.45':''}">${fp(p.price)}</div>
+          <div class="card-social-links">${renderPublishedSocialLinks(p)}</div>
+        </div>
       </div>
       <div class="card-body">
-        <div class="card-price-wrap">
-          <div class="card-price" style="${isSold?'opacity:.4':''}">${fp(p.price)}</div>
-        </div>
         ${isSold?'<div style="font-size:11px;font-weight:600;color:#DC2626;margin-bottom:4px"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg></span> SOLD OUT</div>':''}
         <div class="card-title">${p.title}</div>
         <div class="card-loc"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2C7.24 2 5 4.24 5 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="2"/></svg></span> ${p.city}</div>
@@ -2476,9 +2566,9 @@ function renderGrid(data){
         <button class="card-more" onclick="event.stopPropagation();window.openDetail('${p.id}')">More details &rsaquo;</button>
         
       </div>
-      ${p.sellerPhone?`<div class="card-seller-row">
+      ${true?`<div class="card-seller-row">
         <div class="card-seller-avatar">${(p.ownerName||'O')[0].toUpperCase()}</div>
-        <span class="card-seller-name">${p.ownerName||'Owner'}</span>
+        <span class="card-seller-name">${p.ownerName||p.sellerName||'Property seller'}</span>
         <button class="card-wa-btn" onclick="window.cardContact('${p.id}',event)"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> Chat</button>
       </div>`:''}
     </div>`;
@@ -2636,6 +2726,7 @@ window.pinClick=function(e,id){
 };
 function closePopup(e){const pp=document.getElementById('mapPopup');if(pp&&!pp.contains(e.target))pp.classList.remove('show');}
 
+window.__sellerContacts=window.__sellerContacts||Object.create(null);
 window.openDetail=function(id){
   const p=allProps.find(x=>x.id===id);if(!p)return;
   currentSlide=0;
@@ -2647,18 +2738,19 @@ window.openDetail=function(id){
       .catch(()=>{});
   }catch(e){}
   const hasDim=p.lengthFt>0&&p.widthFt>0,bg=TB[p.type]||'#FFF0E6',isSaved=bookmarks.has(p.id);
-  const sellerPhone=p.sellerPhone||p.ownerPhone||'9989083321';
-  const sellerName=p.ownerName||p.sellerName||'Owner';
+  const serverContact=window.__sellerContacts[p.id]||null;
+  const sellerPhone=serverContact&&serverContact.sellerPhone?serverContact.sellerPhone:'';
+  const sellerName=serverContact&&serverContact.ownerName?serverContact.ownerName:'Property Seller';
   window.__openPid=p.id;
-  const privileged=currentUser&&(currentUser.email===ADMIN_EMAIL||(p.ownerId&&p.ownerId===currentUser.uid)||window.__isPremium());
+  const privileged=currentUser&&(currentUser.email===ADMIN_EMAIL||(p.ownerId&&p.ownerId===currentUser.uid)||window.__isPremium()||!!serverContact);
   const primeOn=!!appSettings.prime;
   const unlocked=window.__unlocks&&window.__unlocks.has(p.id);
   const lockedPrime=primeOn&&!privileged&&!unlocked;        // marked area → Contact Seller
   let canContact=lockedPrime?false:(primeOn?true:window.__canContact(p));
-  let phoneOK=lockedPrime?false:(primeOn?true:window.__phoneVisible(p));
+  let phoneOK=!!serverContact;
   const reqSt=(window.__myReqs&&window.__myReqs[p.id])||'';
-  const shownName=lockedPrime?'Property Seller':(p.ownerName||p.sellerName||'Owner');
-  const shownPhone=phoneOK?sellerPhone:(lockedPrime?'Hidden — tap Contact Seller':String(sellerPhone).slice(0,4)+'XXXXXX');
+  const shownName=phoneOK?sellerName:'Property Seller';
+  const shownPhone=phoneOK?sellerPhone:'Phone number hidden until contact access is approved';
   document.getElementById('detailBody').innerHTML=`
     <div class="detail-img" style="background:${bg};position:relative" id="detailImgWrap">
       ${p.photos&&p.photos.length>1
@@ -2713,8 +2805,8 @@ window.openDetail=function(id){
         <div style="font-size:12px;color:#888;margin-top:3px">This property has been sold</div>
       </div>`:''}
       ${lockedPrime?`<div class="lock-cta" onclick="window.openContactChooser('${p.id}')"><div class="lock-cta-ico">🔐</div><div class="lock-cta-t"><div class="lock-cta-h">Contact Seller</div><div class="lock-cta-s">See the seller's name, phone &amp; WhatsApp, and chat — go Prime or unlock just this seller</div></div><button class="lock-cta-btn">Contact Seller</button></div>`:(canContact?`<div class="contact-btns">
-        ${phoneOK?`<button class="btn-call" onclick="window.open('tel:${sellerPhone}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call ${sellerPhone}</button>
-        <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>`:`<button class="btn-req${reqSt==='pending'?' pending':''}" onclick="window.requestPhone('${p.id}')">${reqSt==='pending'?'⏳ Request sent — waiting for seller approval':reqSt==='denied'?'Seller declined — request again or chat below':'🔓 Request Phone Number from Seller'}</button>`}
+        ${phoneOK?`<button class="btn-call" onclick="window.open('tel:+91${sellerPhone.replace(/\D/g,'')}')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 3.5-2 1.5a10 10 0 004 4l1.5-2L16 11.5V15a1.5 1.5 0 01-1.5 1.5A13.5 13.5 0 013 3A1.5 1.5 0 014.5 3z"/></svg></span> Call seller</button>
+        <button class="btn-inquiry" onclick="window.open('https://wa.me/91${sellerPhone.replace(/\D/g,'')}?text=Hi, I saw your property ${encodeURIComponent(p.title)} on MyPlotMitra. Is it still available?')"><span class="ico " style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/></svg></span> WhatsApp</button>`:`<button class="btn-req${reqSt==='pending'?' pending':''}" onclick="${primeOn?`window.loadSellerContact('${p.id}')`:`window.requestPhone('${p.id}')`}">${primeOn?'🔓 Reveal approved seller contact':(reqSt==='pending'?'⏳ Request sent — waiting for seller approval':reqSt==='denied'?'Seller declined — request again':'🔓 Request Phone Number from Seller')}</button>`}
         <button class="btn-chat-app" onclick="window.startChat('${p.id}')"><span class="ico" style="display:inline-flex;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 9.5c0 3.59-3.13 6.5-7 6.5-.97 0-1.9-.18-2.74-.5L3 17l1.4-3.6A6.5 6.5 0 013 9.5C3 5.91 6.13 3 10 3s7 2.91 7 6.5z"/><circle cx="7" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="9.5" r=".8" fill="currentColor"/><circle cx="13" cy="9.5" r=".8" fill="currentColor"/></svg></span> Chat</button>
       </div>`:`<div class="lock-cta" onclick="window.openSubscribe()">
         <div class="lock-cta-ico">🔒</div>
@@ -2735,6 +2827,7 @@ window.openDetail=function(id){
     </div>`;
   document.getElementById('sheetOverlay').classList.add('open');
   document.getElementById('detailSheet').classList.add('open');
+  if(currentUser&&!window.__sellerContacts[p.id])window.loadSellerContact(p.id,{silent:true});
 };
 window.closeDetail=function(){document.getElementById('sheetOverlay').classList.remove('open');document.getElementById('detailSheet').classList.remove('open');};
 
@@ -2813,7 +2906,7 @@ window.toggleHideSold=()=>{
 };
 window.toggleBk=(id,e)=>{if(e)e.stopPropagation();if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveBk();render();};
 window.openPost=()=>{
-  setTimeout(()=>{try{window.applyWaMode();window.updBadgeTotal();}catch(_){}} ,50);
+  setTimeout(()=>{try{window.applyWaMode();window.updBadgeTotal();window.updateSocialPromotionTotal();}catch(_){}} ,50);
   if(!currentUser){window.doSignIn();return;}
   document.getElementById('postModal').classList.add('open');
   // Init map picker after modal opens
@@ -3228,6 +3321,20 @@ function compressImage(file, maxWidth=1200, quality=0.78){
   });
 }
 
+// ── PAID SOCIAL-MEDIA PROMOTION ─────────────────────
+const SOCIAL_PROMOTION_PRICE = 500;
+const SOCIAL_PROMOTION_KEYS = ['youtube','facebook','instagram'];
+window.getSelectedSocialPromotionPlatforms = function(){
+  return SOCIAL_PROMOTION_KEYS.filter(key=>document.getElementById('socialPromo'+key[0].toUpperCase()+key.slice(1))?.checked);
+};
+window.updateSocialPromotionTotal = function(){
+  const selected=window.getSelectedSocialPromotionPlatforms();
+  const total=selected.length*SOCIAL_PROMOTION_PRICE;
+  const node=document.getElementById('socialPromotionTotal');
+  if(node)node.textContent='₹'+total.toLocaleString('en-IN');
+  return {platforms:selected,total};
+};
+
 // ── MULTI PHOTO MANAGEMENT ──────────────────────────
 const selectedPhotos = new Array(6).fill(null);
 let activeSlot = 0;
@@ -3303,6 +3410,9 @@ window.closePost=()=>{
   const succ=document.getElementById('submitSuccess');
   if(frm2){frm2.reset();frm2.style.display='block';}
   if(succ)succ.classList.remove('show');
+  const retrySocial=document.getElementById('retrySocialPromotionBtn');
+  if(retrySocial)retrySocial.style.display='none';
+  window.__lastSocialPromotionRequest=null;
   for(let i=0; i<6; i++) selectedPhotos[i]=null;
   renderPhotoGrid();
   window.clearMapPin();
@@ -3318,6 +3428,8 @@ window.closePost=()=>{
   const proofStatus=document.getElementById('proofStatus');
   if(featSec)featSec.classList.remove('show');
   if(featChk)featChk.checked=false;
+  SOCIAL_PROMOTION_KEYS.forEach(key=>{const c=document.getElementById('socialPromo'+key[0].toUpperCase()+key.slice(1));if(c)c.checked=false;});
+  window.updateSocialPromotionTotal();
   if(proofPrev)proofPrev.style.display='none';
   if(proofData)proofData.value='';
   if(proofStatus)proofStatus.style.display='none';
@@ -3337,7 +3449,7 @@ function buildPlotSVG(o,svgId){
   let P={ BL:{x:(maxW-front)/2,y:0}, BR:{x:(maxW+front)/2,y:0},
           TR:{x:(maxW+back)/2+s,y:H}, TL:{x:(maxW-back)/2+s,y:H} };
   const cx=(P.BL.x+P.BR.x+P.TR.x+P.TL.x)/4, cy=(P.BL.y+P.BR.y+P.TR.y+P.TL.y)/4;
-  const ang=({South:0,East:90,North:180,West:270})[facing]; const A=(ang===undefined?90:ang)*Math.PI/180;
+  const ang=({South:0,'South-East':45,East:90,'North-East':135,North:180,'North-West':225,West:270,'South-West':315})[facing]; const A=(ang===undefined?90:ang)*Math.PI/180;
   const ca=Math.cos(A), sa=Math.sin(A);
   const rot=p=>{const dx=p.x-cx,dy=p.y-cy;return {x:cx+dx*ca-dy*sa,y:cy+dx*sa+dy*ca};};
   const R={BL:rot(P.BL),BR:rot(P.BR),TR:rot(P.TR),TL:rot(P.TL)}, C={x:cx,y:cy};
@@ -3478,30 +3590,80 @@ window.updPrice=()=>{
     prev.textContent='= '+display;
   } else if(prev){prev.textContent='';}
 };
+async function websiteAuthenticatedPost(endpoint, body){
+  if(!currentUser)throw new Error('Please sign in before posting a property.');
+  const token=await currentUser.getIdToken();
+  const response=await fetch('/api/'+endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'Accept':'application/json'},
+    body:JSON.stringify(body)
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok){
+    const detail=data.error||'Request failed';
+    throw new Error(`${detail} (HTTP ${response.status}; /api/${endpoint})`);
+  }
+  return data;
+}
+
+async function uploadWebPropertyPhoto(file, index, total){
+  const compressed=await compressImage(file,1200,0.78);
+  let contentType=String(compressed.type||file.type||'').toLowerCase().split(';')[0];
+  if(contentType==='image/jpg')contentType='image/jpeg';
+  if(!['image/jpeg','image/png','image/webp'].includes(contentType)){
+    throw new Error(`Photo ${index+1}: use JPG, PNG or WebP format.`);
+  }
+  if(!compressed.size||compressed.size>5*1024*1024){
+    throw new Error(`Photo ${index+1} is larger than 5 MB after compression.`);
+  }
+  let key='';
+  try{
+    const reservation=await websiteAuthenticatedPost('r2-upload-url',{
+      category:'property',contentType,size:compressed.size
+    });
+    key=String(reservation.key||'');
+    const uploadUrl=String(reservation.uploadUrl||'');
+    if(!key||!uploadUrl||!/^https:\/\//i.test(uploadUrl)){
+      throw new Error(`Photo ${index+1}: server did not return a valid R2 upload URL (/api/r2-upload-url).`);
+    }
+    const upload=await fetch(uploadUrl,{
+      method:'PUT',headers:{'Content-Type':contentType},body:compressed
+    });
+    if(!upload.ok)throw new Error(`Photo ${index+1} upload failed (HTTP ${upload.status}; R2 storage).`);
+    const finalized=await websiteAuthenticatedPost('r2-finalize-upload',{category:'property',key});
+    if(finalized.key!==key||!finalized.publicUrl){
+      throw new Error(`Photo ${index+1} could not be verified (/api/r2-finalize-upload).`);
+    }
+    return key;
+  }catch(error){
+    if(key){
+      try{await websiteAuthenticatedPost('r2-cleanup-uploads',{keys:[key]});}catch(_){/* server expiry is fallback */}
+    }
+    throw error;
+  }
+}
+
 window.submitProperty=async e=>{
   e.preventDefault();
   if(!currentUser){showToast('Please sign in first','error');return;}
-  // Validate price
   const priceHiddenVal=document.getElementById('priceHidden')?.value;
   if(!priceHiddenVal||Number(priceHiddenVal)<=0){
-    // If user typed in priceVal directly without selecting unit, calculate now
     window.updPrice();
     const recalc=document.getElementById('priceHidden')?.value;
     if(!recalc||Number(recalc)<=0){showToast('Please enter a valid price','error');return;}
   }
   if(appSettings.waVerify&&(!window.__waVerified||window.__waVerified!==(e.target.sellerPhone.value||'').replace(/\D/g,''))){showToast('Please verify your WhatsApp number first','error');return;}
   const form=e.target,btn=form.querySelector('.submit-btn');
-  btn.textContent='Submitting...';btn.disabled=true;
+  const socialSelection=window.updateSocialPromotionTotal();
+  const selectedPlatforms=socialSelection.platforms;
+  btn.textContent='Preparing secure submission…';btn.disabled=true;
+  const uploadedKeys=[];
   try{
-    const data={
-      ownerId:currentUser.uid,
-      ownerEmail:currentUser.email,
-      ownerName:currentUser.displayName||'User',
-      sellerPhone:form.sellerPhone.value.trim(),
-      waVerified:!!appSettings.waVerify,
+    const property={
       title:form.title_.value.trim(),
       description:form.description.value.trim(),
       type:form.type_.value,
+      transactionType:'sale',
       address:form.address.value.trim(),
       city:form.city.value.trim()||'Hyderabad',
       lat:form.lat.value?Number(form.lat.value):null,
@@ -3510,7 +3672,7 @@ window.submitProperty=async e=>{
       widthFt:Number(form.widthFt.value)||0,
       areaSqft:Number(form.areaSqft.value)||0,
       facing:document.getElementById('plotFacing')?.value||'',
-      isCorner:!!(document.getElementById('plotCorner')?.checked),
+      isCorner:!!document.getElementById('plotCorner')?.checked,
       frontLen:Number(document.getElementById('fFront')?.value)||0,
       backLen:Number(document.getElementById('fBack')?.value)||0,
       leftLen:Number(document.getElementById('fLeft')?.value)||0,
@@ -3518,88 +3680,84 @@ window.submitProperty=async e=>{
       frontRoad:Number(document.getElementById('fFrontRoad')?.value)||0,
       sideRoad:Number(document.getElementById('fSideRoad')?.value)||0,
       plotNumber:(document.getElementById('fPlotNo')?.value||'').trim(),
-      badgesRequested:{verifiedOwner:!!document.getElementById('bgOwner')?.checked,verifiedPhone:!!document.getElementById('bgPhone')?.checked,verifiedProperty:!!document.getElementById('bgProperty')?.checked,visitPhotos:!!document.getElementById('bgVisit')?.checked,location:!!document.getElementById('bgLocation')?.checked},
-      badges:{},urgent:false,premiumListing:false,
+      badgesRequested:{
+        verifiedOwner:!!document.getElementById('bgOwner')?.checked,
+        verifiedPhone:!!document.getElementById('bgPhone')?.checked,
+        verifiedProperty:!!document.getElementById('bgProperty')?.checked,
+        visitPhotos:!!document.getElementById('bgVisit')?.checked,
+        location:!!document.getElementById('bgLocation')?.checked
+      },
       price:Number(document.getElementById('priceHidden')?.value||form.priceVal?.value||0),
-      isNegotiable:form.negotiable.checked,
-      isFeatured:false,
-      featuredRequested:!!(document.getElementById('featuredToggleCheck')?.checked),
-      paymentProof:document.getElementById('paymentProofData')?.value||null,
-      status:'pending',
-      viewsCount:0,
-      photos:[],
-      createdAt:serverTimestamp(),
-      updatedAt:serverTimestamp()
+      isNegotiable:!!form.negotiable.checked,
+      featuredRequested:!!document.getElementById('featuredToggleCheck')?.checked,
+      socialPromotionPlatforms:selectedPlatforms
     };
 
-    // Photo upload — USE_STORAGE=true enables Firebase Storage (requires billing)
-    const photoFiles = selectedPhotos.filter(p=>p!==null);
-    const uploadedUrls = [];
-
-    if(photoFiles.length > 0){
-      btn.textContent = `Processing ${photoFiles.length} photo${photoFiles.length>1?'s':''}...`;
-      for(let i=0; i<photoFiles.length; i++){
-        try{
-          const compressed = await compressImage(photoFiles[i].file, 800, 0.7);
-          if(USE_STORAGE){
-            // Firebase Storage upload (requires billing)
-            btn.textContent = `Uploading ${i+1}/${photoFiles.length}...`;
-            const slug = slugify(`${data.type||'property'}-${data.city||''}-${data.title||''}`);
-            const safeName = `properties/${slug}-${Date.now()}-${i+1}.jpg`;
-            const storRef = ref(storage, safeName);
-            const uploadWithTimeout = new Promise(async(resolve,reject)=>{
-              const t=setTimeout(()=>reject(new Error('Upload timeout')),30000);
-              try{
-                const snap=await uploadBytes(storRef,compressed);
-                const url=await getDownloadURL(snap.ref);
-                clearTimeout(t);resolve(url);
-              }catch(e){clearTimeout(t);reject(e);}
-            });
-            uploadedUrls.push(await uploadWithTimeout);
-          } else {
-            // Base64 fallback (no billing needed)
-            const b64=await new Promise(res=>{
-              const rd=new FileReader();
-              rd.onload=e=>res(e.target.result);
-              rd.readAsDataURL(compressed);
-            });
-            uploadedUrls.push(b64);
-          }
-        }catch(e){console.warn(`Photo ${i+1} failed:`,e.message);}
-      }
-      if(uploadedUrls.length>0){
-        data.coverPhoto=uploadedUrls[0];
-        data.photos=uploadedUrls;
-      }
+    if(property.lat===null||property.lng===null){
+      throw new Error('Please pin your property location on the map before submitting.');
     }
 
-    btn.textContent = 'Saving property...';
-    await addDoc(collection(db,'properties'), data);
+    const photoFiles=selectedPhotos.filter(p=>p!==null);
+    for(let i=0;i<photoFiles.length;i++){
+      btn.textContent=`Uploading photo ${i+1} of ${photoFiles.length}…`;
+      uploadedKeys.push(await uploadWebPropertyPhoto(photoFiles[i].file,i,photoFiles.length));
+    }
 
-    // Show success screen
-    const frm  = document.querySelector('#postModal form');
-    const succ = document.getElementById('submitSuccess');
-    if(frm)  frm.style.display='none';
-    if(succ) succ.classList.add('show');
+    btn.textContent='Saving property securely…';
+    const result=await websiteAuthenticatedPost('property-create',{
+      property,
+      sellerPhone:String(form.sellerPhone.value||'').trim(),
+      photoKeys:uploadedKeys
+    });
+    const propertyId=String(result.propertyId||'');
+    if(result.success!==true||!propertyId){
+      throw new Error('The secured property API did not confirm the listing (/api/property-create).');
+    }
+    // These uploads now belong to the saved listing. Never send them to the
+    // abandoned-upload cleanup route after this point.
+    uploadedKeys.length=0;
 
-    // Reset photos
-    for(let i=0; i<6; i++) selectedPhotos[i]=null;
+    // Listing is safely created before any optional promotion payment.
+    const frm=document.querySelector('#postModal form');
+    const succ=document.getElementById('submitSuccess');
+    const successSub=document.querySelector('#submitSuccess .submit-success-sub');
+    if(frm)frm.style.display='none';
+    if(succ)succ.classList.add('show');
+    if(successSub){
+      successSub.innerHTML='Your listing has been sent for admin review.<br>It will go live after approval.'+
+        (selectedPlatforms.length?`<br><br><b>Social promotion selected:</b> ${selectedPlatforms.map(x=>x[0].toUpperCase()+x.slice(1)).join(', ')} — <b>₹${(selectedPlatforms.length*500).toLocaleString('en-IN')}</b>. Secure Cashfree checkout will open next.`:'');
+    }
+    for(let i=0;i<6;i++)selectedPhotos[i]=null;
     window.clearMapPin();
+    try{await loadProps();}catch(refreshError){console.warn('Property saved, but the public list could not refresh yet:',refreshError);}
 
-  }catch(err){
-    console.error('Submit error:',err);
-    if(err.code==='permission-denied'){
-      showToast('Permission error — check Firebase rules','error');
-    } else if(err.message&&err.message.includes('offline')){
-      showToast('No internet connection. Please try again.','error');
-    } else {
-      showToast('Error submitting. Please try again.','error');
+    if(selectedPlatforms.length){
+      window.__lastSocialPromotionRequest={propertyId,phone:String(form.sellerPhone.value||'').trim(),platforms:selectedPlatforms};
+      const payment=await window.cashfreePay('social_promotion',propertyId,String(form.sellerPhone.value||'').trim());
+      if(!payment||payment.started!==true){
+        const retry=document.getElementById('retrySocialPromotionBtn');
+        if(retry)retry.style.display='inline-flex';
+        showToast(`Listing saved. Social promotion payment was not started: ${payment?.error||'Please retry securely.'}`,'error');
+      }
     }
+  }catch(err){
+    console.error('Secure property submission error:',err);
+    if(uploadedKeys.length){
+      try{await websiteAuthenticatedPost('r2-cleanup-uploads',{keys:uploadedKeys});}catch(cleanErr){console.warn('R2 cleanup will expire server-side:',cleanErr);}
+    }
+    showToast(err.message||'Property submission failed.','error');
   }finally{
     btn.textContent='Submit for Approval';
     btn.disabled=false;
   }
 };
+
+window.retrySocialPromotionPayment=async function(){
+  const pending=window.__lastSocialPromotionRequest;
+  if(!pending){showToast('No pending social promotion payment was found.','error');return;}
+  await window.cashfreePay('social_promotion',pending.propertyId,pending.phone);
+};
+
 // ── DELETE PROPERTY COMPLETELY ──────────────────────
 window.deletePropertyCompletely=async(id, coverPhoto, showConfirm=true)=>{
   if(showConfirm && !confirm('Delete this property completely? This cannot be undone.'))return;
@@ -3654,6 +3812,78 @@ window.openAdmin=async()=>{
 };
 window.closeAdmin=()=>document.getElementById('adminModal').classList.remove('open');
 
+function socialAdminEscape(value){
+  return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+window.renderSocialPromotionsAdmin=async function(list){
+  list.innerHTML='<div style="text-align:center;padding:26px;color:#888">Loading paid social promotions…</div>';
+  try{
+    const snapshot=await getDocs(collection(db,'properties'));
+    const properties=snapshot.docs.map(docSnap=>({id:docSnap.id,...docSnap.data()}));
+    const jobs=[];
+    for(const property of properties){
+      const requested=Array.isArray(property.socialPromotionPlatforms)?property.socialPromotionPlatforms:[];
+      const promotions=property.socialPromotions&&typeof property.socialPromotions==='object'?property.socialPromotions:{};
+      for(const platform of ['youtube','facebook','instagram']){
+        const promo=promotions[platform]&&typeof promotions[platform]==='object'?promotions[platform]:{};
+        if(requested.includes(platform)&&promo.paymentStatus==='paid'&&promo.published!==true&&promo.status!=='published'){
+          jobs.push({property,platform,promo});
+        }
+      }
+    }
+    if(!jobs.length){
+      list.innerHTML='<div class="empty-adm">No paid social promotions are waiting for publication.</div>';
+      return;
+    }
+    const brand=(platform)=>platform==='youtube'
+      ?'<span class="sp-brand" style="background:#E62117">▶</span>'
+      :platform==='facebook'
+        ?'<span class="sp-brand" style="background:#1877F2;font-size:17px">f</span>'
+        :'<span class="sp-brand" style="background:linear-gradient(135deg,#6A3BC2,#D62E7B,#F6A13A)">◎</span>';
+    list.innerHTML=jobs.map(({property,platform,promo})=>{
+      const pid=socialAdminEscape(property.id);
+      const safePlatform=socialAdminEscape(platform);
+      const img=property.coverPhoto||(Array.isArray(property.photos)?property.photos[0]:'');
+      const isApproved=String(property.status||'').toLowerCase()==='approved';
+      const inputId=`social-url-${pid}-${safePlatform}`;
+      return `<div class="social-admin-card">
+        <div class="social-admin-head">
+          ${img?`<img class="social-admin-thumb" src="${socialAdminEscape(img)}" alt="Property photo" onerror="this.style.display='none'"/>`:''}
+          <div><div class="social-admin-title">${socialAdminEscape(property.title||'Property')}</div><div class="social-admin-sub">${socialAdminEscape(property.city||'')} · ${socialAdminEscape(property.status||'pending')} · Paid ₹500</div></div>
+        </div>
+        <div class="social-admin-platform">${brand(platform)}<b style="font-size:12px;min-width:70px">${safePlatform[0].toUpperCase()+safePlatform.slice(1)}</b>
+          ${isApproved?`<input id="${inputId}" type="url" placeholder="Paste published ${safePlatform} URL" aria-label="Published ${safePlatform} URL"/><button onclick="window.publishSocialPromotion('${pid}','${safePlatform}','${inputId}')">Mark Published</button>`:'<span class="social-admin-wait">Waiting for property approval</span>'}
+        </div>
+        <div class="social-admin-sub">Cashfree payment: verified ₹500 · Publication: awaiting admin link</div>
+      </div>`;
+    }).join('');
+  }catch(error){
+    console.error('Social promotion admin queue:',error);
+    list.innerHTML=`<div style="color:#B42318;padding:18px">Could not load social promotions: ${socialAdminEscape(error.message)}</div>`;
+  }
+};
+
+window.publishSocialPromotion=async function(propertyId,platform,inputId){
+  const input=document.getElementById(inputId);
+  const url=String(input?.value||'').trim();
+  if(!url){showToast('Paste the actual published platform URL first.','error');input?.focus();return;}
+  try{
+    const token=await currentUser.getIdToken();
+    const response=await fetch('/api/admin-social-promotion',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({propertyId,platform,url})
+    });
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok||result.success!==true)throw new Error(result.error||`HTTP ${response.status}`);
+    showToast(`${platform[0].toUpperCase()+platform.slice(1)} link published on MyPlotMitra.`,'success');
+    await loadProps();
+    await window.renderSocialPromotionsAdmin(document.getElementById('pendingList'));
+  }catch(error){
+    console.error('Admin social publication:',error);
+    showToast(error.message||'Could not save the published link.','error');
+  }
+};
+
 window.switchAdminTab=async(tab)=>{
   adminTab=tab;
   document.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
@@ -3675,7 +3905,8 @@ async function loadAdminTab(tab){
       <button class="adm-tab${tab==='approved'?' on':''}" data-tab="approved" onclick="window.switchAdminTab('approved')">Approved</button>
       <button class="adm-tab${tab==='sold'?' on':''}" data-tab="sold" onclick="window.switchAdminTab('sold')">Sold Out</button>
       <button class="adm-tab${tab==='premium'?' on':''}" data-tab="premium" onclick="window.switchAdminTab('premium')">Premium</button>
-      <button class="adm-tab${tab==='banners'?' on':''}" data-tab="banners" onclick="window.switchAdminTab('banners')">Banners</button>`;
+      <button class="adm-tab${tab==='banners'?' on':''}" data-tab="banners" onclick="window.switchAdminTab('banners')">Banners</button>
+      <button class="adm-tab${tab==='social'?' on':''}" data-tab="social" onclick="window.switchAdminTab('social')">Social Media</button>`;
     body.parentNode.insertBefore(tabBar,body);
   } else if(modal){
     modal.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
@@ -3684,6 +3915,7 @@ async function loadAdminTab(tab){
   list.innerHTML='<div style="text-align:center;padding:30px;color:#AAA">Loading...</div>';
   if(tab==='premium'){return window.renderPremiumAdmin(list);}
   if(tab==='banners'){return window.renderBannersAdmin(list);}
+  if(tab==='social'){return window.renderSocialPromotionsAdmin(list);}
 
   try{
     const snap=await getDocs(collection(db,'properties'));
@@ -3995,77 +4227,137 @@ window.__canContact=(p)=>{
 };
 window.cardContact=function(id,ev){
   ev&&ev.stopPropagation();
-  const p=allProps.find(x=>x.id===id);if(!p)return;
-  if(!window.__canContact(p)){window.openDetail(id);return;}
-  const ph=(p.sellerPhone||'9989083321').replace(/\D/g,'');
-  window.open('https://wa.me/91'+ph+'?text=Hi, I saw your listing *'+encodeURIComponent(p.title||'')+'* on MyPlotMitra. Is it available?');
+  window.openDetail(id);
 };
 
-window.openSubscribe=async function(){
-  if(appSettings.prime){window.openContactChooser(window.__openPid||'');return;}
-  const body=document.getElementById('subModalBody');
-  document.getElementById('subModal').classList.add('open');
-  if(!currentUser){
-    body.innerHTML=`<div style="text-align:center;padding:10px 0">
-      <div class="sub-price"><span class="amt">₹25</span><span class="per">/month</span></div>
-      <p style="font-size:13px;color:#666;margin:6px 0 16px">Sign in with Google to subscribe and unlock seller contacts &amp; chat.</p>
-      <button class="btn-post" style="width:100%" onclick="window.doSignIn()">Sign in to continue</button></div>`;
+
+window.openSubscribe = async function() {
+  if (appSettings.prime) {
+    window.openContactChooser(window.__openPid || '');
     return;
   }
-  if(window.__isPremium()){
-    const t=myProfile.premiumUntil;const d=t.toDate?t.toDate():new Date(t.seconds*1000);
-    body.innerHTML=`<div style="text-align:center;padding:14px 0">
-      <span class="prem-badge">PREMIUM ACTIVE</span>
-      <p style="font-size:13.5px;margin-top:12px">You have full access to seller contacts and chat.</p>
-      <p style="font-size:12px;color:#777">Valid till <b>${d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</b></p></div>`;
+
+  const body = document.getElementById('subModalBody');
+  const modal = document.getElementById('subModal');
+
+  if (!body || !modal) {
+    showToast('Premium subscription screen is unavailable.', 'error');
     return;
   }
-  let pending=false;
-  try{const r=await getDoc(doc(db,'subRequests',currentUser.uid));pending=r.exists()&&r.data().status==='pending';}catch(e){}
-  if(pending){
-    body.innerHTML=`<div style="text-align:center;padding:14px 0">
-      <div style="font-size:34px">⏳</div>
-      <p style="font-size:13.5px;font-weight:700;margin-top:8px">Payment under review</p>
-      <p style="font-size:12.5px;color:#777">Admin activates your Premium within 2 hours of payment confirmation. You'll get access automatically after approval — just refresh.</p></div>`;
+
+  modal.classList.add('open');
+
+  if (!currentUser) {
+    body.innerHTML = `
+      <div style="text-align:center;padding:10px 0">
+        <div class="sub-price">
+          <span class="amt">₹25</span><span class="per">/month</span>
+        </div>
+        <p style="font-size:13px;color:#666;margin:6px 0 16px">
+          Sign in with Google to subscribe and unlock seller contacts and chat.
+        </p>
+        <button class="btn-post" style="width:100%"
+          onclick="window.doSignIn()">Sign in to continue</button>
+      </div>`;
     return;
   }
-  body.innerHTML=`
-    <div class="sub-price"><span class="amt">₹25</span><span class="per">/month</span></div>
+
+  if (window.__isPremium()) {
+    const t = myProfile && myProfile.premiumUntil;
+    const d = t && typeof t.toDate === 'function'
+      ? t.toDate()
+      : new Date(t && t.seconds ? t.seconds * 1000 : t);
+
+    const validDate = d instanceof Date && !Number.isNaN(d.getTime());
+
+    body.innerHTML = `
+      <div style="text-align:center;padding:14px 0">
+        <span class="prem-badge">PREMIUM ACTIVE</span>
+        <p style="font-size:13.5px;margin-top:12px">
+          You have full access to seller contacts and chat.
+        </p>
+        ${validDate ? `
+          <p style="font-size:12px;color:#777">
+            Valid till <b>${d.toLocaleDateString('en-IN', {
+              day:'numeric', month:'short', year:'numeric'
+            })}</b>
+          </p>` : ''}
+      </div>`;
+    return;
+  }
+
+  // Preserve protection for any older manual payment request awaiting review.
+  let pending = false;
+  try {
+    const request = await getDoc(doc(db, 'subRequests', currentUser.uid));
+    pending = request.exists() && request.data().status === 'pending';
+  } catch (error) {
+    console.warn('Could not check previous subscription request:', error);
+  }
+
+  if (pending) {
+    body.innerHTML = `
+      <div style="text-align:center;padding:14px 0">
+        <div style="font-size:34px">⏳</div>
+        <p style="font-size:13.5px;font-weight:700;margin-top:8px">
+          Previous payment request under review
+        </p>
+        <p style="font-size:12.5px;color:#777">
+          Your earlier Premium request is still awaiting admin review.
+          Please wait for that request to be resolved before making another payment.
+        </p>
+      </div>`;
+    return;
+  }
+
+  const primePrice = Number(appSettings.primePrice) || 25;
+  const phonePrefill = String(currentUser.phoneNumber || '')
+    .replace(/\D/g, '')
+    .slice(-10);
+
+  body.innerHTML = `
+    <div class="sub-price">
+      <span class="amt">₹${primePrice}</span>
+      <span class="per">/month</span>
+    </div>
+
     <div style="margin:6px 0 14px">
       <div class="sub-benefit"><b>✓</b> View seller phone numbers</div>
-      <div class="sub-benefit"><b>✓</b> Call &amp; WhatsApp owners directly</div>
+      <div class="sub-benefit"><b>✓</b> Call and WhatsApp owners directly</div>
       <div class="sub-benefit"><b>✓</b> Unlimited in-app chat with sellers</div>
-      <div class="sub-benefit"><b>✓</b> Valid 30 days from activation</div>
+      <div class="sub-benefit"><b>✓</b> Valid for 30 days</div>
     </div>
-    <div style="background:#FAFAFA;border:1px solid var(--g200);border-radius:12px;padding:12px;margin-bottom:12px">
-      <div style="font-size:11px;color:#777;font-weight:600;margin-bottom:4px">PAY ₹25 VIA UPI / PhonePe / GPay</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-        <b style="font-size:14px">9989083321@upi</b>
-        <button onclick="navigator.clipboard.writeText('9989083321@upi');showToast('UPI ID copied','success')" style="background:#0A0A0A;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11.5px;cursor:pointer;font-family:inherit">Copy</button>
-      </div>
-      <div style="font-size:11px;color:#999;margin-top:4px">Amount: ₹25 · Name: MyPlotMitra</div>
-    </div>
-    <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px">Upload payment screenshot *</label>
-    <input type="file" id="subProofFile" accept="image/*" style="font-size:12px;margin-bottom:12px;width:100%"/>
-    <button class="btn-post" style="width:100%" id="subSubmitBtn" onclick="window.submitSub()">Submit for activation</button>
-    <p style="font-size:11px;color:#999;text-align:center;margin-top:8px">Admin activates within 2 hours after payment confirmation</p>`;
-};
 
-window.submitSub=async function(){
-  const f=document.getElementById('subProofFile').files[0];
-  if(!f){showToast('Attach your payment screenshot','error');return;}
-  if(f.size>5*1024*1024){showToast('Screenshot too large (max 5MB)','error');return;}
-  const btn=document.getElementById('subSubmitBtn');btn.disabled=true;btn.textContent='Uploading…';
-  try{
-    const r=ref(storage,'subscriptions/'+currentUser.uid+'_'+Date.now()+'.jpg');
-    await uploadBytes(r,f);
-    const url=await getDownloadURL(r);
-    await setDoc(doc(db,'subRequests',currentUser.uid),{
-      uid:currentUser.uid,name:currentUser.displayName||'',email:currentUser.email||'',
-      proof:url,status:'pending',createdAt:serverTimestamp()});
-    window.openSubscribe();
-    showToast('Submitted! Premium activates after admin approval.','success');
-  }catch(e){console.error(e);showToast('Upload failed — try again','error');btn.disabled=false;btn.textContent='Submit for activation';}
+    <div class="fg" style="margin:0 0 12px">
+      <label class="flbl" for="cashfreeCustomerPhone">
+        Mobile number for payment *
+      </label>
+      <input
+        id="cashfreeCustomerPhone"
+        class="finp"
+        type="tel"
+        inputmode="numeric"
+        autocomplete="tel"
+        maxlength="10"
+        pattern="[6-9][0-9]{9}"
+        placeholder="Enter 10-digit mobile number"
+        value="${phonePrefill}"
+        required
+      />
+      <div style="font-size:11px;color:#888;margin-top:4px">
+        Required by Cashfree for payment confirmation.
+      </div>
+    </div>
+
+    <button class="btn-post" style="width:100%"
+      onclick="window.cashfreePay('prime')">
+      Pay ₹${primePrice} securely with Cashfree
+    </button>
+
+    <p style="font-size:11px;color:#999;text-align:center;margin-top:8px">
+      Secure checkout powered by Cashfree.
+      Premium activates automatically after payment verification.
+    </p>`;
 };
 
 /* ── Admin: Premium tab ── */
@@ -4679,24 +4971,59 @@ function startReqListeners(){
     if(document.getElementById('chatsModal').classList.contains('open'))renderInbox();
   },e=>console.log('req seller:',e.code||e));
 }
-window.__phoneVisible=(p)=>{
-  if(!p||!p.sellerPhone)return false;
-  if(currentUser&&(currentUser.email===ADMIN_EMAIL||(p.ownerId&&p.ownerId===currentUser.uid)))return true;
-  return window.__myReqs[p.id]==='approved';
+window.__phoneVisible=(p)=>!!(p&&window.__sellerContacts&&window.__sellerContacts[p.id]);
+window.loadSellerContact=async function(propId,options={}){
+  if(!currentUser)return false;
+  if(window.__sellerContacts[propId])return true;
+  try{
+    const token=await currentUser.getIdToken();
+    const response=await fetch('/api/property-contact',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({propId})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.error||'Could not load seller contact');
+    if(data.unlocked!==true)return false;
+    const phone=String(data.sellerPhone||'').replace(/\D/g,'');
+    if(!/^[6-9]\d{9}$/.test(phone))throw new Error('Seller contact is unavailable');
+    window.__sellerContacts[propId]={sellerPhone:phone,ownerName:String(data.ownerName||'Seller').slice(0,120)};
+    if(window.__openPid===propId)refreshOpenDetail();
+    return true;
+  }catch(e){
+    if(!options.silent)showToast(e.message||'Could not load seller contact','error');
+    return false;
+  }
 };
 window.requestPhone=async function(propId){
   if(!currentUser){showToast('Sign in to request the number','error');window.doSignIn();return;}
   const p=allProps.find(x=>x.id===propId);if(!p)return;
-  if(!window.__canContact(p)){window.openSubscribe();return;}
-  if(!p.ownerId){showToast('Request unavailable — use Chat instead','error');return;}
+  if(appSettings.prime&&!window.__canContact(p)){window.openContactChooser(propId);return;}
   try{
-    await setDoc(doc(db,'contactRequests',propId+'_'+currentUser.uid),{
-      propertyId:propId,propertyTitle:p.title||'',
-      buyerId:currentUser.uid,buyerName:currentUser.displayName||'Buyer',
-      sellerId:p.ownerId,status:'pending',createdAt:serverTimestamp()});
-    pushTo(p.ownerId,'New contact request',`${currentUser.displayName||'A buyer'} wants your number for "${p.title||'your listing'}"`);
-    showToast('Request sent! You will see the number once the seller approves.','success');
-  }catch(e){console.error(e);showToast('Could not send request','error');}
+    if(await window.loadSellerContact(propId,{silent:true})){
+      showToast('Seller contact is available now.','success');
+      return;
+    }
+    const token=await currentUser.getIdToken();
+    const response=await fetch('/api/contact-request',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({propId})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.error||'Could not send contact request');
+    if(data.alreadyAuthorized){
+      await window.loadSellerContact(propId);
+      return;
+    }
+    if(data.alreadyApproved){
+      await window.loadSellerContact(propId);
+      showToast('Your request was already approved.','success');
+      return;
+    }
+    showToast(data.alreadyPending?'Your request is already waiting for seller approval.':'Request sent! You will see the number once the seller approves.','success');
+    startReqListeners();
+  }catch(e){console.error('contact request:',e);showToast(e.message||'Could not send request','error');}
 };
 window.decideReq=async function(id,approve){
   try{
@@ -4705,7 +5032,16 @@ window.decideReq=async function(id,approve){
     showToast(approve?'Your number is now visible to this buyer':'Request declined','success');
   }catch(e){console.error(e);showToast('Failed — try again','error');}
 };
-onAuthStateChanged(auth,()=>{setTimeout(startReqListeners,500);});
+let sellerContactCacheUid=currentUser?currentUser.uid:null;
+onAuthStateChanged(auth,user=>{
+  const nextUid=user?user.uid:null;
+  if(nextUid!==sellerContactCacheUid){
+    window.__sellerContacts=Object.create(null);
+    sellerContactCacheUid=nextUid;
+    refreshOpenDetail();
+  }
+  setTimeout(startReqListeners,500);
+});
 /* ════════ END CONTACT REQUESTS ════════ */
 
 /* ════════ WHATSAPP NUMBER VERIFICATION (post form) ════════ */
@@ -4783,132 +5119,407 @@ window.waCheckCode=async function(){
 };
 /* ════════ END WA VERIFICATION ════════ */
 
-/* ════════ PHONEPE PAY-PER-CONTACT (₹10) ════════ */
-window.__unlocks=new Set();let unlkUnsub=null;
-function startUnlockListener(){
-  if(unlkUnsub){unlkUnsub();unlkUnsub=null;}
-  window.__unlocks=new Set();
-  if(!currentUser)return;
-  unlkUnsub=onSnapshot(query(collection(db,'unlocks'),where('buyerId','==',currentUser.uid)),sn=>{
-    window.__unlocks=new Set(sn.docs.map(d=>(d.data().propertyId)));
-    refreshOpenDetail();
-  },e=>console.log('unlocks:',e.code||e));
-}
-onAuthStateChanged(auth,()=>{setTimeout(startUnlockListener,600);});
 
-window.openContactChooser=async function(propId){
-  if(!currentUser){showToast('Sign in to contact sellers','error');window.doSignIn();return;}
-  const cfg=appSettings;
-  const primeP=Number(cfg.primePrice)||25, fxN=Number(cfg.flexyCount)||3, fxP=Number(cfg.flexyPrice)||10;
-  let credits=Number(myProfile&&myProfile.contactCredits)||0;
-  try{const u=await getDoc(doc(db,'users',currentUser.uid));if(u.exists()){myProfile=u.data();credits=Number(myProfile.contactCredits)||0;}}catch(_){}
-  document.getElementById('chooserBody').innerHTML=`
-    <div class="chooser-opt" onclick="window.rzpPay('prime')">
+/* ===== CASHFREE PRIME AND CONTACT CREDIT CHECKOUT ===== */
+
+window.__unlocks = new Set();
+let unlkUnsub = null;
+
+function startUnlockListener() {
+  if (unlkUnsub) {
+    unlkUnsub();
+    unlkUnsub = null;
+  }
+
+  window.__unlocks = new Set();
+  if (!currentUser) return;
+
+  unlkUnsub = onSnapshot(
+    query(collection(db, 'unlocks'), where('buyerId', '==', currentUser.uid)),
+    snapshot => {
+      window.__unlocks = new Set(
+        snapshot.docs.map(docSnap => docSnap.data().propertyId)
+      );
+      refreshOpenDetail();
+    },
+    error => console.log('unlocks:', error.code || error)
+  );
+}
+
+onAuthStateChanged(auth, () => setTimeout(startUnlockListener, 600));
+
+window.openContactChooser = async function(propId) {
+  if (!currentUser) {
+    showToast('Sign in to contact sellers', 'error');
+    window.doSignIn();
+    return;
+  }
+
+  const cfg = appSettings;
+  const primeP = Number(cfg.primePrice) || 25;
+  const fxN = Number(cfg.flexyCount) || 3;
+  const fxP = Number(cfg.flexyPrice) || 10;
+
+  let credits = Number(myProfile && myProfile.contactCredits) || 0;
+
+  try {
+    const userSnapshot = await getDoc(doc(db, 'users', currentUser.uid));
+    if (userSnapshot.exists()) {
+      myProfile = userSnapshot.data();
+      credits = Number(myProfile.contactCredits) || 0;
+    }
+  } catch (error) {
+    console.warn('Could not refresh contact-credit balance:', error);
+  }
+
+  const safePropId = String(propId || '');
+  const phonePrefill = String(currentUser.phoneNumber || '')
+    .replace(/\D/g, '')
+    .slice(-10);
+
+  document.getElementById('chooserBody').innerHTML = `
+    <div class="fg" style="margin:0 0 12px">
+      <label class="flbl" for="cashfreeCustomerPhone">
+        Mobile number for payment *
+      </label>
+      <input
+        id="cashfreeCustomerPhone"
+        class="finp"
+        type="tel"
+        inputmode="numeric"
+        autocomplete="tel"
+        maxlength="10"
+        pattern="[6-9][0-9]{9}"
+        placeholder="Enter 10-digit mobile number"
+        value="${phonePrefill}"
+        required
+      />
+      <div style="font-size:11px;color:#888;margin-top:4px">
+        Required by Cashfree for payment confirmation.
+      </div>
+    </div>
+
+    <div class="chooser-opt" onclick="window.cashfreePay('prime')">
       <div style="font-size:22px">⭐</div>
-      <div style="flex:1"><div class="co-h">Prime — ₹${primeP}/month</div>
-      <div class="co-s">Unlimited seller contacts + chat on every property for 30 days</div></div>
+      <div style="flex:1">
+        <div class="co-h">Prime — ₹${primeP}/month</div>
+        <div class="co-s">
+          Unlimited seller contacts + chat on every property for 30 days
+        </div>
+      </div>
       <div class="co-go">›</div>
     </div>
-    <div class="chooser-opt" onclick="window.chooseFlexy('${propId}')">
+
+    <div class="chooser-opt" onclick="window.chooseFlexy('${safePropId}')">
       <div style="font-size:22px">🔓</div>
-      <div style="flex:1"><div class="co-h">${credits>0?`Use 1 contact credit (${credits} left)`:`Contact this seller — ₹${fxP}`}</div>
-      <div class="co-s">${credits>0?'Unlock this seller using your balance':`Pay ₹${fxP} once, get ${fxN} seller contacts to use anytime`}</div></div>
+      <div style="flex:1">
+        <div class="co-h">
+          ${credits > 0
+            ? `Use 1 contact credit (${credits} left)`
+            : `Contact this seller — ₹${fxP}`}
+        </div>
+        <div class="co-s">
+          ${credits > 0
+            ? 'Unlock this seller using your balance'
+            : `Pay ₹${fxP} once, get ${fxN} seller contacts to use anytime`}
+        </div>
+      </div>
       <div class="co-go">›</div>
     </div>
-    <p style="font-size:11px;color:#999;text-align:center;margin-top:10px">Secure payment via Razorpay · UPI, cards, netbanking</p>`;
+
+    <p style="font-size:11px;color:#999;text-align:center;margin-top:10px">
+      Secure checkout powered by Cashfree.
+    </p>
+  `;
+
   document.getElementById('chooserModal').classList.add('open');
 };
-window.chooseFlexy=async function(propId){
-  const credits=Number(myProfile&&myProfile.contactCredits)||0;
-  if(credits>0){
-    try{
-      const token=await currentUser.getIdToken();
-      const r=await fetch('/api/use-credit',{method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-        body:JSON.stringify({propId})});
-      const d=await r.json();
-      if(d.success){
-        document.getElementById('chooserModal').classList.remove('open');
-        if(myProfile)myProfile.contactCredits=d.creditsLeft;
-        showToast('Unlocked! '+(d.creditsLeft||0)+' contact credit(s) left.','success');
-      }else showToast(d.error||'Could not use credit','error');
-    }catch(e){showToast('Network error — try again','error');}
-  }else{
-    window.rzpPay('flexy',propId);
+
+window.chooseFlexy = async function(propId) {
+  if (!currentUser) {
+    showToast('Sign in first', 'error');
+    window.doSignIn();
+    return;
+  }
+
+  const credits = Number(myProfile && myProfile.contactCredits) || 0;
+
+  if (credits > 0) {
+    try {
+      const token = await currentUser.getIdToken();
+      const response = await fetch('/api/use-credit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ propId })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        showToast(data.error || 'Could not use contact credit', 'error');
+        return;
+      }
+
+      if (myProfile) myProfile.contactCredits = data.creditsLeft;
+
+      document.getElementById('chooserModal').classList.remove('open');
+      showToast(
+        'Unlocked! ' + (data.creditsLeft || 0) + ' contact credit(s) left.',
+        'success'
+      );
+      refreshOpenDetail();
+    } catch (error) {
+      console.error('Contact credit error:', error);
+      showToast('Network error — please try again.', 'error');
+    }
+  } else {
+    window.cashfreePay('flexy', propId);
   }
 };
-window.rzpPay=async function(kind,propId){
-  if(!currentUser){showToast('Sign in first','error');window.doSignIn();return;}
-  if(typeof Razorpay==='undefined'){showToast('Payment library failed to load — refresh and try again','error');return;}
-  try{
-    const token=await currentUser.getIdToken();
-    const r=await fetch('/api/rzp-create-order',{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-      body:JSON.stringify({kind:kind||'flexy',propId:propId||null})});
-    const d=await r.json();
-    if(!d.orderId){showToast(d.error||'Could not start payment','error');return;}
-    const rzp=new Razorpay({
-      key:d.keyId,
-      order_id:d.orderId,
-      amount:d.amount,
-      currency:d.currency||'INR',
-      name:'MyPlotMitra',
-      description:d.label||'MyPlotMitra payment',
-      image:'https://www.myplotmitra.com/icons/icon-192.png',
-      prefill:{name:currentUser.displayName||'',email:currentUser.email||''},
-      theme:{color:'#FF6A00'},
-      modal:{ondismiss:()=>showToast('Payment cancelled','error')},
-      handler:async(resp)=>{
-        try{
-          const t2=await currentUser.getIdToken();
-          const v=await fetch('/api/rzp-verify',{method:'POST',
-            headers:{'Content-Type':'application/json','Authorization':'Bearer '+t2},
-            body:JSON.stringify(resp)});
-          const out=await v.json();
-          if(out.success){
-            document.getElementById('chooserModal').classList.remove('open');
-            showToast(out.prime?'⭐ You are now Prime! Unlimited contacts for 30 days.'
-              :'✅ Payment successful! Seller unlocked'+(out.creditsLeft?` — ${out.creditsLeft} credit(s) left for other sellers.`:'.'),'success');
-            if(typeof out.creditsLeft==='number'&&myProfile)myProfile.contactCredits=out.creditsLeft;
-            if(out.propId||propId){setTimeout(()=>{try{window.openDetail(out.propId||propId);}catch(_){}} ,800);}
-          }else{
-            showToast(out.error||'Verification failed — contact support, do not pay again','error');
-          }
-        }catch(e){console.error(e);showToast('Could not verify payment — contact support','error');}
-      }
-    });
-    rzp.on('payment.failed',(resp)=>{
-      console.warn('payment.failed',resp.error);
-      showToast('Payment failed: '+(resp.error?.description||'try another method'),'error');
-    });
-    rzp.open();
-  }catch(e){console.error(e);showToast('Payment could not start — try again','error');}
-};
-window.startPay=(propId)=>window.rzpPay('flexy',propId);
 
-// Handle return from PhonePe: ?payreturn=<txnId>
-(async function(){
-  const m=new URLSearchParams(location.search).get('payreturn');
-  if(!m)return;
-  history.replaceState({},'',location.pathname);
-  const check=async()=>{
-    try{
-      const r=await fetch('/api/pay-status?txn='+encodeURIComponent(m));
-      const d=await r.json();
-      if(d.state==='success'){
-        showToast('✅ Payment successful! Contact details unlocked.','success');
-        if(d.propId){setTimeout(()=>{try{window.openDetail(d.propId);}catch(_){ }},900);}
-        return true;
+window.cashfreePay = async function(kind, propId, customerPhoneOverride) {
+  if (!currentUser) {
+    showToast('Sign in first', 'error');
+    window.doSignIn();
+    return;
+  }
+
+  if (window.__cashfreePaymentBusy) return;
+
+  if (!['prime', 'flexy', 'social_promotion'].includes(kind)) {
+    showToast('Unsupported payment option.', 'error');
+    return;
+  }
+
+  const phoneInput = document.getElementById('cashfreeCustomerPhone');
+  const customerPhone = String(customerPhoneOverride || (phoneInput ? phoneInput.value : ''))
+    .replace(/\D/g, '')
+    .slice(-10);
+
+  if (!/^[6-9]\d{9}$/.test(customerPhone)) {
+    showToast('Enter a valid 10-digit Indian mobile number.', 'error');
+    if (phoneInput) phoneInput.focus();
+    return;
+  }
+
+  if ((kind === 'flexy' || kind === 'social_promotion') && !propId) {
+    showToast('Select a property before starting this payment.', 'error');
+    return {started:false,error:'Property ID is required'};
+  }
+
+  window.__cashfreePaymentBusy = true;
+
+  try {
+    if (typeof window.Cashfree !== 'function') {
+      throw new Error('Cashfree checkout did not load. Refresh and try again.');
+    }
+
+    const token = await currentUser.getIdToken();
+    const response = await fetch('/api/cashfree-create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        kind,
+        customerPhone,
+        ...(['flexy','social_promotion'].includes(kind) ? { propId } : {})
+      })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'Could not create Cashfree payment order.');
+    }
+
+    if (!data.orderId || !data.paymentSessionId) {
+      throw new Error('Cashfree did not return a valid payment session.');
+    }
+
+    const environment = String(data.environment || '').toUpperCase();
+    if (!['SANDBOX', 'PRODUCTION'].includes(environment)) {
+      throw new Error('Cashfree returned an invalid payment environment.');
+    }
+
+    const hostname = location.hostname.toLowerCase();
+    const isProductionSite = [
+      'myplotmitra.com',
+      'www.myplotmitra.com'
+    ].includes(hostname);
+
+    if (!isProductionSite && environment !== 'SANDBOX') {
+      throw new Error('Non-production websites can only use Cashfree Sandbox.');
+    }
+    if (isProductionSite && environment !== 'PRODUCTION') {
+      throw new Error('Production website requires the Production payment environment.');
+    }
+
+    const cashfree = window.Cashfree({
+      mode: environment === 'PRODUCTION' ? 'production' : 'sandbox'
+    });
+
+    const checkoutResult = await cashfree.checkout({
+      paymentSessionId: data.paymentSessionId,
+      redirectTarget: '_self'
+    });
+
+    if (checkoutResult && checkoutResult.error) {
+      throw new Error(
+        checkoutResult.error.message || 'Cashfree checkout could not be opened.'
+      );
+    }
+    return {started:true,orderId:data.orderId,amount:data.amount,kind};
+  } catch (error) {
+    console.error('Cashfree checkout error:', error);
+    showToast(error.message || 'Payment could not start. Please try again.', 'error');
+    return {started:false,error:error.message||'Payment could not start'};
+  } finally {
+    window.__cashfreePaymentBusy = false;
+  }
+};
+
+window.startPay = propId => window.cashfreePay('flexy', propId);
+
+async function handleCashfreeReturn() {
+  const returnUrl = new URL(window.location.href);
+  if (returnUrl.searchParams.get('cashfree_return') !== '1') return;
+
+  const orderId = String(returnUrl.searchParams.get('order_id') || '').trim();
+  if (!orderId || orderId.includes('{') || orderId.length > 150) {
+    showToast('Cashfree returned an invalid order reference.', 'error');
+    return;
+  }
+
+  let user = auth.currentUser;
+  if (!user) {
+    user = await new Promise(resolve => {
+      let unsubscribe = () => {};
+      unsubscribe = onAuthStateChanged(auth, resolvedUser => {
+        unsubscribe();
+        resolve(resolvedUser);
+      });
+    });
+  }
+
+  if (!user) {
+    showToast(
+      'Sign in with the same account used for payment, then refresh to verify.',
+      'error'
+    );
+    return;
+  }
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const token = await user.getIdToken();
+      const response = await fetch('/api/cashfree-verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ orderId })
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || 'Payment verification request failed.');
       }
-      if(d.state==='pending')return false;
-      showToast(d.state==='failed'?'Payment failed or cancelled.':'Could not confirm payment yet.','error');
-      return true;
-    }catch(e){return false;}
-  };
-  if(await check())return;
-  let n=0;const iv=setInterval(async()=>{if(await check()||++n>5)clearInterval(iv);},2500);
-})();
-/* ════════ END PHONEPE ════════ */
+
+      if (data.success) {
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete('cashfree_return');
+        cleanUrl.searchParams.delete('order_id');
+
+        history.replaceState(
+          {},
+          '',
+          cleanUrl.pathname + cleanUrl.search + cleanUrl.hash
+        );
+
+        if (data.kind === 'prime') {
+          showToast(
+            '⭐ Prime activated! Seller contact access is enabled for 30 days.',
+            'success'
+          );
+        } else if (data.kind === 'flexy') {
+          const balance = Number(data.creditsLeft);
+          showToast(
+            Number.isFinite(balance)
+              ? `Payment successful. ${balance} contact credit(s) remaining.`
+              : 'Payment successful. Contact credits updated.',
+            'success'
+          );
+        } else if (data.kind === 'social_promotion') {
+          showToast('Social promotion payment verified. Admin publishing is next; logos appear after the published links are saved.', 'success');
+        } else {
+          showToast('Payment verified successfully.', 'success');
+        }
+
+        try {
+          render();
+          refreshOpenDetail();
+        } catch (error) {
+          console.warn('Could not refresh property view:', error);
+        }
+
+        if (data.propId) {
+          setTimeout(() => {
+            try {
+              window.openDetail(data.propId);
+            } catch (error) {
+              console.warn('Could not reopen property:', error);
+            }
+          }, 800);
+        }
+        return;
+      }
+
+      if (data.paymentStatus === 'pending') {
+        if (attempt < 2) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          continue;
+        }
+
+        showToast(
+          'Payment is still being confirmed. Do not pay again. Refresh this page shortly to check again.',
+          'error'
+        );
+        return;
+      }
+
+      showToast(
+        data.error || 'Payment has not been confirmed. Do not pay again yet.',
+        'error'
+      );
+      return;
+    } catch (error) {
+      console.error('Cashfree verification error:', error);
+
+      if (attempt === 2) {
+        showToast(
+          'Could not confirm payment yet. Do not pay again; refresh this page to retry.',
+          'error'
+        );
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+  }
+}
+
+handleCashfreeReturn().catch(error => {
+  console.error('Cashfree return handler:', error);
+  showToast('Could not verify the payment return. Refresh to retry.', 'error');
+});
+
+/* ===== END CASHFREE PRIME AND CONTACT CREDIT CHECKOUT ===== */
+
 // Read ?type= and ?q= from the URL so SEO landing pages can deep-link into a pre-filtered view
 (function applyUrlFilters(){
   try{

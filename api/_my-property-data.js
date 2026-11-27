@@ -5,6 +5,7 @@ const PRIVATE_FIELDS = new Set([
   'ownerEmail',
   'ownerName',
   'sellerPhone',
+  'ownerPhone',
   'waVerified',
   'paymentProofKey',
   'photoKeys',

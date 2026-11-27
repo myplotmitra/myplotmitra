@@ -5,6 +5,7 @@ const PRIVATE_FIELDS = [
   'ownerEmail',
   'ownerName',
   'sellerPhone',
+  'ownerPhone',
   'waVerified',
   'paymentProofKey',
   'photoKeys',
@@ -63,6 +64,13 @@ function buildPrivatePropertyData(publicData, existingPrivate) {
     if (Object.prototype.hasOwnProperty.call(source, field)) {
       moved[field] = source[field];
     }
+  }
+
+  // Older public records used ownerPhone. Normalize it to the canonical
+  // sellerPhone contact field before it is removed from the public document.
+  if (!String(moved.sellerPhone || '').trim() &&
+      String(moved.ownerPhone || '').trim()) {
+    moved.sellerPhone = moved.ownerPhone;
   }
 
   const oldOwner = String(moved.ownerId || '').trim();

@@ -6,12 +6,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: 'AIzaSyCMFjanKid7Bw7-w084beGMRwvjn0WMfT4',
-  authDomain: 'myplotmitra-d692c.firebaseapp.com',
-  projectId: 'myplotmitra-d692c',
-  storageBucket: 'myplotmitra-d692c.firebasestorage.app',
-  messagingSenderId: '686781189764',
-  appId: '1:686781189764:web:c4fc3e669e8fb0b3b6bcd1',
+  "apiKey": "AIzaSyAnmBJavyJBmxTaM9jqNI7gajr1U3BVZ1E",
+  "authDomain": "myplotmitra-preview-d8c47.firebaseapp.com",
+  "projectId": "myplotmitra-preview-d8c47",
+  "storageBucket": "myplotmitra-preview-d8c47.firebasestorage.app",
+  "messagingSenderId": "109977955626",
+  "appId": "1:109977955626:web:b8b7d40414703843434253"
 });
 
 const messaging = firebase.messaging();
@@ -23,7 +23,7 @@ messaging.onBackgroundMessage((payload) => {
     body: d.body || 'You have a new update',
     icon: '/icons/icon-192.png',
     badge: '/icons/icon-192.png',
-    data: { url: d.url || 'https://www.myplotmitra.com/' },
+    data: { url: d.url || self.location.origin },
     vibrate: [180, 90, 180],
     tag: 'mpm-msg',
   });
@@ -31,5 +31,5 @@ messaging.onBackgroundMessage((payload) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
-  e.waitUntil(clients.openWindow(e.notification.data?.url || 'https://www.myplotmitra.com/'));
+  e.waitUntil(clients.openWindow(e.notification.data?.url || self.location.origin));
 });

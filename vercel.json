@@ -102,15 +102,15 @@
       "use": "@vercel/static"
     },
     {
-      "src": "api/rzp-create-order.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/rzp-verify.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "api/use-credit.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/contact-request.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/property-contact.js",
       "use": "@vercel/node"
     },
     {
@@ -164,6 +164,42 @@
     {
       "src": "api/r2-delete-property.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/property-create.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/r2-upload-url.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/r2-finalize-upload.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/r2-cleanup-uploads.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/rental-draft-create.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/cashfree-create-order.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/cashfree-verify.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/cashfree-webhook.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/admin-social-promotion.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -191,16 +227,16 @@
       "dest": "/manifest.json"
     },
     {
-      "src": "/api/rzp-verify",
-      "dest": "/api/rzp-verify.js"
-    },
-    {
-      "src": "/api/rzp-create-order",
-      "dest": "/api/rzp-create-order.js"
-    },
-    {
       "src": "/api/use-credit",
       "dest": "/api/use-credit.js"
+    },
+    {
+      "src": "/api/contact-request",
+      "dest": "/api/contact-request.js"
+    },
+    {
+      "src": "/api/property-contact",
+      "dest": "/api/property-contact.js"
     },
     {
       "src": "/api/notify",
@@ -225,6 +261,42 @@
     {
       "src": "/api/r2-delete-property",
       "dest": "/api/r2-delete-property.js"
+    },
+    {
+      "src": "/api/property-create",
+      "dest": "/api/property-create.js"
+    },
+    {
+      "src": "/api/r2-upload-url",
+      "dest": "/api/r2-upload-url.js"
+    },
+    {
+      "src": "/api/r2-finalize-upload",
+      "dest": "/api/r2-finalize-upload.js"
+    },
+    {
+      "src": "/api/r2-cleanup-uploads",
+      "dest": "/api/r2-cleanup-uploads.js"
+    },
+    {
+      "src": "/api/rental-draft-create",
+      "dest": "/api/rental-draft-create.js"
+    },
+    {
+      "src": "/api/cashfree-create-order",
+      "dest": "/api/cashfree-create-order.js"
+    },
+    {
+      "src": "/api/cashfree-verify",
+      "dest": "/api/cashfree-verify.js"
+    },
+    {
+      "src": "/api/cashfree-webhook",
+      "dest": "/api/cashfree-webhook.js"
+    },
+    {
+      "src": "/api/admin-social-promotion",
+      "dest": "/api/admin-social-promotion.js"
     },
     {
       "handle": "filesystem"

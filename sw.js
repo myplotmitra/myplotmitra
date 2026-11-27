@@ -1,6 +1,6 @@
 // MyPlotMitra — Service Worker
 // Offline shell + safe caching. Push support is ready but optional.
-// Never caches Firebase / Razorpay / API calls.
+// Never caches Firebase / Cashfree / API calls.
 
 const CACHE = 'mpm-v3';
 const CORE = ['/', '/index.html', '/manifest.json'];
@@ -28,7 +28,7 @@ self.addEventListener('fetch', (e) => {
     url.includes('firebase') ||
     url.includes('googleapis.com') ||
     url.includes('gstatic.com') ||
-    url.includes('razorpay.com') ||
+    url.includes('cashfree.com') ||
     url.includes('google-analytics') ||
     url.includes('identitytoolkit')
   ) return;

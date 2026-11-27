@@ -219,7 +219,8 @@ function createCashfreeVerifyHandler(deps) {
           success: true,
           alreadyProcessed: true,
           kind: pay.kind,
-          propId: pay.propId || null,
+          propId: pay.propId || pay.propertyId || null,
+          propertyId: pay.propertyId || pay.propId || null,
           creditsLeft: pay.creditsLeft,
           needsReview: pay.fulfilmentStatus === 'needs_review'
         });

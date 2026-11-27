@@ -108,17 +108,31 @@ module.exports = async (req, res) => {
         ? Object.keys(BADGES).filter(key => prop.badgesRequested && prop.badgesRequested[key] &&
             !(prop.badgesPaid && prop.badgesPaid[key]) && !(prop.badges && prop.badges[key]))
         : [];
+      if (kind === 'property_addons') {
+        try {
+          normalizeRequestedPlatforms(prop.socialPromotionPlatforms || []);
+          socialPromotionPlatforms = getUnpaidSocialPromotionPlatforms(prop);
+        } catch (_) {
+          return res.status(409).json({ error: 'The saved social promotion selection is invalid. Please contact support.' });
+        }
+      }
       if (kind === 'featured' && (prop.featuredPaid || prop.isFeatured)) {
         return res.status(409).json({ error: 'Featured placement is already paid or active' });
       }
-      if (!wantsFeatured && !badgeKeys.length) {
-        return res.status(400).json({ error: 'No unpaid featured or badge options were selected for this listing' });
+      if (!wantsFeatured && !badgeKeys.length && !socialPromotionPlatforms.length) {
+        return res.status(400).json({ error: 'No unpaid Featured, badge or social media options were selected for this listing' });
       }
       addons = { featured: wantsFeatured, badgeKeys };
       if (wantsFeatured) amount += price(cfg, 'featuredPrice', 499);
       for (const key of badgeKeys) amount += price(cfg, BADGES[key].field, BADGES[key].fallback);
-      label = [wantsFeatured ? 'Gold Featured listing' : '', ...badgeKeys.map(k => k)]
-        .filter(Boolean).join(' + ');
+      if (socialPromotionPlatforms.length) {
+        amount += calculateSocialPromotionAmount(socialPromotionPlatforms);
+      }
+      label = [
+        wantsFeatured ? 'Featured listing' : '',
+        ...badgeKeys.map(k => k),
+        socialPromotionPlatforms.length ? `Social promotion: ${socialPromotionPlatforms.join(', ')}` : ''
+      ].filter(Boolean).join(' + ');
     } else if (kind === 'social_promotion') {
       propId = String(body.propId || '').trim();
       if (!propId || propId.includes('/') || propId.length > 150) {
@@ -219,8 +233,26 @@ module.exports = async (req, res) => {
         return res.status(409).json({ error: 'Rental pricing information is invalid. Please recreate the rental draft.' });
       }
 
+      addons = draft.addons && typeof draft.addons === 'object'
+        ? { featured: draft.addons.featured === true, badgeKeys: [] }
+        : { featured: false, badgeKeys: [] };
+      try {
+        socialPromotionPlatforms = normalizeRequestedPlatforms(draft.socialPromotionPlatforms || []);
+      } catch (_) {
+        return res.status(409).json({ error: 'Rental draft contains invalid social promotion selections.' });
+      }
+      if (
+        Boolean(snapshot.featuredRequested) !== Boolean(addons.featured) ||
+        JSON.stringify(snapshot.socialPromotionPlatforms || []) !== JSON.stringify(socialPromotionPlatforms)
+      ) {
+        return res.status(409).json({ error: 'Rental add-on selections do not match their trusted pricing snapshot.' });
+      }
       amount = storedAmount;
-      label = `Rental listing — ${Number(draft.photoCount)} photo(s)`;
+      label = [
+        `Rental listing — ${Number(draft.photoCount)} photo(s)`,
+        addons.featured ? 'Featured listing' : '',
+        socialPromotionPlatforms.length ? `Social promotion: ${socialPromotionPlatforms.join(', ')}` : ''
+      ].filter(Boolean).join(' + ');
     }
 
     amount = roundRupees(amount);
@@ -244,6 +276,9 @@ module.exports = async (req, res) => {
       for (const key of (addons && Array.isArray(addons.badgeKeys) ? addons.badgeKeys : [])) {
         reservationKeys.push(`badge|${propId}|${key}`);
       }
+      for (const platform of socialPromotionPlatforms) {
+        reservationKeys.push(`social_promotion|${propId}|${platform}`);
+      }
     } else if (kind === 'banner') {
       reservationKeys.push(`banner|${bannerId}`);
     } else if (kind === 'social_promotion') {
@@ -252,6 +287,10 @@ module.exports = async (req, res) => {
       }
     } else if (kind === 'rental') {
       reservationKeys.push(`rental|${rentalDraftId}`);
+      if (addons && addons.featured) reservationKeys.push(`featured|${propertyId}`);
+      for (const platform of socialPromotionPlatforms) {
+        reservationKeys.push(`social_promotion|${propertyId}|${platform}`);
+      }
     }
 
     if (!reservationKeys.length) {
@@ -286,7 +325,9 @@ module.exports = async (req, res) => {
           !sameMoney(rentalDraft.rentalFeeAmount, amount) ||
           !sameMoney(snapshot.amount, amount) ||
           String(rentalDraft.currency || '') !== 'INR' ||
-          String(snapshot.currency || '') !== 'INR'
+          String(snapshot.currency || '') !== 'INR' ||
+          Boolean((rentalDraft.addons || {}).featured) !== Boolean((addons || {}).featured) ||
+          JSON.stringify(rentalDraft.socialPromotionPlatforms || []) !== JSON.stringify(socialPromotionPlatforms)
         ) {
           const conflict = new Error('Rental draft or saved pricing changed. Please contact support.');
           conflict.status = 409;

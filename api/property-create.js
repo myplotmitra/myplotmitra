@@ -82,12 +82,13 @@ module.exports = async function handler(req, res) {
           onePhotoFreeEnabled &&
           normalized.photoKeys.length === 1;
 
-        if (
-          isRental &&
-          settings.rentalPaymentEnabled === true &&
-          !qualifiesForFreeRental
-        ) {
-          fail(409, 'RENTAL_PAYMENT_REQUIRED');
+        if (isRental && !qualifiesForFreeRental) {
+          fail(
+            409,
+            settings.rentalPaymentEnabled === true
+              ? 'RENTAL_PAYMENT_REQUIRED'
+              : 'RENTAL_PHOTO_PAYMENT_DISABLED'
+          );
         }
 const uploadSnapshots = await Promise.all(
         uploadRefs.map(upload => tx.get(upload.ref))

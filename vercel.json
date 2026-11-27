@@ -243,6 +243,10 @@
       "dest": "/api/r2.js?__mpm_route=r2-cleanup-uploads"
     },
     {
+      "src": "/api/property-posting-pricing",
+      "dest": "/api/properties.js?__mpm_route=property-posting-pricing"
+    },
+    {
       "src": "/api/rental-draft-create",
       "dest": "/api/properties.js?__mpm_route=rental-draft-create"
     },

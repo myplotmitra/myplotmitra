@@ -1,4 +1,5 @@
 const { mergePropertyData } = require('./_property-private');
+const { buildCashfreeFulfilmentResult } = require('./_cashfree-fulfilment-result');
 // Shared Cashfree Payment Gateway utilities for MyPlotMitra.
 // Uses the existing Firebase Admin initialization in ./_r2.js.
 const crypto = require('crypto');
@@ -170,7 +171,8 @@ async function fulfilCashfreeOrder(orderId, payment) {
         success: true,
         alreadyProcessed: true,
         kind: pay.kind,
-        propId: pay.propId || null,
+        propId: pay.propId || pay.propertyId || null,
+        propertyId: pay.propertyId || pay.propId || null,
         needsReview: pay.fulfilmentStatus === 'needs_review'
       };
     }
@@ -233,6 +235,8 @@ async function fulfilCashfreeOrder(orderId, payment) {
             !sameMoney(draft.pricingSnapshot.amount, pay.amount) ||
             String(draft.pricingSnapshot.currency || '') !== 'INR' ||
             Number(draft.pricingSnapshot.photoCount) !== Number(draft.photoCount) ||
+            Boolean((draft.addons || {}).featured) !== Boolean((pay.addons || {}).featured) ||
+            JSON.stringify(draft.socialPromotionPlatforms || []) !== JSON.stringify(pay.socialPromotionPlatforms || []) ||
             draft.status !== 'pending_payment' ||
             !['creating', 'created'].includes(String(draft.paymentStatus || '')) ||
             !draft.property ||
@@ -375,11 +379,39 @@ async function fulfilCashfreeOrder(orderId, payment) {
           });
         }
       } else {
-        tx.create(propertyRef, {
+        const rentalPropertyData = {
           ...documents.publicData,
           createdAt: paidAt,
           updatedAt: paidAt
-        });
+        };
+        if (pay.addons && pay.addons.featured === true) {
+          rentalPropertyData.featuredRequested = true;
+          rentalPropertyData.featuredPaid = true;
+          rentalPropertyData.isFeatured = true;
+          rentalPropertyData.featuredPaymentOrderId = String(orderId);
+          rentalPropertyData.featuredPaidAt = paidAt;
+        }
+        const paidRentalPlatforms = Array.isArray(pay.socialPromotionPlatforms)
+          ? pay.socialPromotionPlatforms
+          : [];
+        if (paidRentalPlatforms.length) {
+          const promotionData = { ...(rentalPropertyData.socialPromotions || {}) };
+          for (const platform of paidRentalPlatforms) {
+            const previous = promotionData[platform] && typeof promotionData[platform] === 'object'
+              ? promotionData[platform]
+              : {};
+            promotionData[platform] = {
+              ...previous,
+              paymentStatus: 'paid',
+              status: 'awaiting_publication',
+              published: false,
+              paymentOrderId: String(orderId),
+              paidAt
+            };
+          }
+          rentalPropertyData.socialPromotions = promotionData;
+        }
+        tx.create(propertyRef, rentalPropertyData);
 
         tx.create(privateRef, documents.privateData);
         tx.create(contactRef, documents.contactInfo);
@@ -409,6 +441,8 @@ async function fulfilCashfreeOrder(orderId, payment) {
         paymentUpdate.rentalDraftId = rentalDraftId;
         paymentUpdate.propId = propertyId;
         paymentUpdate.propertyId = propertyId;
+        paymentUpdate.addons = pay.addons || { featured: false, badgeKeys: [] };
+        paymentUpdate.socialPromotionPlatforms = paidRentalPlatforms;
       }
     } else if (pay.kind === 'prime') {
       const userSnap = await tx.get(userRef);
@@ -475,17 +509,41 @@ async function fulfilCashfreeOrder(orderId, payment) {
           )
         : null;
 
+      const addons = pay.kind === 'featured'
+        ? { featured: true, badgeKeys: [] }
+        : (pay.addons || { featured: false, badgeKeys: [] });
+      const paidPlatforms = Array.isArray(pay.socialPromotionPlatforms)
+        ? pay.socialPromotionPlatforms
+        : [];
+      const promotions = property && property.socialPromotions && typeof property.socialPromotions === 'object'
+        ? property.socialPromotions
+        : {};
+      const invalidPlatforms = paidPlatforms.some(platform =>
+        !['youtube', 'facebook', 'instagram'].includes(platform) ||
+        !Array.isArray(property && property.socialPromotionPlatforms) ||
+        !property.socialPromotionPlatforms.includes(platform)
+      );
+      const alreadyPaidPlatforms = paidPlatforms.some(platform => {
+        const item = promotions[platform] && typeof promotions[platform] === 'object'
+          ? promotions[platform]
+          : {};
+        return item.paymentStatus === 'paid' || item.published === true;
+      });
+
       if (!propSnap.exists || property.ownerId !== uid) {
         paymentUpdate.fulfilmentStatus = 'needs_review';
         paymentUpdate.fulfilmentNote = 'Property missing or owner mismatch after successful payment';
+      } else if (invalidPlatforms || alreadyPaidPlatforms) {
+        paymentUpdate.fulfilmentStatus = 'needs_review';
+        paymentUpdate.fulfilmentNote = invalidPlatforms
+          ? 'Social promotion platform selection does not match the saved property'
+          : 'A selected social platform was already paid or published';
       } else {
         const propUpdate = { updatedAt: paidAt };
-        const addons = pay.kind === 'featured'
-          ? { featured: true, badgeKeys: [] }
-          : (pay.addons || { featured: false, badgeKeys: [] });
         if (addons.featured) {
           propUpdate.featuredRequested = true;
           propUpdate.featuredPaid = true;
+          propUpdate.isFeatured = true;
           propUpdate.featuredPaymentOrderId = String(orderId);
           propUpdate.featuredPaidAt = paidAt;
         }
@@ -495,9 +553,18 @@ async function fulfilCashfreeOrder(orderId, payment) {
             propUpdate.badgesPaymentOrderId = String(orderId);
           }
         }
+        for (const platform of paidPlatforms) {
+          propUpdate[`socialPromotions.${platform}.paymentStatus`] = 'paid';
+          propUpdate[`socialPromotions.${platform}.status`] = 'awaiting_publication';
+          propUpdate[`socialPromotions.${platform}.published`] = false;
+          propUpdate[`socialPromotions.${platform}.paymentOrderId`] = String(orderId);
+          propUpdate[`socialPromotions.${platform}.paidAt`] = paidAt;
+        }
         tx.update(propRef, propUpdate);
       }
       paymentUpdate.propId = String(pay.propId || '');
+      paymentUpdate.addons = addons;
+      paymentUpdate.socialPromotionPlatforms = paidPlatforms;
     } else if (pay.kind === 'social_promotion') {
       const propId = String(pay.propId || '');
       const platforms = Array.isArray(pay.socialPromotionPlatforms)
@@ -576,13 +643,7 @@ async function fulfilCashfreeOrder(orderId, payment) {
     });
 
     tx.update(paymentRef, paymentUpdate);
-    return {
-      success: true,
-      kind: pay.kind,
-      propId: pay.propId || null,
-      creditsLeft: typeof paymentUpdate.creditsLeft === 'number' ? paymentUpdate.creditsLeft : undefined,
-      needsReview: paymentUpdate.fulfilmentStatus === 'needs_review'
-    };
+    return buildCashfreeFulfilmentResult(pay, paymentUpdate);
   });
 }
 

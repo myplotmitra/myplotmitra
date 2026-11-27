@@ -5,6 +5,7 @@ const {
   normalizePropertyCreateRequest,
   validateReadyPhotoUploads
 } = require('./_property-create-policy');
+const { calculateRentalDraftPricing } = require('./_rental-pricing');
 
 const DRAFT_LIFETIME_MS = 24 * 60 * 60 * 1000;
 
@@ -67,19 +68,13 @@ module.exports = async (req, res) => {
     const ownerName = String(
       user.displayName || user.name || ''
     ).trim().slice(0, 120) || 'User';
+    let checkoutPricing = null;
 
     await db.runTransaction(async tx => {
       // Read every document before performing any writes.
       const settingsSnap = await tx.get(settingsRef);
 
-      if (
-        !settingsSnap.exists ||
-        settingsSnap.data().rentalPaymentEnabled !== true
-      ) {
-        fail(409, 'Rental payment is currently disabled');
-      }
-
-      const settings = settingsSnap.data() || {};
+      const settings = settingsSnap.exists ? (settingsSnap.data() || {}) : {};
       const configuredRentalLimit = settings.rentalMaxPhotos;
       const rentalMaxPhotos = configuredRentalLimit == null ? 20 : configuredRentalLimit;
       if (!Number.isSafeInteger(rentalMaxPhotos) || rentalMaxPhotos < 1 || rentalMaxPhotos > 100) {
@@ -96,58 +91,28 @@ module.exports = async (req, res) => {
         fail(400, 'At least one rental photo is required');
       }
 
-      const onePhotoFreeEnabled =
-        settings.rentalOnePhotoFreeEnabled !== false;
-
-      // One-photo free listings must use the free property-create endpoint.
-      if (onePhotoFreeEnabled && photoCount === 1) {
-        fail(409, 'This one-photo rental qualifies for free listing');
-      }
-
-      const basePrice = settings.rentalBasePrice == null
-        ? 20
-        : settings.rentalBasePrice;
-
-      const includedPhotos = settings.rentalIncludedPhotos == null
-        ? 3
-        : settings.rentalIncludedPhotos;
-
-      const extraPhotoPrice = settings.rentalExtraPhotoPrice == null
-        ? 10
-        : settings.rentalExtraPhotoPrice;
-
+      const featuredRequested = normalized.publicData.featuredRequested === true;
+      const socialPromotionPlatforms = Array.isArray(normalized.publicData.socialPromotionPlatforms)
+        ? normalized.publicData.socialPromotionPlatforms.slice()
+        : [];
       if (
-        !Number.isSafeInteger(basePrice) ||
-        basePrice < 1 ||
-        !Number.isSafeInteger(includedPhotos) ||
-        includedPhotos < 1 ||
-        !Number.isSafeInteger(extraPhotoPrice) ||
-        extraPhotoPrice < 0
+        settings.rentalOnePhotoFreeEnabled !== false &&
+        photoCount === 1 &&
+        !featuredRequested &&
+        socialPromotionPlatforms.length === 0
       ) {
-        fail(500, 'Invalid rental pricing settings');
+        fail(409, 'This one-photo rental qualifies for the free listing path');
       }
 
-      const extraPhotoCount = Math.max(0, photoCount - includedPhotos);
-      const rentalFeeAmount =
-        basePrice + (extraPhotoCount * extraPhotoPrice);
-
-      if (
-        !Number.isSafeInteger(rentalFeeAmount) ||
-        rentalFeeAmount < 1
-      ) {
-        fail(500, 'Invalid calculated rental fee');
-      }
-
-      const pricingSnapshot = {
+      const checkout = calculateRentalDraftPricing({
+        settings,
         photoCount,
-        basePrice,
-        includedPhotos,
-        extraPhotoPrice,
-        extraPhotoCount,
-        onePhotoFreeEnabled,
-        amount: rentalFeeAmount,
-        currency: 'INR'
-      };
+        featuredRequested,
+        socialPromotionPlatforms
+      });
+      const rentalFeeAmount = checkout.amount;
+      const pricingSnapshot = checkout.pricingSnapshot;
+      checkoutPricing = { amount: rentalFeeAmount, pricingSnapshot };
 
       const uploadSnaps = await Promise.all(
         uploadRefs.map(ref => tx.get(ref))
@@ -180,6 +145,8 @@ module.exports = async (req, res) => {
         photoCount: normalized.photoKeys.length,
         rentalMaxPhotos,
         rentalFeeAmount,
+        addons: { featured: featuredRequested, badgeKeys: [] },
+        socialPromotionPlatforms,
         currency: 'INR',
         pricingSnapshot,
         status: 'pending_payment',
@@ -204,7 +171,9 @@ module.exports = async (req, res) => {
       success: true,
       draftId: draftRef.id,
       status: 'pending_payment',
-      photoCount: normalized.photoKeys.length
+      photoCount: normalized.photoKeys.length,
+      amount: checkoutPricing ? checkoutPricing.amount : null,
+      pricingSnapshot: checkoutPricing ? checkoutPricing.pricingSnapshot : null
     });
 
   } catch (error) {
@@ -215,6 +184,15 @@ module.exports = async (req, res) => {
       'INVALID_PROPERTY_FIELD',
       'INVALID_TRANSACTION_TYPE',
       'INVALID_RENT_PERIOD',
+      'MISSING_RENT_CATEGORY',
+      'INVALID_RENT_CATEGORY',
+      'RENTAL_SPACE_LAYOUT_REQUIRED',
+      'INVALID_RENTAL_SPACE_LAYOUT_FIELD',
+      'INVALID_RENTAL_SPACE_LAYOUT_MEASUREMENTS',
+      'RENTAL_SPACE_LAYOUT_NOT_APPLICABLE',
+      'RENTAL_PLOT_LAYOUT_NOT_APPLICABLE',
+      'INVALID_RENTAL_PHOTO_COUNT',
+      'INVALID_RENTAL_SOCIAL_PROMOTIONS',
       'INVALID_PROPERTY_TYPE',
       'INVALID_PRICE',
       'MISSING_TITLE',

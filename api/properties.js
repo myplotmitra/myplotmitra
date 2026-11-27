@@ -9,4 +9,5 @@ module.exports = createDispatcher({
   'r2-delete-property': require('./r2-delete-property'),
   'property-create': require('./property-create'),
   'rental-draft-create': require('./rental-draft-create'),
+  'property-posting-pricing': require('./_property-posting-pricing'),
 });

@@ -12,6 +12,10 @@ const FACING_DIRECTIONS = [
   'South', 'South-West', 'West', 'North-West'
 ];
 const SOCIAL_PROMOTION_PLATFORMS = ['youtube', 'facebook', 'instagram'];
+const RENT_CATEGORIES = [
+  '1bhk', '2bhk', '3bhk', '4bhk', 'independent_house', 'apartment',
+  'commercial_shop', 'single_room', 'shared', 'open_commercial_space'
+];
 
 const BADGE_KEYS = [
   'verifiedOwner',
@@ -23,6 +27,7 @@ const BADGE_KEYS = [
 
 const PROPERTY_INPUT_FIELDS = new Set([
   'title', 'description', 'type', 'transactionType', 'rentPeriod',
+  'rentCategory', 'rentalSpaceLayout',
   'address', 'city',
   'lat', 'lng', 'lengthFt', 'widthFt', 'areaSqft',
   'facing', 'isCorner', 'frontLen', 'backLen',
@@ -338,6 +343,29 @@ function normalizePlotLayout(value, facing, isCorner) {
   };
 }
 
+function normalizeRentalSpaceLayout(value) {
+  if (value == null || !value || typeof value !== 'object' || Array.isArray(value)) {
+    fail('RENTAL_SPACE_LAYOUT_REQUIRED');
+  }
+  const allowed = new Set(['widthFt', 'depthFt', 'roadWidthFt']);
+  for (const key of Object.keys(value)) {
+    if (!allowed.has(key)) fail('INVALID_RENTAL_SPACE_LAYOUT_FIELD');
+  }
+  const widthFt = numeric(value.widthFt, 'rental_space_width', NUMERIC_LIMITS.widthFt);
+  const depthFt = numeric(value.depthFt, 'rental_space_depth', NUMERIC_LIMITS.lengthFt);
+  const roadWidthFt = numeric(value.roadWidthFt, 'rental_space_road_width', NUMERIC_LIMITS.frontRoad);
+  if (widthFt <= 0 || depthFt <= 0 || roadWidthFt < 0) {
+    fail('INVALID_RENTAL_SPACE_LAYOUT_MEASUREMENTS');
+  }
+  return {
+    widthFt,
+    depthFt,
+    roadWidthFt,
+    areaSqft: Math.round(widthFt * depthFt * 100) / 100,
+    drawingNote: 'Simple indicative open-space layout; verify dimensions against the site survey.'
+  };
+}
+
 function normalizePropertyCreateRequest(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     fail('INVALID_REQUEST');
@@ -376,8 +404,21 @@ function normalizePropertyCreateRequest(body) {
   }
 
   let rentPeriod = null;
+  let rentCategory = null;
 
   if (transactionType === 'rent') {
+    rentCategory = source.rentCategory == null
+      ? null
+      : cleanString(source.rentCategory, 'rentCategory', 32, true).toLowerCase();
+    if (!rentCategory) fail('MISSING_RENT_CATEGORY');
+    if (!RENT_CATEGORIES.includes(rentCategory)) {
+      fail('INVALID_RENT_CATEGORY');
+    }
+    const expectedRentType =
+      rentCategory === 'independent_house' || rentCategory === 'commercial_shop'
+        ? 'house'
+        : (rentCategory === 'open_commercial_space' ? 'land' : 'flat');
+    if (type !== expectedRentType) fail('INVALID_RENT_PROPERTY_TYPE');
     rentPeriod = source.rentPeriod == null
       ? 'month'
       : cleanString(source.rentPeriod, 'rentPeriod', 10, true).toLowerCase();
@@ -385,8 +426,15 @@ function normalizePropertyCreateRequest(body) {
     if (!['day', 'week', 'month', 'year'].includes(rentPeriod)) {
       fail('INVALID_RENT_PERIOD');
     }
-  } else if (source.rentPeriod != null) {
+  } else if (source.rentPeriod != null || source.rentCategory != null || source.rentalSpaceLayout != null) {
     fail('INVALID_RENT_PERIOD');
+  }
+
+  let rentalSpaceLayout = null;
+  if (transactionType === 'rent' && rentCategory === 'open_commercial_space') {
+    rentalSpaceLayout = normalizeRentalSpaceLayout(source.rentalSpaceLayout);
+  } else if (source.rentalSpaceLayout != null) {
+    fail('RENTAL_SPACE_LAYOUT_NOT_APPLICABLE');
   }
 
   const price = Number(source.price);
@@ -408,13 +456,18 @@ function normalizePropertyCreateRequest(body) {
   const isCorner = boolean(source.isCorner, 'isCorner');
   const plotLayoutSkipped = boolean(source.plotLayoutSkipped, 'plotLayoutSkipped');
   const isPlotLike = type === 'plot' || type === 'land';
+  if (transactionType === 'rent' && source.plotLayout != null) {
+    // Rentals never use the full four-boundary sale plot plan. Open/commercial
+    // space rentals use rentalSpaceLayout (a compact width/depth/road sketch).
+    fail('RENTAL_PLOT_LAYOUT_NOT_APPLICABLE');
+  }
   if (!isPlotLike && (source.plotLayout != null || plotLayoutSkipped)) {
     fail('PLOT_LAYOUT_NOT_APPLICABLE');
   }
   if (plotLayoutSkipped && source.plotLayout != null) {
     fail('PLOT_LAYOUT_CANNOT_BE_SKIPPED_AND_SUBMITTED');
   }
-  const plotLayout = isPlotLike && !plotLayoutSkipped
+  const plotLayout = transactionType === 'sale' && isPlotLike && !plotLayoutSkipped
     ? normalizePlotLayout(source.plotLayout, facing, isCorner)
     : null;
   const socialPromotionPlatforms = normalizeSocialPromotionPlatforms(
@@ -427,6 +480,8 @@ function normalizePropertyCreateRequest(body) {
     type,
     transactionType,
     rentPeriod,
+    ...(rentCategory ? { rentCategory } : {}),
+    ...(rentalSpaceLayout ? { rentalSpaceLayout } : {}),
     address: cleanString(source.address, 'address', 300, true),
     city: cleanString(source.city, 'city', 120) || 'Hyderabad',
 
@@ -448,7 +503,7 @@ function normalizePropertyCreateRequest(body) {
     sideRoad: numeric(source.sideRoad, 'sideRoad', NUMERIC_LIMITS.sideRoad),
 
     plotNumber: cleanString(source.plotNumber, 'plotNumber', 80),
-    plotLayoutSkipped: isPlotLike ? plotLayoutSkipped : false,
+    plotLayoutSkipped: transactionType === 'rent' ? true : (isPlotLike ? plotLayoutSkipped : false),
     ...(plotLayout ? { plotLayout } : {}),
     badgesRequested: normalizeBadgesRequested(source.badgesRequested),
 
@@ -552,6 +607,8 @@ module.exports = {
   MAX_PROPERTY_PHOTOS,
   BADGE_KEYS,
   SOCIAL_PROMOTION_PLATFORMS,
+  RENT_CATEGORIES,
+  normalizeRentalSpaceLayout,
   normalizeSocialPromotionPlatforms,
   buildInitialSocialPromotions,
   normalizePhone,

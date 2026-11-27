@@ -290,7 +290,9 @@ console.log('PASS: existing requests default to sale');
 const monthlyRent = normalizePropertyCreateRequest(validBody({
   property: {
     ...validBody().property,
-    transactionType: 'rent'
+    type: 'flat',
+    transactionType: 'rent',
+    rentCategory: '1bhk'
   }
 }));
 assert.equal(monthlyRent.publicData.transactionType, 'rent');
@@ -301,8 +303,10 @@ for (const period of ['day', 'week', 'month', 'year']) {
   const result = normalizePropertyCreateRequest(validBody({
     property: {
       ...validBody().property,
+      type: 'flat',
       transactionType: 'rent',
-      rentPeriod: period
+      rentPeriod: period,
+      rentCategory: '2bhk'
     }
   }));
   assert.equal(result.publicData.rentPeriod, period);
@@ -324,7 +328,9 @@ assert.throws(
   () => normalizePropertyCreateRequest(validBody({
     property: {
       ...validBody().property,
+      type: 'flat',
       transactionType: 'rent',
+      rentCategory: '1bhk',
       rentPeriod: 'fortnight'
     }
   })),
@@ -450,3 +456,80 @@ assert.throws(() => normalizePropertyCreateRequest(validBody({
   }
 })), /INVALID_PROPERTY_FIELD/);
 console.log('PASS: clients cannot inject social promotion payment or publication state');
+
+
+// Rental accommodation categories: residential rentals have no plot survey layout.
+for (const rentCategory of [
+  '1bhk', '2bhk', '3bhk', '4bhk', 'independent_house',
+  'apartment', 'commercial_shop', 'single_room', 'shared'
+]) {
+  const normalizedRent = normalizePropertyCreateRequest(validBody({
+    property: {
+      ...validBody().property,
+      type: rentCategory === 'independent_house' || rentCategory === 'commercial_shop' ? 'house' : 'flat',
+      transactionType: 'rent',
+      rentPeriod: 'month',
+      rentCategory,
+      plotLayoutSkipped: false
+    }
+  }));
+  assert.equal(normalizedRent.publicData.rentCategory, rentCategory);
+  assert.equal(normalizedRent.publicData.plotLayoutSkipped, true);
+  assert.equal(Object.hasOwn(normalizedRent.publicData, 'plotLayout'), false);
+}
+console.log('PASS: all rent accommodation categories normalize without a full plot layout');
+
+assert.throws(() => normalizePropertyCreateRequest(validBody({
+  property: { ...validBody().property, transactionType: 'rent' }
+})), /MISSING_RENT_CATEGORY/);
+console.log('PASS: rental listings require an explicit accommodation category');
+
+assert.throws(() => normalizePropertyCreateRequest(validBody({
+  property: {
+    ...validBody().property,
+    type: 'flat',
+    transactionType: 'rent',
+    rentCategory: 'studio-villa'
+  }
+})), /INVALID_RENT_CATEGORY/);
+console.log('PASS: unsupported rental accommodation categories are rejected');
+
+assert.throws(() => normalizePropertyCreateRequest(validBody({
+  property: { ...validBody().property, type: 'plot', transactionType: 'rent', rentCategory: '1bhk' }
+})), /INVALID_RENT_PROPERTY_TYPE/);
+console.log('PASS: rental accommodation category is saved with a matching property type');
+
+const openSpaceRent = normalizePropertyCreateRequest(validBody({
+  property: {
+    ...validBody().property,
+    type: 'land',
+    transactionType: 'rent',
+    rentPeriod: 'month',
+    rentCategory: 'open_commercial_space',
+    plotLayoutSkipped: true,
+    rentalSpaceLayout: { widthFt: 30, depthFt: 50, roadWidthFt: 24 }
+  }
+}));
+assert.deepEqual(openSpaceRent.publicData.rentalSpaceLayout, {
+  widthFt: 30,
+  depthFt: 50,
+  roadWidthFt: 24,
+  areaSqft: 1500,
+  drawingNote: 'Simple indicative open-space layout; verify dimensions against the site survey.'
+});
+assert.equal(Object.hasOwn(openSpaceRent.publicData, 'plotLayout'), false);
+console.log('PASS: open/commercial rentals accept only the compact width/depth/road layout');
+
+assert.throws(() => normalizePropertyCreateRequest(validBody({
+  property: {
+    ...validBody().property,
+    type: 'land',
+    transactionType: 'rent',
+    rentPeriod: 'month',
+    rentCategory: 'open_commercial_space',
+    plotLayoutSkipped: true,
+    rentalSpaceLayout: { widthFt: 30, depthFt: 50, roadWidthFt: 24 },
+    plotLayout: { schemaVersion: 1 }
+  }
+})), /RENTAL_PLOT_LAYOUT_NOT_APPLICABLE/);
+console.log('PASS: rental listings cannot submit the full sale plot layout');

@@ -102,15 +102,15 @@
       "use": "@vercel/static"
     },
     {
-      "src": "api/use-credit.js",
+      "src": "api/contacts.js",
       "use": "@vercel/node"
     },
     {
-      "src": "api/contact-request.js",
+      "src": "api/properties.js",
       "use": "@vercel/node"
     },
     {
-      "src": "api/property-contact.js",
+      "src": "api/r2.js",
       "use": "@vercel/node"
     },
     {
@@ -148,42 +148,6 @@
     {
       "src": "google93b50763b89aed8a.html",
       "use": "@vercel/static"
-    },
-    {
-      "src": "api/my-properties.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/property-update.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/property-mark-sold.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/r2-delete-property.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/property-create.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/r2-upload-url.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/r2-finalize-upload.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/r2-cleanup-uploads.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/rental-draft-create.js",
-      "use": "@vercel/node"
     },
     {
       "src": "api/cashfree-create-order.js",
@@ -228,15 +192,15 @@
     },
     {
       "src": "/api/use-credit",
-      "dest": "/api/use-credit.js"
+      "dest": "/api/contacts.js?__mpm_route=use-credit"
     },
     {
       "src": "/api/contact-request",
-      "dest": "/api/contact-request.js"
+      "dest": "/api/contacts.js?__mpm_route=contact-request"
     },
     {
       "src": "/api/property-contact",
-      "dest": "/api/property-contact.js"
+      "dest": "/api/contacts.js?__mpm_route=property-contact"
     },
     {
       "src": "/api/notify",
@@ -248,39 +212,39 @@
     },
     {
       "src": "/api/my-properties",
-      "dest": "/api/my-properties.js"
+      "dest": "/api/properties.js?__mpm_route=my-properties"
     },
     {
       "src": "/api/property-update",
-      "dest": "/api/property-update.js"
+      "dest": "/api/properties.js?__mpm_route=property-update"
     },
     {
       "src": "/api/property-mark-sold",
-      "dest": "/api/property-mark-sold.js"
+      "dest": "/api/properties.js?__mpm_route=property-mark-sold"
     },
     {
       "src": "/api/r2-delete-property",
-      "dest": "/api/r2-delete-property.js"
+      "dest": "/api/properties.js?__mpm_route=r2-delete-property"
     },
     {
       "src": "/api/property-create",
-      "dest": "/api/property-create.js"
+      "dest": "/api/properties.js?__mpm_route=property-create"
     },
     {
       "src": "/api/r2-upload-url",
-      "dest": "/api/r2-upload-url.js"
+      "dest": "/api/r2.js?__mpm_route=r2-upload-url"
     },
     {
       "src": "/api/r2-finalize-upload",
-      "dest": "/api/r2-finalize-upload.js"
+      "dest": "/api/r2.js?__mpm_route=r2-finalize-upload"
     },
     {
       "src": "/api/r2-cleanup-uploads",
-      "dest": "/api/r2-cleanup-uploads.js"
+      "dest": "/api/r2.js?__mpm_route=r2-cleanup-uploads"
     },
     {
       "src": "/api/rental-draft-create",
-      "dest": "/api/rental-draft-create.js"
+      "dest": "/api/properties.js?__mpm_route=rental-draft-create"
     },
     {
       "src": "/api/cashfree-create-order",
